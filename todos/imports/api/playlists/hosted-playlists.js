@@ -29,11 +29,11 @@ class HostedPlaylistCollection extends Mongo.Collection {
 
 export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 
-// Deny all client-side updates since we will be using methods to manage this collection
-HostedPlaylists.deny({
-  //insert() { return true; },
-  update() { return true; },
-  remove() { return true; },
+// allow inserts (note: best practice is to DENY crud operations and expose them via methods.js, but we can do that later if  we want to)
+HostedPlaylists.allow({
+  'insert': function () {
+    return true; 
+  },
 });
 
 HostedPlaylists.schema = new SimpleSchema({
