@@ -71,7 +71,7 @@ HostedPlaylists.helpers({
   songs() {
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { createdAt: -1 } });
   },
-  initializeSongs(songs){
+  initializeSongs(songs) {
     window.alert(this._id);
     var playlistId = this._id;
     $.each(songs, function( index, value ) {
@@ -83,5 +83,8 @@ HostedPlaylists.helpers({
       });
     });
     return;
+  },
+  getUserId() {
+    return this.userId;
   }
 });
