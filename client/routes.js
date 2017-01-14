@@ -11,7 +11,6 @@ import '../imports/playlist-page.js';
 import '../imports/debug.js';
 import '../imports/app-body.js';
 
-
 FlowRouter.route('/', {
   name: 'App.home',
   triggersEnter: [acquireSession],
@@ -59,17 +58,17 @@ FlowRouter.route('/debug/', {
   },
 });
 
-FlowRouter.notFound = {
-  action() {
-    BlazeLayout.render('App_body');
-  },
-};
+// FlowRouter.notFound = {
+//   action() {
+//     BlazeLayout.render('App_body');
+//   },
+// };
 
 // trigger for managing session across routes
 function acquireSession() {
   const sessionKey = "jukebox-active-user-id";
   var userIdFromSession = Session.get(sessionKey);
-  if(!userIdFromSession || !Users.find(userIdFromSession).count() === 0){
+  if(!userIdFromSession || Users.find(userIdFromSession).count() === 0){
     var userId = Users.createNewUser(null);
     Session.setPersistent(sessionKey, userId);
   }
