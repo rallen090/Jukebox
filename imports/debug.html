@@ -1,0 +1,38 @@
+<template name="debug_page">
+  <div>
+  Users:<br/>
+    <ul>
+      {{#each users}}
+        {{_id}} - {{spotifyUserId}} - {{spotifyAuthToken}}
+        <br/>
+      {{/each}}
+    </ul>
+  </div>
+    <div>
+    Playlists:<br/>
+    <ul>
+      {{#each hostedPlaylists}}
+        {{_id}} - {{name}} - {{publicId}} - {{userId}}
+        <br/>
+      {{/each}}
+    </ul>
+  </div>
+    <div>
+    Songs:<br/>
+    <ul>
+      {{#each songs}}
+        {{_id}} - {{name}} - {{artist}} - {{userId}}
+        <br/>
+      {{/each}}
+    </ul>
+  </div>  
+  <div>
+  Lists:<br/>
+    <ul>
+      {{#each lists}}
+        {{_id}} - {{name}}
+        <br/>
+      {{/each}}
+    </ul>
+  </div>
+</template>
