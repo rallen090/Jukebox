@@ -1,0 +1,47 @@
+<template name="playlist_page">
+  <div class="page lists-show">
+    <nav class="js-title-nav">
+          <div class="nav-group">
+          <h1 class="js-edit-list title-page">
+            <span class="title-wrapper">{{playlist.name}}</span>
+<!--             <span class="count-list">{{songs.count()}}</span> -->
+          </h1>
+
+          <div class="nav-group right">
+            <div class="nav-item options-mobile">
+              <select class="list-edit">
+                {{#if isOwner}}
+                  <option value="public">Settings</option>
+                {{/if}}
+              </select>
+              <span class="icon-cog"></span>
+            </div>
+          </div>
+          </div>
+    </nav>
+
+    <div class="content-scrollable list-items">
+      {{#if songs}}
+        {{#each song in songs}}
+          {{playlist.name}} - {{playlist.dateCreated}} - Created by user {{playlist.userId}}
+
+		  <div class="list-item">
+		    <label class="checkbox">
+		      <input type="checkbox" checked="false" name="checked">
+		      <span class="checkbox-custom"></span>
+		    </label>
+		    <input
+		      type="text"
+		      value="({{song.votes.length}}) - {{song.name}} - {{song.artist}}"
+		      placeholder={{_ 'todos.item.taskName'}}>
+		    <a class="js-delete-item delete-item" href="#">
+		      <span class="icon-trash"></span>
+		    </a>
+		  </div>
+        {{/each}}
+        {{else}}
+        Playlist is empty
+      {{/if}}
+    </div>
+  </div>
+</template>
