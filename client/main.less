@@ -21,10 +21,11 @@ html, button, input, textarea, select {
 }
 
 body {
-	.type-regular;
 	font-size: 16px;
-	.position(absolute, 0, 0, 0, 0);
 	background-color: #000;
+	color: #ccc;
+	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
 	background-image: linear-gradient(to bottom, @color-bg-top, @color-bg-bottom);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
@@ -32,6 +33,41 @@ body {
 
 #header {
 	background: rgba(0, 0, 0, 0.2);
-	padding: 10px 5px;	
+	padding: 10px 15px;	
 }
 
+#container {
+	padding: 15px;
+}
+
+h1, h2, h3, h4, p {
+	color: #ccc;
+	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+.big-input {
+	font-size: 30px;
+	padding: 10px 10px;
+	margin: 20px 0px;
+	width: 300px;
+	background-color: #222;
+	border: 0px;
+	color: #ccc;
+}
+
+a.link-playlist-new {
+	position: relative;
+	margin: 0 0 -10px 0;
+	padding: 50px 0 0 0;
+	cursor: hand;
+	
+}
