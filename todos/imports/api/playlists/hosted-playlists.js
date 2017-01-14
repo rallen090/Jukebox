@@ -7,7 +7,7 @@ class HostedPlaylistCollection extends Mongo.Collection {
   insert(list, callback) {
     const ourList = list;
     if (!ourList.name) {
-      const defaultName = "Default Playlist Name";
+      const defaultName = "Default Playlist";
       let nextLetter = 'A';
       ourList.name = `${defaultName} ${nextLetter}`;
 
@@ -26,7 +26,7 @@ class HostedPlaylistCollection extends Mongo.Collection {
   }
 }
 
-export const Lists = new ListsCollection('playlists');
+export const Lists = new HostedPlaylistCollection('playlists');
 
 // Deny all client-side updates since we will be using methods to manage this collection
 Lists.deny({
