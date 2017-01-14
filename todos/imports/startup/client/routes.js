@@ -89,7 +89,7 @@ FlowRouter.notFound = {
 function acquireSession() {
   const sessionKey = "jukebox-active-user-id";
   var userIdFromSession = Session.get(sessionKey);
-  if(!userIdFromSession){
+  if(!userIdFromSession || !Users.find(userIdFromSession).count() === 0){
     var userId = Users.createNewUser(null);
     Session.setPersistent(sessionKey, userId);
   }

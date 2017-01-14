@@ -88,8 +88,5 @@ HostedPlaylists.helpers({
       });
     });
     return;
-  },
-  getUserId() {
-    return this.userId;
   }
 });

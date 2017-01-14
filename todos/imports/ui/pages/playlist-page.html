@@ -23,7 +23,7 @@
     <div class="content-scrollable list-items">
       {{#if songs}}
         {{#each song in songs}}
-          {{playlist.name}} - {{playlist.name}} - {{playlist.name}}
+          {{playlist.name}} - {{playlist.dateCreated}} - Created by user {{playlist.userId}}
 
 		  <div class="list-item">
 		    <label class="checkbox">
@@ -39,15 +39,12 @@
 		    </a>
 		  </div>
 
-        {{else}}
           <div class="wrapper-message">
             <div class="title-message">Playlist is empty</div>
           </div>
         {{/each}}
-      {{else}}
-        <div class="wrapper-message">
-          <div class="title-message">{{_ 'lists.show.loading'}}</div>
-        </div>
+        {{else}}
+        Playlist is empty
       {{/if}}
     </div>
   </div>
