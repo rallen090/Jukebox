@@ -11,9 +11,6 @@ Template.debug_page.onCreated(function bodyOnCreated() {
 });
 
 Template.debug_page.helpers({
-  lists() {
-    return Lists.find();
-  },
   users() {
     return Users.find();
   },
