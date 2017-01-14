@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import SimpleSchema from 'simpl-schema';
 
 import { Playlists } from './hosted-playlists.js';
 
@@ -55,7 +55,7 @@ Songs.schema = new SimpleSchema({
     type: Date,
   },
   votes: {
-    type: [Number],
+    type: Array,
     defaultValue: [],
   },
 });
