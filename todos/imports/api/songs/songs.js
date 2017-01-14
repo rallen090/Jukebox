@@ -23,11 +23,11 @@ class SongsCollection extends Mongo.Collection {
 
 export const Songs = new SongsCollection('songs');
 
-// Deny all client-side updates since we will be using methods to manage this collection
-Songs.deny({
-  //insert() { return true; },
-  update() { return true; },
-  remove() { return true; },
+// allow inserts (note: best practice is to DENY crud operations and expose them via methods.js, but we can do that later if  we want to)
+Songs.allow({
+  'insert': function () {
+    return true; 
+  },
 });
 
 Songs.schema = new SimpleSchema({

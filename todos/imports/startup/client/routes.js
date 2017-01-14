@@ -89,7 +89,7 @@ function acquireSession() {
   const sessionKey = "jukebox-active-user-id";
   var userIdFromSession = Session.get(sessionKey);
   if(!userIdFromSession){
-    var userId = Users.createNewUser();
+    var userId = Users.createNewUser(null);
     Session.setPersistent(sessionKey, userId);
   }
 };
