@@ -1,8 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 
-import { HostedPlaylists } from '../hosted.js';
-import { HostedPlaylists } from '../hosted-playlists.js';
-import { HostedPlaylists } from '../hosted-playlists.js';
+import { Users } from '../imports/api/users.js';
+import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
+import { Songs } from '../imports/api/songs.js';
 
 Meteor.publish('users', function () {
   return Users.find();
