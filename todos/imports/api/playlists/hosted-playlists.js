@@ -31,7 +31,7 @@ export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 
 // Deny all client-side updates since we will be using methods to manage this collection
 HostedPlaylists.deny({
-  insert() { return true; },
+  //insert() { return true; },
   update() { return true; },
   remove() { return true; },
 });
@@ -60,7 +60,18 @@ HostedPlaylists.helpers({
     return this.currentSong;
   },
   songs() {
-    //return Todos.find({ listId: this._id }, { sort: { createdAt: -1 } });
-    return null;
+    return Songs.find({ hostedPlaylistId: this._id }, { sort: { createdAt: -1 } });
   },
+  initializeSongs(songs){
+    window.alert(this._id);
+    $.each(songs, function( index, value ) {
+      Songs.insert({
+        spotifyId: value.spotifyId,
+        name: value.name,
+        artist: value.artist,
+        hostedPlaylistId: this._id,
+      })
+    });
+    return;
+  }
 });

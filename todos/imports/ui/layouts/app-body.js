@@ -12,6 +12,7 @@ import { _ } from 'meteor/underscore';
 import { $ } from 'meteor/jquery';
 
 import { Lists } from '../../api/lists/lists.js';
+import { Users } from '../../api/users/users.js';
 import { insert } from '../../api/lists/methods.js';
 
 import '../components/loading.js';
@@ -38,6 +39,10 @@ Meteor.startup(() => {
 Template.App_body.onCreated(function appBodyOnCreated() {
   this.subscribe('lists.public');
   this.subscribe('lists.private');
+
+  this.subscribe('users');
+  this.subscribe('playlists');
+  this.subscribe('songs');
 
   this.state = new ReactiveDict();
   this.state.setDefault({
