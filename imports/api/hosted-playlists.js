@@ -16,7 +16,6 @@ class HostedPlaylistCollection extends Mongo.Collection {
     catch (e) {
     }
     ourList.publicId = largestId ? largestId + 1 : 1;
-    window.alert(largestId);
     if (!ourList.name) {
       const defaultName = "Default Playlist";
       let nextLetter = 'A';
@@ -77,7 +76,6 @@ HostedPlaylists.helpers({
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
   },
   initializeSongs(songs) {
-    window.alert(this._id);
     var playlistId = this._id;
     $.each(songs, function( index, value ) {
       Songs.insert({
