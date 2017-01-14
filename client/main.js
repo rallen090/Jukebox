@@ -3,4 +3,4 @@ import { ReactiveVar } from 'meteor/reactive-var';
 
 import './main.html';
 
-import '../imports/ui/playlist.js';
+import '../imports/ui/party.js';
