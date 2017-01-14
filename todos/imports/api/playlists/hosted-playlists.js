@@ -74,7 +74,7 @@ HostedPlaylists.helpers({
     return this.currentSong;
   },
   songs() {
-    return Songs.find({ hostedPlaylistId: this._id }, { sort: { createdAt: -1 } });
+    return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
   },
   initializeSongs(songs) {
     window.alert(this._id);
