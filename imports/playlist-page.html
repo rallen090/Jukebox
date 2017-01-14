@@ -9,11 +9,9 @@
 
           <div class="nav-group right">
             <div class="nav-item options-mobile">
-              <select class="list-edit">
-                {{#if isOwner}}
-                  <option value="public">Settings</option>
-                {{/if}}
-              </select>
+            {{#if isOwner}}
+              <a>Settings</a>
+              {{/if}}
               <span class="icon-cog"></span>
             </div>
           </div>

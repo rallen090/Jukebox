@@ -6,6 +6,7 @@ import { Playlists } from './hosted-playlists.js';
 class SongsCollection extends Mongo.Collection {
   insert(song, callback) {
     const ourSong = song;
+    ourSong.votes = [];
     ourSong.dateAdded = ourSong.dateAdded || new Date();
     const result = super.insert(ourSong, callback);
     return result;
@@ -55,8 +56,7 @@ Songs.schema = new SimpleSchema({
     type: Date,
   },
   votes: {
-    type: Array,
-    defaultValue: [],
+    type: Array
   },
 });
 

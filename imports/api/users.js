@@ -5,9 +5,7 @@ import { HostedPlaylists } from './hosted-playlists.js';
 
 class UsersCollection extends Mongo.Collection {
   createNewUser(callback) {
-
     var id = super.insert({}, callback);
-    window.alert(id);
     return id;
   }
 }
