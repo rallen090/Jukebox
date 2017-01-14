@@ -23,6 +23,7 @@ Template.create_page.helpers({
 
 Template.create_page.events({
   'click .js-new-playlist'() {
+
   	var playlistName = $('#playlist-name').val();
 
   	// TODO: pull from Spotify
@@ -31,13 +32,13 @@ Template.create_page.events({
         name: "Song A",
         artist: "Artist A"
     }];
+
     var playlistId = HostedPlaylists.insert({
     	name: playlistName,
     	userId: Session.get("jukebox-active-user-id")
     })
     var newPlaylist = HostedPlaylists.findOne(playlistId);
   	newPlaylist.initializeSongs(songs);
-
     //FlowRouter.go('Lists.show', { _id: listId });
   },
 });

@@ -68,9 +68,9 @@ HostedPlaylists.publicFields = {
 };
 
 HostedPlaylists.helpers({
-  playNextSong(userId) {
+  playNextSong() {
     // TODO
-    return this.currentSong;
+    return "this.currentSong";
   },
   songs() {
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
