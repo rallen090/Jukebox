@@ -9,7 +9,12 @@ class HostedPlaylistCollection extends Mongo.Collection {
     ourList.dateCreated = ourList.dateCreated || new Date();
 
     // increment public id that is used in URLs
-    var largestId = this.findOne({}, {sort: {'publicId': -1}}).publicId;
+    var largestId = 0;
+    try {
+       largestId = this.findOne({}, {sort: {'publicId': -1}}).publicId;
+    }
+    catch (e) {
+    }
     ourList.publicId = largestId ? largestId + 1 : 1;
     window.alert(largestId);
     if (!ourList.name) {
