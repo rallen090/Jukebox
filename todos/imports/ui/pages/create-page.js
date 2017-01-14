@@ -38,11 +38,9 @@ Template.create_page.events({
     	name: playlistName,
     	userId: Session.get("jukebox-active-user-id")
     })
-    window.alert(playlistId);
     var newPlaylist = HostedPlaylists.findOne(playlistId);
   	newPlaylist.initializeSongs(songs);
 
-  	window.alert("Success!");
     //FlowRouter.go('Lists.show', { _id: listId });
   },
 });

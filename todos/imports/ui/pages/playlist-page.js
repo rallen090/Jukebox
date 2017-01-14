@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { HostedPlaylists } from '../../api/playlists/hosted-playlists.js';
@@ -10,7 +11,7 @@ import './app-not-found.js';
 import { displayError } from '../lib/errors.js';  
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
-  this.getPlaylistId = () => FlowRouter.getParam('_id');
+  this.getPlaylistId = () => parseInt(FlowRouter.getParam('_id'), 10);
 });
 
 Template.playlist_page.helpers({
@@ -20,17 +21,16 @@ Template.playlist_page.helpers({
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
     return playlist;
   },
-  songs(){
+  songs() {
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
     return playlist ? playlist.songs() : [];
   },
-  isOwner(){
+  isOwner() {
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
-    alert(playlist);
+    var playlist = HostedPlaylists.findOne({ publicId: playlistId });
     var playlistUserId = playlist.userId;
     return playlistUserId === Session.get("jukebox-active-user-id");
   }
