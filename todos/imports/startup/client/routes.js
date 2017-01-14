@@ -15,6 +15,7 @@ import '../../ui/pages/app-not-found.js';
 
 // jukebox templates
 import '../../ui/pages/create-page.js';
+import '../../ui/pages/playlist-page.js';
 import '../../ui/pages/debug.js';
 
 // Import to override accounts templates
@@ -66,7 +67,7 @@ FlowRouter.route('/jukebox/playlist/:_id', {
   name: 'Jukebox.playlist',
   triggersEnter: [acquireSession],
   action() {
-    BlazeLayout.render('App_body', { main: 'app_rootRedirector' });
+    BlazeLayout.render('App_body', { main: 'playlist_page' });
   },
 });
 

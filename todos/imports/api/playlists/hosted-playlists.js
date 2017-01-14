@@ -7,6 +7,11 @@ class HostedPlaylistCollection extends Mongo.Collection {
   insert(list, callback) {
     const ourList = list;
     ourList.dateCreated = ourList.dateCreated || new Date();
+
+    // increment public id that is used in URLs
+    var largestId = this.findOne({}, {sort: {'publicId': -1}}).publicId;
+    ourList.publicId = largestId ? largestId + 1 : 1;
+    window.alert(largestId);
     if (!ourList.name) {
       const defaultName = "Default Playlist";
       let nextLetter = 'A';
@@ -38,6 +43,7 @@ HostedPlaylists.allow({
 
 HostedPlaylists.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
+  publicId: { type: Number },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id},
   dateCreated: { type: Date, denyUpdate: true },
   name: { type: String },
@@ -50,6 +56,9 @@ HostedPlaylists.attachSchema(HostedPlaylists.schema);
 // to the client. If we add secret properties to List objects, don't list
 // them here to keep them private to the server.
 HostedPlaylists.publicFields = {
+  publicId: 1,
+  userId: 1,
+  dateCreated: 1,
   name: 1,
   currentSong: 1
 };
