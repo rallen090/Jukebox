@@ -25,7 +25,7 @@ export const Songs = new SongsCollection('songs');
 
 // Deny all client-side updates since we will be using methods to manage this collection
 Songs.deny({
-  insert() { return true; },
+  //insert() { return true; },
   update() { return true; },
   remove() { return true; },
 });
@@ -37,8 +37,6 @@ Songs.schema = new SimpleSchema({
   },
   hostedPlaylistId: {
     type: String,
-    regEx: SimpleSchema.RegEx.Id,
-    denyUpdate: true,
   },
   spotifyId: {
     type: String,
