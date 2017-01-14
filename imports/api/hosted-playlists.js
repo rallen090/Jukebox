@@ -50,7 +50,7 @@ HostedPlaylists.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
   publicId: { type: Number },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id},
-  dateCreated: { type: Date, denyUpdate: true },
+  dateCreated: { type: Date },
   name: { type: String },
   currentSong: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 });
