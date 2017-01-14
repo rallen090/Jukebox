@@ -1,7 +1,7 @@
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
-
 import { Session } from 'meteor/session';
+
 import { Users } from '../imports/api/users.js';
 import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
 import { Songs } from '../imports/api/songs.js';
@@ -9,12 +9,14 @@ import { Songs } from '../imports/api/songs.js';
 import '../imports/create-page.js';
 import '../imports/playlist-page.js';
 import '../imports/debug.js';
+import '../imports/app-body.js';
+
 
 FlowRouter.route('/', {
   name: 'App.home',
   triggersEnter: [acquireSession],
   action() {
-    BlazeLayout.render('App_body', { main: 'create_page' });
+    BlazeLayout.render('App_body', {  });
   },
 });
 

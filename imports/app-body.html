@@ -1,0 +1,23 @@
+<template name="App_body">
+	
+	<div id="header">
+		<h1><img src="Jukebox@1x.png" alt="JUKEBOX" /></h1>
+	</div>
+
+    <div id="container" class="">
+
+      <div class="content-overlay"></div>
+
+      <div id="content-container">
+	      
+          {{#if Template.subscriptionsReady}}
+            {{> Template.dynamic template=main}}
+          {{else}}
+            <p>loading</p>
+          {{/if}}
+          
+      </div>
+      
+    </div>
+
+</template>

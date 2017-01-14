@@ -24,3 +24,7 @@ aldeed:simple-schema
 aldeed:collection2-core
 react-meteor-data
 dburles:collection-helpers
+kadira:flow-router
+kadira:blaze-layout
+session
+u2622:persistent-session

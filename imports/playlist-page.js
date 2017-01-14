@@ -3,12 +3,9 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-import { HostedPlaylists } from '../../api/hosted-playlists.js';
+import { HostedPlaylists } from './api/hosted-playlists.js';
 
 import './playlist-page.html';
-import './app-not-found.js';
-
-import { displayError } from '../lib/errors.js';  
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
   this.getPlaylistId = () => parseInt(FlowRouter.getParam('_id'), 10);
