@@ -5,8 +5,8 @@
 
 body {
   .position(absolute, 0, 0, 0, 0);
-  background-color: #315481;
-  background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+  background-color: #000;
+  background-image: linear-gradient(to bottom, @color-bg-top, @color-bg-bottom);
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -36,7 +36,7 @@ body {
   .position(absolute, 0, 0, 0, 0);
   transition: all 200ms ease-out;
   transform: translate3d(0, 0, 0);
-  background: @color-tertiary;
+  background: rgba(0, 0, 0, 0.2);
   opacity: 1;
 
   .page {
