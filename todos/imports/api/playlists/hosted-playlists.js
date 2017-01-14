@@ -6,6 +6,7 @@ import { Songs } from '../songs/songs.js';
 class HostedPlaylistCollection extends Mongo.Collection {
   insert(list, callback) {
     const ourList = list;
+    ourList.dateCreated = ourList.dateCreated || new Date();
     if (!ourList.name) {
       const defaultName = "Default Playlist";
       let nextLetter = 'A';
@@ -26,32 +27,34 @@ class HostedPlaylistCollection extends Mongo.Collection {
   }
 }
 
-export const Lists = new HostedPlaylistCollection('playlists');
+export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 
 // Deny all client-side updates since we will be using methods to manage this collection
-Lists.deny({
+HostedPlaylists.deny({
   insert() { return true; },
   update() { return true; },
   remove() { return true; },
 });
 
-Lists.schema = new SimpleSchema({
+HostedPlaylists.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
+  userId: { type: String, regEx: SimpleSchema.RegEx.Id},
+  dateCreated: { type: Date, denyUpdate: true },
   name: { type: String },
   currentSong: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
 });
 
-Lists.attachSchema(Lists.schema);
+HostedPlaylists.attachSchema(HostedPlaylists.schema);
 
 // This represents the keys from Lists objects that should be published
 // to the client. If we add secret properties to List objects, don't list
 // them here to keep them private to the server.
-Lists.publicFields = {
+HostedPlaylists.publicFields = {
   name: 1,
   currentSong: 1
 };
 
-Lists.helpers({
+HostedPlaylists.helpers({
   playNextSong(userId) {
     // TODO
     return this.currentSong;
