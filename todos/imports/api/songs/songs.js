@@ -7,6 +7,7 @@ class SongsCollection extends Mongo.Collection {
   insert(song, callback) {
     const ourSong = song;
     ourSong.dateAdded = ourSong.dateAdded || new Date();
+    window.alert("BLAH: " + ourSong.hostedPlaylistId)
     const result = super.insert(ourSong, callback);
     return result;
   }

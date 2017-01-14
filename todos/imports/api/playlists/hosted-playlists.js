@@ -64,13 +64,14 @@ HostedPlaylists.helpers({
   },
   initializeSongs(songs){
     window.alert(this._id);
+    var playlistId = this._id;
     $.each(songs, function( index, value ) {
       Songs.insert({
         spotifyId: value.spotifyId,
         name: value.name,
         artist: value.artist,
-        hostedPlaylistId: this._id,
-      })
+        hostedPlaylistId: playlistId,
+      });
     });
     return;
   }
