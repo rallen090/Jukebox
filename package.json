@@ -10,6 +10,12 @@
     "react": "^15.4.2",
     "react-addons-pure-render-mixin": "^15.4.2",
     "simpl-schema": "^0.1.0",
-    "spotify-web-api-node": "^2.3.6"
+    "spotify-web-api-node": "^2.3.6",
+    "autoprefixer": "^6.3.1"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {"browsers": ["last 2 versions"]}
+    }
   }
 }
