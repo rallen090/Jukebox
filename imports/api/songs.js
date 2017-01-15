@@ -6,7 +6,8 @@ import { Playlists } from './hosted-playlists.js';
 class SongsCollection extends Mongo.Collection {
   insert(song, callback) {
     const ourSong = song;
-    ourSong.votes = [1];
+    ourSong.voteCount = 0;
+    ourSong.votes = [];
     ourSong.played = false;
     ourSong.dateAdded = ourSong.dateAdded || new Date();
     const result = super.insert(ourSong, callback);
@@ -59,6 +60,9 @@ Songs.schema = new SimpleSchema({
   votes: {
     type: Array
   },
+  voteCount: {
+    type: Number
+  },
   played: {
     type: Boolean
   },
@@ -74,7 +78,7 @@ Songs.publicFields = {
   spotifyId: 1,
   name: 1,
   artist: 1,
-  addedOn: 1,
+  dateAdded: 1,
   votes: 1,
 };
 
@@ -101,10 +105,12 @@ Songs.helpers({
   },
   vote(userId) {
     this.upVotes.pushIfNotExist(userId);
+    this.voteCount++;
   },
   unvote(userId) {
     if(index > -1){
       this.votes.splice(this.upVotes.indexof(userId), 1);
+      this.voteCount--;
     }
   },
   setPlayed() {
