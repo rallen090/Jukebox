@@ -28,3 +28,5 @@ kadira:flow-router
 kadira:blaze-layout
 session
 u2622:persistent-session
+npm-bcrypt
+nimble:restivus
