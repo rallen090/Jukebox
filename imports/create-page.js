@@ -14,17 +14,21 @@ var SpotifyPlaylists = new Meteor.Collection(null);
 Template.create_page.onCreated(function createPageOnCreated() {
   this.autorun(() => {
     // populate playlists
-    getUserPlaylists(function(response){
-      var items = response.items;
-      $.each(items, function( index, value ) {
-        SpotifyPlaylists.insert({
-          spotifyId: value.id,
-          name: value.name,
-          imgUrl: value.images.url,
-          songCount: value.tracks.total
+    if(SpotifyPlaylists.find().count() === 0){
+      getUserPlaylists(function(response){
+        var items = response.items;
+        $.each(items, function( index, value ) {
+          if(value){
+            SpotifyPlaylists.insert({
+            spotifyId: value.id,
+            name: value.name,
+            imgUrl: value.images.url,
+            songCount: value.tracks.total
+          });
+          }
         });
-      });
-    })
+      })
+    }
   });
 });
 
