@@ -108,11 +108,19 @@ Songs.helpers({
   vote(userId) {
     this.upVotes.pushIfNotExist(userId);
     this.voteCount++;
+
+    Songs.update(this._id, {
+      $set: { voteCount: this.voteCount, upVotes: this.upVotes },
+    });
   },
   unvote(userId) {
     if(index > -1){
       this.votes.splice(this.upVotes.indexof(userId), 1);
       this.voteCount--;
+
+      Songs.update(this._id, {
+        $set: { voteCount: this.voteCount, upVotes: this.upVotes },
+      });
     }
   },
   setPlayed() {
