@@ -7,7 +7,7 @@ class HostedPlaylistCollection extends Mongo.Collection {
   insert(list, callback) {
     const ourList = list;
     ourList.dateCreated = ourList.dateCreated || new Date();
-
+    ourList.previousSongIds = [];
     // increment public id that is used in URLs
     var largestId = 0;
     try {
@@ -89,7 +89,7 @@ HostedPlaylists.helpers({
     //nextSong.setPlayed();
 
     // and return the actual spotify id to the streaming service
-    return Object.getOwnPropertyNames(nextSong[0]);//nextSong.spotifyId;
+    return Object.getOwnPropertyNames(nextSong);//nextSong.spotifyId;
   },
   songs() {
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
