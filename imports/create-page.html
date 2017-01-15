@@ -10,29 +10,46 @@
 		
 	<input type="text" class="big-input" id="playlist-name" placeholder="Jukebox name">
 	
+<!-- 
+	commenting this out in case we want to re-use the arrow somewhere - but no need for a button on this page now
+	since you can select directly from the playlist to advance to the next page 	
 	<a id="js-new-playlist" class="link-playlist-new">
 		<i class="fa fa-arrow-right fa-3x"></i>
-	</a>
+	</a> 
+-->
 	
 	</p>
 
-	<div class="spotify-playlists-container">
-	<h3>Spotify playlists</h3>
-	{{#if playlists}}
-      <ul class="spotify-playlists">
-      {{#each playlist in playlists}}
-        <li>
-        <span>{{playlist.name}} ({{playlist.songCount}})</span>
+	<div  class="spotify-playlists-container">
+	<h3>Select a playlist</h3>
+	
+      <ul id="spotify-playlists">
+      	<li>
+        + New playlist
         </li>
-      {{/each}}
+        {{#if playlists}}
+	      {{#each playlist in playlists}}
+	        <li id="{{playlist.spotifyId}}">
+	        {{playlist.name}} ({{playlist.songCount}})
+	        </li>
+	      {{/each}}
+        <li>
+        FDSAFDSA
+        </li>
+        <li>
+        FDSAFDSA
+        </li>
+        <li>
+        FDSAFDSA
+        </li>
+        <li>
+        FDSAFDSA
+        </li>
+	    {{/if}}
       </ul>
-    {{else}}
-      No Spotify playlists found
-    {{/if}}
   	</div>
 
 </div>
-
 
 <div class="welcomeOption">
 	<span class="icon"><i class="fa fa-question-circle-o fa-1x"></i></span> 

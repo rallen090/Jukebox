@@ -303,6 +303,55 @@ span.voter {
 	clear: both;
 }
 
+.spotify-playlists-container{
+	margin-right: 100px;
+}
+
+/* remove the scroll bar since on mobile you will prefer to just scroll without seeing a scrollbar */
+#spotify-playlists::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+#spotify-playlists::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+/* Container with border and rounded corners */
+.spotify-playlists-container ul {
+    margin-left: 50px;
+    border: 1px solid #ccc;
+    width: 100%;
+    /* precise size to fit exactly full items in the list without seeing partial blocks */
+    height: 186px;
+    overflow: scroll;
+    overflow-x: hidden;
+
+
+    /* Border radius for Chrome, Webkit and other good browsers */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Only add border to bottom of <li> */
+.spotify-playlists-container li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Get rid of the last <li>'s bottom border to stop overlap with <ul>'s border */
+/* :last-child works in IE7+ */
+.spotify-playlists-container li:last-child {
+    border-bottom: none;
+}
+
+/* background highlight on hovered playlists */
+.spotify-playlists-container li:hover { 
+    background-color: #b62990;
+    cursor: pointer;
+}
 
 /**************************************************
 	Mobile/small screen overrides 
