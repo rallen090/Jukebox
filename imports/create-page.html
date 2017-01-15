@@ -16,6 +16,21 @@
 	
 	</p>
 
+	<div class="spotify-playlists-container">
+	<h3>Spotify playlists</h3>
+	{{#if playlists}}
+      <ul class="spotify-playlists">
+      {{#each playlist in playlists}}
+        <li>
+        <span>{{playlist.name}} ({{playlist.songCount}})</span>
+        </li>
+      {{/each}}
+      </ul>
+    {{else}}
+      No Spotify playlists found
+    {{/if}}
+  	</div>
+
 </div>
 
 
@@ -26,7 +41,5 @@
 		Spotify doesn't allow music to be played directly from web apps, so we built an iPhone app for hosts. Fortunately, your guests don't need to download anything extra. 
 	</p>
 </div>
-
-	
 	
 </template>
