@@ -7,22 +7,23 @@ import { HostedPlaylists } from './api/hosted-playlists.js';
 
 import './welcome.html';
 
-Template.playlist_page.onCreated(function playPageOnCreated() {
+Template.welcome_page.onCreated(function playPageOnCreated() {
 
 });
 
-Template.playlist_page.helpers({
+Template.welcome_page.helpers({
 
 });
 
-Template.playlist_page.events({
+Template.welcome_page.events({
   'click #js-party-joiner'() {
   	var playlistId = $('#playlist-id').val();
   	alert(playlistId);
       var playlist = HostedPlaylists.findOne({publicId: playlistId});
+  	alert(playlist);
 
       if(!playlist){
-        $('#invalidPlaylistAlert').display = "block";
+        $('#invalidPlaylistAlert').display;;
       } else {
 	  	FlowRouter.go('Jukebox.playlist', { _id: playlistId });
       }
