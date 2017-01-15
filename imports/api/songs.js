@@ -84,44 +84,18 @@ Songs.publicFields = {
   played: 1,
 };
 
-// check if an element exists in array using a comparer function
-// comparer : function(currentElement)
-Array.prototype.inArray = function(element) { 
-    for(var i=0; i < this.length; i++) { 
-        if(element === this[i]) return true; 
-    }
-    return false; 
-}; 
-
-// adds an element to the array if it does not already exist using a comparer 
-// function
-Array.prototype.pushIfNotExist = function(element) { 
-    if (!this.inArray(element)) {
-        this.push(element);
-    }
-}; 
-
 Songs.helpers({
   getPlaylist() {
     return Playlists.findOne(this.hostedPlaylistId);
   },
   vote(userId) {
-    this.upVotes.pushIfNotExist(userId);
-    this.voteCount++;
-
-    Songs.update(this._id, {
-      $set: { voteCount: this.voteCount, upVotes: this.upVotes },
-    });
+    // perform these operations atomically on the db for thread safety (via $inc for count and $push/$pull for userId vote list)
+    Songs.update(this._id, { $inc: { voteCount: 1 } });
+    Songs.update(this._id, { $push: { votes: userId } });
   },
   unvote(userId) {
-    if(index > -1){
-      this.votes.splice(this.upVotes.indexof(userId), 1);
-      this.voteCount--;
-
-      Songs.update(this._id, {
-        $set: { voteCount: this.voteCount, upVotes: this.upVotes },
-      });
-    }
+    Songs.update(this._id, { $inc: { voteCount: -1 } });
+    Songs.update(this._id, { $pull: { votes: userId } });
   },
   setPlayed() {
     this.played = true;
