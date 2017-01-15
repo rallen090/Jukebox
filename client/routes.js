@@ -51,6 +51,14 @@ FlowRouter.route('/playlist/:_id', {
   },
 });
 
+FlowRouter.route('/p/:_id', {
+  name: 'Jukebox.playlist',
+  triggersEnter: [acquireSession],
+  action() {
+    BlazeLayout.render('App_body', { main: 'playlist_page' });
+  },
+});
+
 FlowRouter.route('/debug/', {
   name: 'Jukebox.debug',
   action() {

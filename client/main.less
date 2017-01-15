@@ -21,17 +21,120 @@ html, button, input, textarea, select {
 }
 
 body {
-	.type-regular;
 	font-size: 16px;
-	.position(absolute, 0, 0, 0, 0);
 	background-color: #000;
+	color: #ccc;
+	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
 	background-image: linear-gradient(to bottom, @color-bg-top, @color-bg-bottom);
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 }
 
-#header {
-	background: rgba(0, 0, 0, 0.2);
-	padding: 10px 5px;	
+strong {
+	font-weight: bold;
 }
 
+#header {
+	background: rgba(0, 0, 0, 0.7);
+	padding: 10px 15px;	
+}
+
+#container {
+	padding: 15px;
+}
+
+h1, h2, h3, h4, p {
+	color: #ccc;
+	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+h2 {
+	font-size: 30px;
+}
+
+.big-input {
+	font-size: 30px;
+	padding: 10px 10px;
+	margin: 20px 0px;
+	width: 300px;
+	background-color: #222;
+	border: 0px;
+	color: #ccc;
+}
+
+a.link-playlist-new {
+	position: relative;
+	padding: 10px;
+	cursor: hand;
+	color: @color-primary;
+}
+
+.nowPlayingHeader {
+	background-color: #111;
+}
+
+.nowPlayingHeader h3 {
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	padding: 10px 10px 0px 10px;
+}
+
+.playlistContainer {
+	margin: 10px 0px;
+}
+
+.playlist li {
+	padding: 10px 10px;
+	color: #fff;
+	border-bottom: 1px solid #666;
+}
+
+.playlist li:first-child {
+	background-color: #111;
+}
+
+.playlist li:first-child span.votes:after {
+	content: " votes";
+}
+
+.playlist li:first-child span.voter {
+	display: none;
+}
+
+.playlist li:nth-child(2):before {
+	content: "Up next: <br/>"
+}
+
+span.songName {
+	font-size: 18px;
+}
+
+span.songArtist {
+	
+}
+
+span.voteContainer {
+	border: 2px solid @color-primary;
+	background-color: @color-primary;
+    border-radius: 80px;
+    color: #000;
+    padding: 6px;
+    margin: 0 0 0 10px;
+    font-size: 16px;
+    float: right;
+}
+
+span.votes {
+	
+}
+
+span.voter {
+	padding: 0 0 0 5px;
+}
