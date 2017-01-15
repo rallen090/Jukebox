@@ -1,8 +1,13 @@
 <template name="welcome_page">
 
-<div id="explaination">
+
+<!--
+	<div id="explaination">
 	<h2><i>Collaborative playlists for parties and events</i></h2>
-</div><!-- /#explaination -->
+</div>
+-->
+<!-- /#explaination -->
+
 
 <div class="welcomeOption" id="joinJukebox">
 	<span class="icon"><i class="fa fa-music fa-1x"></i></span> 
@@ -12,8 +17,9 @@
 	</p>
 	
 	<div class="inputContainer">
+		<div id="invalidPlaylistAlert"><p><i class="fa fa-exclamation-triangle"></i> <strong>Invalid Juke Code:</strong> Ask the party host for the playlist number</p></div>
 		<div class="inputPrefix">#<input type="text" class="big-input partyInput" id="playlist-id" placeholder="Juke Code"></div>
-			<a id="js-party-joiner" class="partyJoinClick" href="#">
+			<a id="js-party-joiner" class="partyJoinClick" >
 			<i class="fa fa-arrow-right"></i>
 			</a>
 	</div>

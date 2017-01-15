@@ -64,6 +64,12 @@ h3 {
 	font-size: 20px;
 }
 
+p.small {
+	font-size: 12px;
+	padding: 4px 0 0 0;
+	max-width: 500px;
+}
+
 #explaination h2 {
 	font-size: 20px;
 	margin: 0 0 20px 0;
@@ -82,7 +88,7 @@ h3 {
 	position: relative;
 	float: left;
 	font-size: 40px;
-	margin: -2px 0px;
+	margin: -10px 0px;
 	padding: 0px;	
 }
 
@@ -136,6 +142,20 @@ h3 {
 	width: 200px;
 	font-family: "Courier New", Courier, monospace;
 	font-weight: bold;
+}
+
+#invalidPlaylistAlert {
+	background-color: @color-primary;
+	border: #fff;
+	padding: 5px;
+	margin: 10px 0 -10px 0;
+	display: none;
+}
+
+#invalidPlaylistAlert p {
+	color: #000;
+	text-shadow: none;
+	margin: 0px;
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
