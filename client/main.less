@@ -48,6 +48,8 @@ h1, h2, h3, h4, p {
 	color: #ccc;
 	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 400;
+	text-shadow: 1px 1px #000;
+
 }
 
 h1 {
@@ -56,26 +58,68 @@ h1 {
 
 h2 {
 	font-size: 40px;
-	text-shadow: 2px 2px #000;
 }
 
 h3 {
 	font-size: 20px;
-	text-shadow: 2px 2px #000;
 }
 
 #explaination h2 {
 	font-size: 20px;
+	margin: 0 0 20px 0;
 }
 
 .welcomeOption {
 	background: rgba(0, 0, 0, 0.7);
 	padding: 15px 15px;	
 	margin: 10px 0px;
+	display: block;
+	text-decoration: none;
+	color: #ccc;
 }
 
-.welcomeOption .fa {
-	margin-right: 10px;
+.welcomeOption span.icon {
+	position: relative;
+	float: left;
+	font-size: 40px;
+	margin: -2px 0px;
+	padding: 0px;	
+}
+
+.welcomeOption h3 {
+	margin-left: 50px;
+	padding: 0 0 5px 0;
+}
+
+.welcomeOption p {
+	margin-left: 50px;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0px;
+	padding: 15px 15px;
+}
+
+#footer p {
+	color: #aaa;
+}
+
+
+#footer a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px dotted #fff;
+}
+
+#footer a:hover {
+	color: #fff;
+	background-color: #000;
+}
+
+
+.inputContainer {
+	margin: 0 0 0 50px;
 }
 
 .big-input {
@@ -83,9 +127,58 @@ h3 {
 	padding: 10px 10px;
 	margin: 20px 0px;
 	width: 300px;
-	background-color: #222;
+	background-color: #161616;
+	border: 0px;
+	color: @color-primary;
+}
+
+.partyInput {
+	width: 200px;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  opacity: 0.5;
+  font-weight: normal;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  opacity: 0.5;
+  font-weight: normal;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  opacity: 0.5;
+  font-weight: normal;
+}
+:-moz-placeholder { /* Firefox 18- */
+  opacity: 0.5;
+  font-weight: normal;
+}
+
+
+.inputPrefix {
+	font-size: 30px;
+	margin: 20px 0px;
+	padding: 0 0 0 10px;
+	background-color: #161616;
 	border: 0px;
 	color: #ccc;
+	float: left;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+}
+
+.inputPrefix .big-input {
+	margin: 0px;
+}
+
+.partyJoinClick {
+	float: left;
+	color: @color-primary;
+	text-decoration: none;
+	font-size: 40px;
+	margin: 25px 0 0 0;
+	padding: 0 0 0 10px;
 }
 
 a.link-playlist-new {
@@ -178,4 +271,8 @@ span.voter {
 
 .playlistShare .fa {
 	margin-right: 5px;
+}
+
+.clear {
+	clear: both;
 }

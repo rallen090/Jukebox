@@ -1,15 +1,36 @@
 <template name="welcome_page">
 
 <div id="explaination">
-	<h2>Collaborative playlists for parties and events</h2>
+	<h2><i>Collaborative playlists for parties and events</i></h2>
 </div><!-- /#explaination -->
 
 <div class="welcomeOption" id="joinJukebox">
-	<h3><i class="fa fa-music fa-1x"></i> Join a jukebox</h3>
+	<span class="icon"><i class="fa fa-music fa-1x"></i></span> 
+	<h3>Join a jukebox</h3>
+	<p>
+		Add songs and vote on what'll play next<br/>
+	</p>
+	
+	<div class="inputContainer">
+		<div class="inputPrefix">#<input type="text" class="big-input partyInput" id="playlist-id" placeholder="Juke Code"></div>
+			<a id="js-party-joiner" class="partyJoinClick" href="#">
+			<i class="fa fa-arrow-right"></i>
+			</a>
+	</div>
+	
+	<div class="clear"></div>
+
 </div><!-- /#joinJukebox -->
 
-<div class="welcomeOption" id="createJukebox">
-	<h3><i class="fa fa-bullhorn fa-1x"></i> Create a jukebox</h3>
-</div><!-- /#createJukebox -->
+<a class="welcomeOption" id="createJukebox" href="create">
+	<span class="icon"><i class="fa fa-bullhorn fa-1x"></i></span> 
+	<h3>Create a jukebox</h3>
+	<p>Let your guests help pick what plays next</p>
+</a><!-- /#createJukebox -->
+
+<div id="footer">
+	<p>Created with <i class="fa fa-beer fa-1x"></i> by <a href="http://nikphilipsen.com">Nik Philipsen</a> and <a href="http://ryanallen.io">Ryan Allen</a></p>
+</div><!-- /#explaination -->
+
 
 </template>
