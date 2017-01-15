@@ -8,9 +8,9 @@ if (Meteor.isServer) {
 
   Api.addCollection(HostedPlaylists);
 
-  // maps to /api/playlists/:id
-  Api.addRoute('play/next/:id', {authRequired: false}, {
-    post: function () {
+  // maps to /api/playlist/next/:id
+  Api.addRoute('playlist/next/:id', {authRequired: false}, {
+    get: function () {
       var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
 
       if(!playlist){
@@ -18,6 +18,14 @@ if (Meteor.isServer) {
       }
 
       return playlist.playNextSong();
+    }
+  });
+
+  // maps to /api/playlists/:id
+  Api.addRoute('playlist/isvalid/:id', {authRequired: false}, {
+    get: function () {
+      var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
+      return playlist ? true : false;
     }
   });
 }
