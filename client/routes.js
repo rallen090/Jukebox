@@ -10,6 +10,7 @@ import '../imports/create-page.js';
 import '../imports/playlist-page.js';
 import '../imports/welcome.js';
 import '../imports/debug.js';
+import '../imports/search.js';
 import '../imports/app-body.js';
 
 FlowRouter.route('/', {
@@ -83,6 +84,13 @@ FlowRouter.route('/debug/', {
   name: 'Jukebox.debug',
   action() {
     BlazeLayout.render('App_body', { main: 'debug_page' });
+  },
+});
+
+FlowRouter.route('/search/', {
+  name: 'Jukebox.search',
+  action() {
+    BlazeLayout.render('search', { main: 'search' });
   },
 });
 

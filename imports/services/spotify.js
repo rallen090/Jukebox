@@ -91,3 +91,27 @@ getSongsForPlaylist = function (playlistId, ajaxSuccessFunc) {
         }
     });
 };
+
+searchArtists = function (query, ajaxSuccessFunc) {
+  var accessToken = acquireSpotifyAccessToken();
+
+  return ajaxWithReauthentication({
+        url: 'https://api.spotify.com/v1/search?type=artist?q=' + encodeURIComponent(query),
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        },
+        success: ajaxSuccessFunc
+    });
+};
+
+searchSongs = function (query, ajaxSuccessFunc) {
+  var accessToken = acquireSpotifyAccessToken();
+
+  return ajaxWithReauthentication({
+        url: 'https://api.spotify.com/v1/search?type=track?q=' + encodeURIComponent(query),
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        },
+        success: ajaxSuccessFunc
+    });
+};
