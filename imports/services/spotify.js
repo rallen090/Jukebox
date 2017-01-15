@@ -32,16 +32,6 @@ function spotifyLogin(callback) {
   window.location = url;
 };
 
-function getUserPlaylistsInternal(accessToken, userId, ajaxSuccessFunc) {
-    return $.ajax({
-        url: 'https://api.spotify.com/v1/users/' + userId + '/playlists',
-        headers: {
-           'Authorization': 'Bearer ' + accessToken
-        },
-        success: ajaxSuccessFunc
-    });
-};
-
 function getSongsForPlaylistInternal(accessToken, userId, playlistId, ajaxSuccessFunc) {
     return $.ajax({
         url: 'https://api.spotify.com/v1/users/' + userId + '/playlists/' + playlistId + '/tracks',
@@ -80,13 +70,11 @@ getUserPlaylists = function (ajaxSuccessFunc) {
 	var accessToken = acquireSpotifyAccessToken();
 
 	return ajaxWithReauthentication({
-        url: 'https://api.spotify.com/v1/me',
+        url: 'https://api.spotify.com/v1/me/playlists',
         headers: {
            'Authorization': 'Bearer ' + accessToken
         },
-        success: function(response){
-        	getUserPlaylistsInternal(accessToken, response.id, ajaxSuccessFunc);
-        }
+        success: ajaxSuccessFunc
     });
 };
 
