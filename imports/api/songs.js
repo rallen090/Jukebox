@@ -60,6 +60,9 @@ Songs.schema = new SimpleSchema({
   votes: {
     type: Array
   },
+  'votes.$': {
+    type: String
+  },
   voteCount: {
     type: Number
   },
