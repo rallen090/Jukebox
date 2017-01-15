@@ -74,7 +74,6 @@ FlowRouter.route('/spotify/auth/', {
     const redirectKey = "jukebox-spotify-auth-redirect";
     var originalUrl = Session.get(redirectKey);
     Session.clear(redirectKey);
-    alert(originalUrl);
     window.location = originalUrl;
   },
 });
