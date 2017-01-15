@@ -58,6 +58,10 @@ Songs.schema = new SimpleSchema({
   votes: {
     type: Array
   },
+  played: {
+    type: Boolean,
+    defaultValue: false
+  },
 });
 
 Songs.attachSchema(Songs.schema);
@@ -103,4 +107,7 @@ Songs.helpers({
       this.votes.splice(this.upVotes.indexof(userId), 1);
     }
   },
+  setPlayed() {
+    this.played = true;
+  }
 });

@@ -51,7 +51,8 @@ HostedPlaylists.schema = new SimpleSchema({
   userId: { type: String, regEx: SimpleSchema.RegEx.Id},
   dateCreated: { type: Date },
   name: { type: String },
-  currentSong: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  currentSongId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+  previousSongIds: { type: Array, optional: true }
 });
 
 HostedPlaylists.attachSchema(HostedPlaylists.schema);
@@ -69,8 +70,26 @@ HostedPlaylists.publicFields = {
 
 HostedPlaylists.helpers({
   playNextSong() {
-    // TODO
-    return "this.currentSong";
+    // to play the next song, we look at this playlist's songs and grab unplayed sorted by votes then by date
+    var nextSong = Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { votes: -1, addedOn: -1 }, limit: 1 });
+
+    // return null if we have no more songs
+    if(!nextSong){
+      return {message: "No songs to play"};
+    }
+
+    // store previous songs in order
+    if(!this.previousSongs){
+      this.previousSongs = [];
+    }
+    this.previousSongs.push(nextSong._id);
+
+    // flag the song as played and set the current song pointer
+    this.currentSpotifySongId = nextSong._id;
+    //nextSong.setPlayed();
+
+    // and return the actual spotify id to the streaming service
+    return Object.getOwnPropertyNames(nextSong[0]);//nextSong.spotifyId;
   },
   songs() {
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
