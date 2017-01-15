@@ -17,16 +17,15 @@ Template.welcome_page.helpers({
 
 Template.welcome_page.events({
   'click #js-party-joiner'() {
-  	var playlistId = $('#playlist-id').val();
-  	alert(playlistId);
-      var playlist = HostedPlaylists.findOne({publicId: playlistId});
-  	alert(playlist);
+  	var playlistId = parseInt($('#playlist-id').val(), 10);
+    var playlist = HostedPlaylists.findOne({publicId: playlistId});
 
-      if(!playlist){
-        $('#invalidPlaylistAlert').display;;
-      } else {
-	  	FlowRouter.go('Jukebox.playlist', { _id: playlistId });
-      }
+    if(!playlist){
+      $('#invalidPlaylistAlert').display;;
+    } 
+    else {
+      FlowRouter.go('Jukebox.playlist', { _id: playlistId });
+    }
   },
 
 });

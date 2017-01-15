@@ -45,9 +45,9 @@ Template.create_page.events({
 
     var songs = [];
     // TODO: read this via CSS selector from the page to get the actual selected playlistId (right now we are just grabbing a populated one arbitrarily)
-    var populatedLists = SpotifyPlaylists.find({songCount: {$gt: 0}});
-    if(populatedLists.count() !== 0){
-      var selectedPlaylistId = populatedLists[0].spotifyId;
+    var biggestPlayist = SpotifyPlaylists.findOne({}, {sort: {songCount: -1}});
+    if(biggestPlayist){
+      var selectedPlaylistId = biggestPlayist.spotifyId;
       getSongsForPlaylist(selectedPlaylistId, function(response){
         var rawSongs = response.items;
 
