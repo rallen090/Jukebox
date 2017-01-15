@@ -71,7 +71,7 @@ HostedPlaylists.publicFields = {
 HostedPlaylists.helpers({
   playNextSong() {
     // to play the next song, we look at this playlist's songs and grab unplayed sorted by votes then by date
-    var nextSong = Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { votes: -1, addedOn: -1 }, limit: 1 });
+    var nextSong = Songs.findOne({ hostedPlaylistId: this._id, played: false }, {sort: { voteCount: -1, dateAdded: -1 }});
 
     // return null if we have no more songs
     if(!nextSong){
@@ -85,11 +85,11 @@ HostedPlaylists.helpers({
     this.previousSongs.push(nextSong._id);
 
     // flag the song as played and set the current song pointer
-    this.currentSpotifySongId = nextSong._id;
-    //nextSong.setPlayed();
+    this.currentSongId = nextSong._id;
+    nextSong.setPlayed();
 
     // and return the actual spotify id to the streaming service
-    return Object.getOwnPropertyNames(nextSong);//nextSong.spotifyId;
+    return nextSong.spotifyId;
   },
   songs() {
     return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
