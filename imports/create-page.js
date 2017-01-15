@@ -22,8 +22,7 @@ Template.create_page.helpers({
 });
 
 Template.create_page.events({
-  'click .js-new-playlist'() {
-
+  'click #js-new-playlist'() {
   	var playlistName = $('#playlist-name').val();
 
   	// TODO: pull from Spotify

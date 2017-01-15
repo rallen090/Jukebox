@@ -1,18 +1,23 @@
 <template name="playlist_page">
+
 <h2>
-  {{playlist.name}} - {{playlist.dateCreated}} - Created by user {{playlist.userId}}
+  {{playlist.name}}
 </h2>
+
   <div>
     {{#if isOwner}}
       <a>Settings</a>
     {{/if}}
   </div>
-  <div>
+  
+  <div class="playlistContainer">
     {{#if songs}}
-      <ul>
+	  <div class="nowPlayingHeader"><h3>Now playing</h3></div>
+      <ul class="playlist">
       {{#each song in songs}}
         <li>
-        ({{song.votes.length}}) - {{song.name}} - {{song.artist}}
+        <span class="songName">{{song.name}}</span> <span class="voteContainer"><span class="votes"><strong>{{song.votes.length}}</strong></span><span class="voter"><i class="fa fa-plus"></i></span></span><br/>
+        <span class="songArtist">{{song.artist}}</span>
         </li>
       {{/each}}
       </ul>

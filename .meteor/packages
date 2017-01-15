@@ -28,5 +28,10 @@ kadira:flow-router
 kadira:blaze-layout
 session
 u2622:persistent-session
+<<<<<<< HEAD
 npm-bcrypt
 nimble:restivus
+=======
+less
+fortawesome:fontawesome
+>>>>>>> 487873d5e204bbe6c8bb542af3c16030c06d01dc
