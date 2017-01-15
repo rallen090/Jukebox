@@ -59,6 +59,26 @@ FlowRouter.route('/p/:_id', {
   },
 });
 
+FlowRouter.route('/spotify/auth/', {
+  name: 'Jukebox.spotify',
+  action() {
+    // get the returned spotify token and persist it
+    function getHashValue(key) {
+      var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
+      return matches ? matches[1] : null;
+    }
+    var token = getHashValue('access_token');
+    Session.setPersistent("jukebox-spotify-access-token", token);
+
+    // then read back our redirect so we can return to wherever we were
+    const redirectKey = "jukebox-spotify-auth-redirect";
+    var originalUrl = Session.get(redirectKey);
+    Session.clear(redirectKey);
+    alert(originalUrl);
+    window.location = originalUrl;
+  },
+});
+
 FlowRouter.route('/debug/', {
   name: 'Jukebox.debug',
   action() {

@@ -4,10 +4,16 @@ import SpotifyWebApi from'spotify-web-api-node';
 const CLIENT_ID = 'e03e15b112774918a9d3dfd5e2e78ba5';
 
 function spotifyLogin(callback) {
-  var redirectUrl = window.location.protocol + '//' + window.location.host + '/create';
+  var redirectUrl = window.location.href.split("#")[0]; // return to original URL
+
+  // we store the redirect here since Spotify doesn't allow us to support dymanic URLs to which they redirect on their auth endpoint.
+  // then we just restore this on /spotify/auth here
+  Session.setPersistent("jukebox-spotify-auth-redirect", redirectUrl);
+
+  var authRedirect = window.location.protocol + "//" + window.location.host + "/spotify/auth";
   function getLoginURL(scopes) {
       return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
-        '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+        '&redirect_uri=' + encodeURIComponent(authRedirect) + 
         '&scope=' + encodeURIComponent(scopes.join(' ')) +
         '&response_type=token';
   }
@@ -26,50 +32,9 @@ function spotifyLogin(callback) {
   window.location = url;
 };
 
-function getUserData(accessToken) {
+function getUserPlaylistsInternal(accessToken, userId, ajaxSuccessFunc) {
     return $.ajax({
-        url: 'https://api.spotify.com/v1/me',
-        headers: {
-           'Authorization': 'Bearer ' + accessToken
-        }
-    });
-};
-
-export function acquireSpotifyAccessToken() {
-	var token = Session.get("jukebox-spotify-access-token");
-
-	function tryVerifyAuthenticatedWithSpotify(){
-		try{
-			getUserData(token);
-			return true;
-		}
-		catch(ex){
-			return false;
-		}
-	};
-
-	// if we lack a token OR if we can't access an endpoint, then we force a re-login
-	if(!token || !tryVerifyAuthenticatedWithSpotify()){
-		spotifyLogin(function(accessToken) {
-        getUserData(accessToken)
-            .then(function(response) {
-                loginButton.style.display = 'none';
-                alert(response);
-            });
-        });
-	}
-
-	// otherwise, return the valid token
-	return token;
-};
-
-export function getUserPlaylists(ajaxSuccessFunc) {
-	var token = acquireSpotifyAccessToken();
-
-
-
-	return $.ajax({
-        url: 'https://api.spotify.com/v1/users/' + + '/playlists',
+        url: 'https://api.spotify.com/v1/users/' + userId + '/playlists',
         headers: {
            'Authorization': 'Bearer ' + accessToken
         },
@@ -77,10 +42,49 @@ export function getUserPlaylists(ajaxSuccessFunc) {
     });
 };
 
-export function getSongsForPlaylist(playlistId, ajaxSuccessFunc) {
+function ajaxWithReauthentication(ajaxRequestArguments){
+	var failCount = 0;
+	ajaxRequestArguments.error = function (ex){
+		// assume first failure is because expires token to re-auth
+		if(failCount === 0){
+			acquireSpotifyAccessToken(/* reacquire */ true)
+		}
+	};
+	return $.ajax(ajaxWithReauthentication);
+};
+
+acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire = false) {
+	const tokenKey = "jukebox-spotify-access-token";
+	var token = Session.get();
+	if(!token || reacquire){
+		alert("FDSA");
+		spotifyLogin(function(accessToken) {
+			alert(accessToken);
+	    	Session.setPersistent(tokenKey, accessToken);
+	    });
+	}
+
+	// otherwise, return the valid token
+	return token;
+};
+
+getUserPlaylists = function (ajaxSuccessFunc) {
 	var token = acquireSpotifyAccessToken();
 
-	return $.ajax({
+	return ajaxWithReauthentication({
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        },
+        success: function(response){
+        	getUserPlaylistsInternal(token, response.id, ajaxSuccessFunc);
+        }
+    });
+};
+
+getSongsForPlaylist = function (playlistId, ajaxSuccessFunc) {
+	var token = acquireSpotifyAccessToken();
+	return ajaxWithReauthentication({
         url: 'https://api.spotify.com/v1/me',
         headers: {
            'Authorization': 'Bearer ' + accessToken
