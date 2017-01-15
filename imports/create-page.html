@@ -30,7 +30,7 @@
         {{#if playlists}}
 	      {{#each playlist in playlists}}
 	        <li id="{{playlist.spotifyId}}">
-	        {{playlist.name}} ({{playlist.songCount}})
+	        <i class="spotify icon"></i> {{playlist.name}} ({{playlist.songCount}})
 	        </li>
 	      {{/each}}
 	    {{/if}}
