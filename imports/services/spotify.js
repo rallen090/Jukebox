@@ -42,34 +42,42 @@ function getUserPlaylistsInternal(accessToken, userId, ajaxSuccessFunc) {
     });
 };
 
+function getSongsForPlaylistInternal(accessToken, userId, playlistId, ajaxSuccessFunc) {
+    return $.ajax({
+        url: 'https://api.spotify.com/v1/users/' + userId + '/playlists/' + playlistId + '/tracks',
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        },
+        success: ajaxSuccessFunc
+    });
+};
+
 function ajaxWithReauthentication(ajaxRequestArguments){
 	var failCount = 0;
 	ajaxRequestArguments.error = function (ex){
-		// assume first failure is because expires token to re-auth
+		// assume first failure is because expires accessToken to re-auth
 		if(failCount === 0){
 			acquireSpotifyAccessToken(/* reacquire */ true)
 		}
 	};
-	return $.ajax(ajaxWithReauthentication);
+	return $.ajax(ajaxRequestArguments);
 };
 
 acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire = false) {
 	const tokenKey = "jukebox-spotify-access-token";
-	var token = Session.get();
-	if(!token || reacquire){
-		alert("FDSA");
+	var accessToken = Session.get(tokenKey);
+	if(!accessToken || reacquire){
 		spotifyLogin(function(accessToken) {
-			alert(accessToken);
 	    	Session.setPersistent(tokenKey, accessToken);
 	    });
 	}
 
-	// otherwise, return the valid token
-	return token;
+	// otherwise, return the valid accessToken
+	return accessToken;
 };
 
 getUserPlaylists = function (ajaxSuccessFunc) {
-	var token = acquireSpotifyAccessToken();
+	var accessToken = acquireSpotifyAccessToken();
 
 	return ajaxWithReauthentication({
         url: 'https://api.spotify.com/v1/me',
@@ -77,18 +85,21 @@ getUserPlaylists = function (ajaxSuccessFunc) {
            'Authorization': 'Bearer ' + accessToken
         },
         success: function(response){
-        	getUserPlaylistsInternal(token, response.id, ajaxSuccessFunc);
+        	getUserPlaylistsInternal(accessToken, response.id, ajaxSuccessFunc);
         }
     });
 };
 
 getSongsForPlaylist = function (playlistId, ajaxSuccessFunc) {
-	var token = acquireSpotifyAccessToken();
+	var accessToken = acquireSpotifyAccessToken();
+
 	return ajaxWithReauthentication({
         url: 'https://api.spotify.com/v1/me',
         headers: {
            'Authorization': 'Bearer ' + accessToken
         },
-        success: ajaxSuccessFunc
+        success: function(response){
+        	getSongsForPlaylistInternal(accessToken, response.id, playlistId, ajaxSuccessFunc);
+        }
     });
 };
