@@ -4,7 +4,7 @@ import { Users } from '../imports/api/users.js';
 import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
 import { Songs } from '../imports/api/songs.js';
 
-//import '../imports/public-api/playlist-api.js';
+import '../imports/public-api/playlist-api.js';
 
 Meteor.publish('users', function () {
   return Users.find();
