@@ -4,6 +4,7 @@ import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { HostedPlaylists } from './api/hosted-playlists.js';
+import { Songs } from './api/songs.js';
 
 import './playlist-page.html';
 
@@ -40,4 +41,21 @@ Template.playlist_page.helpers({
 });
 
 Template.playlist_page.events({
+	
+	'click .voteContainer'(event) {
+			
+	  	var songId = event.currentTarget.id;
+	  		  	
+	  	var song = Songs.findOne({_id: songId});
+	  		  		  	
+	  	song.vote(Session.get("jukebox-active-user-id"));
+
+	  	/* a CSS way to implement vote tracking; progrematic is better
+	  	$("#"+songId+" .voter i").removeClass("fa-star-o");	  	
+	  	$("#"+songId+" .voter i").addClass("fa-star");
+	  	*/
+	  	
+	 },
+
+	
 });
