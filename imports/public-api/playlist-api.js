@@ -14,10 +14,16 @@ if (Meteor.isServer) {
       var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
 
       if(!playlist){
-        return { message: "Playlist does not exist" };
+        return { message: "Playlist does not exist", endOfPlaylist: true };
       }
 
-      return playlist.playNextSong();
+      var nextSong = playlist.playNextSong();
+
+      if(!nextSong){
+        return { message: "Playlist is now empty", endOfPlaylist: true };
+      }
+
+      return { nextSong: nextSong, endOfPlaylist: false };
     }
   });
 
@@ -25,7 +31,7 @@ if (Meteor.isServer) {
   Api.addRoute('playlist/isvalid/:id', {authRequired: false}, {
     get: function () {
       var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
-      return playlist ? true : false;
+      return { isValid: playlist ? true : false };
     }
   });
 }
