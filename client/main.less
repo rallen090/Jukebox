@@ -42,12 +42,15 @@ strong {
 
 #container {
 	padding: 15px;
+	max-width: 800px;
 }
 
 h1, h2, h3, h4, p {
 	color: #ccc;
 	font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-weight: 400;
+	text-shadow: 1px 1px #000;
+
 }
 
 h1 {
@@ -55,7 +58,80 @@ h1 {
 }
 
 h2 {
-	font-size: 30px;
+	font-size: 40px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
+p.small {
+	font-size: 12px;
+	padding: 4px 0 0 0;
+	max-width: 500px;
+}
+
+#explaination h2 {
+	font-size: 20px;
+	margin: 0 0 20px 0;
+}
+
+.welcomeOption {
+	background: rgba(0, 0, 0, 0.7);
+	padding: 15px 15px;	
+	margin: 10px 0px;
+	display: block;
+	text-decoration: none;
+	color: #ccc;
+}
+
+.welcomeOption span.icon {
+	position: relative;
+	float: left;
+	font-size: 40px;
+	margin: -10px 0px;
+	padding: 0px;	
+}
+
+a.welcomeOption span.icon {
+	margin: 0px 0px;
+}
+
+.welcomeOption h3 {
+	margin-left: 50px;
+	padding: 0 0 5px 0;
+}
+
+.welcomeOption p {
+	margin-left: 50px;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0px;
+	padding: 10px 5px;
+	width: 100%;
+}
+
+#footer p {
+	color: #aaa;
+}
+
+
+#footer a {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px dotted #fff;
+}
+
+#footer a:hover {
+	color: #fff;
+	background-color: #000;
+}
+
+
+.inputContainer {
+	margin: 0 0 0 50px;
 }
 
 .big-input {
@@ -63,9 +139,72 @@ h2 {
 	padding: 10px 10px;
 	margin: 20px 0px;
 	width: 300px;
-	background-color: #222;
+	background-color: #161616;
+	border: 0px;
+	color: @color-primary;
+}
+
+.partyInput {
+	width: 200px;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+}
+
+#invalidPlaylistAlert {
+	background-color: @color-primary;
+	border: #fff;
+	padding: 5px;
+	margin: 10px 0 -10px 0;
+	display: none;
+}
+
+#invalidPlaylistAlert p {
+	color: #000;
+	text-shadow: none;
+	margin: 0px;
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  opacity: 0.5;
+  font-weight: normal;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  opacity: 0.5;
+  font-weight: normal;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  opacity: 0.5;
+  font-weight: normal;
+}
+:-moz-placeholder { /* Firefox 18- */
+  opacity: 0.5;
+  font-weight: normal;
+}
+
+
+.inputPrefix {
+	font-size: 30px;
+	margin: 20px 0px;
+	padding: 0 0 0 10px;
+	background-color: #161616;
 	border: 0px;
 	color: #ccc;
+	float: left;
+	font-family: "Courier New", Courier, monospace;
+	font-weight: bold;
+}
+
+.inputPrefix .big-input {
+	margin: 0px;
+}
+
+.partyJoinClick {
+	float: left;
+	color: @color-primary;
+	text-decoration: none;
+	font-size: 40px;
+	margin: 25px 0 0 0;
+	padding: 0 0 0 10px;
 }
 
 a.link-playlist-new {
@@ -137,4 +276,60 @@ span.votes {
 
 span.voter {
 	padding: 0 0 0 5px;
+}
+
+.playlistShare {
+	float: right;
+	background-color: #111;
+	padding: 5px;
+}
+
+.playlistShare p {
+	font-size: 12px;
+	text-align: center;
+}
+
+.playlistShare .playlistShareId {
+	font-family: "Courier New", Courier, monospace;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.playlistShare .fa {
+	margin-right: 5px;
+}
+
+.clear {
+	clear: both;
+}
+
+
+/**************************************************
+	Mobile/small screen overrides 
+**************************************************/
+
+@media only screen and (max-width : 600px) {
+	
+#container {
+	padding: 5px;
+}
+
+#header h1 {
+	text-align: center;
+}
+
+.big-input {
+	width: 250px;
+}
+
+.partyInput {
+	width: 185px;
+}
+
+#footer p {
+	font-size: 12px;
+	text-align: center;
+}
+
+
 }
