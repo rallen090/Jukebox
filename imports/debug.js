@@ -1,6 +1,7 @@
 import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import SpotifyWebApi from'spotify-web-api-node';
+import './services/spotify.js';
 
 import { Users } from './api/users.js';
 import { HostedPlaylists } from './api/hosted-playlists.js';
@@ -10,7 +11,10 @@ import './debug.html';
 
 Template.debug_page.onCreated(function bodyOnCreated() {
 
-  alert(JSON.stringify(getUserData("BQAvZokIzdI9zpS_DqgME8KhI4J0MzuNmBUAb5mVsm64ztFF_cJBVsdmiBa7MTPSPCuwtKxLheGKf_nufARmkQSnxe_A9bwdsh7kw57Ya6Df0EDN-zzo4hafae1Bicd5qMSgkSDQ3dv9KsLsaK8Xk8UeBpeqew")));
+  // getUserData("BQAvZokIzdI9zpS_DqgME8KhI4J0MzuNmBUAb5mVsm64ztFF_cJBVsdmiBa7MTPSPCuwtKxLheGKf_nufARmkQSnxe_A9bwdsh7kw57Ya6Df0EDN-zzo4hafae1Bicd5qMSgkSDQ3dv9KsLsaK8Xk8UeBpeqew")
+  // .then(function(response) {
+  //                 alert(response.id);
+  //             });
   // TODO: needed for user-permission authentication + refresh of tokens
   // var code = location.search.split('code=')[1];
   // if(code){
@@ -111,17 +115,8 @@ Template.debug_page.events({
             });
   },
   'click #btn-test'() {
-      var accessToken = "BQAkKv9_9oGgTGioKJunug3IERF0CKAgv1YPkOgexEApqIxJPPFqYLKfsn6imIkrKRhTkk4JDmH2AA0ShGHgvJo3Ev7zpQZyEEstlaiXOTUtFY_InV5Ozh2SSFqpH5ZYcd95b0lZ4l_FQnBglfk0cvM0-CbuKg";
-
-      var spotifyApi = new SpotifyWebApi({
-        accessToken: accessToken
+      getUserPlaylists(function(response){
+        alert(JSON.stringify(response));
       });
-
-      spotifyApi.getMe()
-        .then(function(data) {
-          alert(data.body);
-        }, function(err) {
-          alert(err);
-        });
   }
 });
