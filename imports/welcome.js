@@ -16,5 +16,16 @@ Template.playlist_page.helpers({
 });
 
 Template.playlist_page.events({
+  'click #js-party-joiner'() {
+  	var playlistId = $('#playlist-id').val();
+  	alert(playlistId);
+      var playlist = HostedPlaylists.findOne({publicId: playlistId});
+
+      if(!playlist){
+        $('#invalidPlaylistAlert').display = "block";
+      } else {
+	  	FlowRouter.go('Jukebox.playlist', { _id: playlistId });
+      }
+  },
 
 });
