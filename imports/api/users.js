@@ -4,9 +4,12 @@ import SimpleSchema from 'simpl-schema';
 import { HostedPlaylists } from './hosted-playlists.js';
 
 class UsersCollection extends Mongo.Collection {
-  createNewUser(callback) {
-    var id = super.insert({}, callback);
+  createNewUser() {
+    var id = super.insert({}, null);
     return id;
+  }
+  getCount(){
+    return super.find().count();
   }
 }
 

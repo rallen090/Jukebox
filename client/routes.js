@@ -58,18 +58,24 @@ FlowRouter.route('/debug/', {
   },
 });
 
-// FlowRouter.notFound = {
-//   action() {
-//     BlazeLayout.render('App_body');
-//   },
-// };
+FlowRouter.notFound = {
+  action() {
+    BlazeLayout.render('App_body');
+  },
+};
 
 // trigger for managing session across routes
 function acquireSession() {
   const sessionKey = "jukebox-active-user-id";
   var userIdFromSession = Session.get(sessionKey);
-  if(!userIdFromSession || Users.find(userIdFromSession).count() === 0){
-    var userId = Users.createNewUser(null);
-    Session.setPersistent(sessionKey, userId);
-  }
+  
+  // NOTE: we perform the session storage logic on a delay because this is run before the client is sent the actual 
+  // server-side data, which we need to check against for user info
+  setTimeout(function(){
+    // if there is no session stored OR the session is not a userId we recognize, set the session  
+    if(!userIdFromSession || Users.find(userIdFromSession).count() === 0){
+      var userId = Users.createNewUser();
+      Session.setPersistent(sessionKey, userId);
+    }
+  }, 500);
 };
