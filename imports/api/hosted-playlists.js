@@ -75,7 +75,7 @@ HostedPlaylists.helpers({
 
     // return null if we have no more songs
     if(!nextSong){
-      return {message: "No songs to play"};
+      return null;
     }
 
     // store previous songs in order
@@ -95,9 +95,6 @@ HostedPlaylists.helpers({
     Songs.update(nextSong._id, {
       $set: { played: true },
     });
-
-    //Songs.update(nextSong);
-    //HostedPlaylists.update(this);
 
     // and return the actual spotify id to the streaming service
     return nextSong.spotifyId;
