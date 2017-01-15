@@ -8,6 +8,7 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/create-page.js';
 import '../imports/playlist-page.js';
+import '../imports/welcome.js';
 import '../imports/debug.js';
 import '../imports/app-body.js';
 
@@ -15,7 +16,7 @@ FlowRouter.route('/', {
   name: 'App.home',
   triggersEnter: [acquireSession],
   action() {
-    BlazeLayout.render('App_body', {  });
+    BlazeLayout.render('App_body', { main: 'welcome_page' });
   },
 });
 
