@@ -1,22 +1,34 @@
 <template name="playlist_page">
 
-<h2>
-  {{playlist.name}}
-</h2>
+<div class="playlistTitle">
+	
+	<div class="playlistShare">
+		<p>
+			<span class="playlistShareId"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
+		</p>
+	</div>
 
+	<h2>
+	  {{playlist.name}} 
+	</h2>
+	
+</div>
+
+<!--
   <div>
     {{#if isOwner}}
       <a>Settings</a>
     {{/if}}
   </div>
-  
+-->
+
   <div class="playlistContainer">
     {{#if songs}}
 	  <div class="nowPlayingHeader"><h3>Now playing</h3></div>
       <ul class="playlist">
       {{#each song in songs}}
         <li>
-        <span class="songName">{{song.name}}</span> <span class="voteContainer"><span class="votes"><strong>{{song.votes.length}}</strong></span><span class="voter"><i class="fa fa-plus"></i></span></span><br/>
+        <span class="songName">{{song.name}}</span> <span class="voteContainer"><span class="votes"><strong>{{song.votes.length}}</strong></span><span class="voter"><i class="fa fa-star-o"></i></span></span><br/>
         <span class="songArtist">{{song.artist}}</span>
         </li>
       {{/each}}

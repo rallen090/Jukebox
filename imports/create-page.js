@@ -38,6 +38,7 @@ Template.create_page.events({
     })
     var newPlaylist = HostedPlaylists.findOne(playlistId);
   	newPlaylist.initializeSongs(songs);
-    //FlowRouter.go('Lists.show', { _id: listId });
+    
+    FlowRouter.go('Jukebox.playlist', { _id: newPlaylist.publicId });
   },
 });
