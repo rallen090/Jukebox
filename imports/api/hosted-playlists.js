@@ -88,6 +88,17 @@ HostedPlaylists.helpers({
     this.currentSongId = nextSong._id;
     nextSong.setPlayed();
 
+    HostedPlaylists.update(this._id, {
+      $set: { currentSongId: this.currentSongId, previousSongs: this.previousSongs },
+    });
+
+    Songs.update(nextSong._id, {
+      $set: { played: true },
+    });
+
+    //Songs.update(nextSong);
+    //HostedPlaylists.update(this);
+
     // and return the actual spotify id to the streaming service
     return nextSong.spotifyId;
   },

@@ -21,18 +21,9 @@
     Songs:<br/>
     <ul>
       {{#each songs}}
-        {{_id}} - {{name}} - {{artist}} - {{userId}}
+        {{_id}} - {{name}} - {{artist}} - {{userId}} - Played {{played}} - VoteCount {{voteCount}} - Votes {{votes}}
         <br/>
       {{/each}}
     </ul>
   </div>  
-  <div>
-  Lists:<br/>
-    <ul>
-      {{#each lists}}
-        {{_id}} - {{name}}
-        <br/>
-      {{/each}}
-    </ul>
-  </div>
 </template>

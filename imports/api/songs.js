@@ -80,6 +80,8 @@ Songs.publicFields = {
   artist: 1,
   dateAdded: 1,
   votes: 1,
+  voteCount: 1,
+  played: 1,
 };
 
 // check if an element exists in array using a comparer function
