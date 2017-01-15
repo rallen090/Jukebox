@@ -9,6 +9,8 @@ import { Songs } from './api/songs.js';
 import './debug.html';
 
 Template.debug_page.onCreated(function bodyOnCreated() {
+
+  alert(JSON.stringify(getUserData("BQAvZokIzdI9zpS_DqgME8KhI4J0MzuNmBUAb5mVsm64ztFF_cJBVsdmiBa7MTPSPCuwtKxLheGKf_nufARmkQSnxe_A9bwdsh7kw57Ya6Df0EDN-zzo4hafae1Bicd5qMSgkSDQ3dv9KsLsaK8Xk8UeBpeqew")));
   // TODO: needed for user-permission authentication + refresh of tokens
   // var code = location.search.split('code=')[1];
   // if(code){
@@ -49,39 +51,39 @@ Template.debug_page.helpers({
 });
 
 function login(callback) {
-        var CLIENT_ID = 'e03e15b112774918a9d3dfd5e2e78ba5';
-        var REDIRECT_URI = window.location.protocol + '//' + window.location.host + '/create';
-        alert(REDIRECT_URI);
-        function getLoginURL(scopes) {
-            return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
-              '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
-              '&scope=' + encodeURIComponent(scopes.join(' ')) +
-              '&response_type=token';
-        }
-        
-        var url = getLoginURL([
-            'user-read-email'
-        ]);
-    
-        window.addEventListener("message", function(event) {
-          alert("FDSA");
-            var hash = JSON.parse(event.data);
-            if (hash.type == 'access_token') {
-                callback(hash.access_token);
-            }
-        }, false);
-        
-        window.location = url;
-    };
+  var CLIENT_ID = 'e03e15b112774918a9d3dfd5e2e78ba5';
+  var REDIRECT_URI = window.location.protocol + '//' + window.location.host + '/create';
+  alert(REDIRECT_URI);
+  function getLoginURL(scopes) {
+      return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
+        '&redirect_uri=' + encodeURIComponent(REDIRECT_URI) +
+        '&scope=' + encodeURIComponent(scopes.join(' ')) +
+        '&response_type=token';
+  }
+  
+  var url = getLoginURL([
+      'user-read-email'
+  ]);
 
-    function getUserData(accessToken) {
-        return $.ajax({
-            url: 'https://api.spotify.com/v1/me',
-            headers: {
-               'Authorization': 'Bearer ' + accessToken
-            }
-        });
-    };
+  window.addEventListener("message", function(event) {
+    alert("FDSA");
+      var hash = JSON.parse(event.data);
+      if (hash.type == 'access_token') {
+          callback(hash.access_token);
+      }
+  }, false);
+  
+  window.location = url;
+};
+
+function getUserData(accessToken) {
+    return $.ajax({
+        url: 'https://api.spotify.com/v1/me',
+        headers: {
+           'Authorization': 'Bearer ' + accessToken
+        }
+    });
+};
 
 Template.debug_page.events({
     'click #btn-login'() {
