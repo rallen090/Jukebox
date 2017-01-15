@@ -43,20 +43,40 @@ Template.create_page.events({
   'click #js-new-playlist'() {
   	var playlistName = $('#playlist-name').val();
 
-  	// TODO: pull from Spotify
-  	var songs = [{
-  		spotifyId: "spotify:track:2WMRd3xAb9FwXopCRNWDq1",
-        name: "Song A",
-        artist: "Artist A"
-    }];
+    var songs = [];
+    // TODO: read this via CSS selector from the page to get the actual selected playlistId (right now we are just grabbing a populated one arbitrarily)
+    var populatedLists = SpotifyPlaylists.find({songCount: {$gt: 0}});
+    if(populatedLists.count() !== 0){
+      var selectedPlaylistId = populatedLists[0].spotifyId;
+      getSongsForPlaylist(selectedPlaylistId, function(response){
+        var rawSongs = response.items;
 
-    var playlistId = HostedPlaylists.insert({
-    	name: playlistName,
-    	userId: Session.get("jukebox-active-user-id")
-    })
-    var newPlaylist = HostedPlaylists.findOne(playlistId);
-  	newPlaylist.initializeSongs(songs);
-    
-    FlowRouter.go('Jukebox.playlist', { _id: newPlaylist.publicId });
+        // convert response to songs to insert
+        $.each(rawSongs, function( index, value ) {
+          var track = value.track;
+          songs.push({
+            name: track.name,
+            artist: track.artists[0].name,
+            // track.id is the ID portion only - while track.uri has the 'spotify:track:' prefix as well
+            spotifyId: track.uri
+          });
+        });
+
+        // var songs = [{
+        //   spotifyId: "spotify:track:2WMRd3xAb9FwXopCRNWDq1",
+        //     name: "Song A",
+        //     artist: "Artist A"
+        // }];
+
+        var playlistId = HostedPlaylists.insert({
+          name: playlistName,
+          userId: Session.get("jukebox-active-user-id")
+        })
+        var newPlaylist = HostedPlaylists.findOne(playlistId);
+        newPlaylist.initializeSongs(songs);
+        
+        FlowRouter.go('Jukebox.playlist', { _id: newPlaylist.publicId });
+      });
+    }
   },
 });
