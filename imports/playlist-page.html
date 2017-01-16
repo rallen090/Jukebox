@@ -24,8 +24,10 @@
   </div>
 -->
 
+  <!-- search bar -->
   {{> search playlistId=playlist._id}}
 
+  <!-- current songs -->
   <div class="playlistContainer">
     {{#if songs}}
 	  <div class="nowPlayingHeader"><h3>Now playing</h3></div>
@@ -59,6 +61,27 @@
       Playlist is empty
     {{/if}}
   </div>
+
+  <!-- previous songs -->
+  {{#if hasPastSongs}}
+  <div class="ui horizontal divider">
+    <span style="color: #ccc">Played</span>
+  </div>
+
+  <div class="pastPlaylistContainer">
+    
+      <ul class="playlist">
+      <li></li>
+      {{#each song in previousSongs}}
+        <li>
+        <span class="songName">{{song.name}}</span><br/>
+        <span class="songArtist">{{song.artist}}</span>
+        </li>
+      {{/each}}
+      </ul>
+
+  </div>
+  {{/if}}
 
   <!-- we show this as a way to artificially extend the page height, which is used to enable placing the search bar at the top of the page, 
   no matter how big the page is. this is important for mobile since the keyboard can get in the way of search results without being able to scroll -->
