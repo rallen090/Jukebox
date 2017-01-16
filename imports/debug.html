@@ -21,7 +21,7 @@
     Songs:<br/>
     <ul>
       {{#each songs}}
-        {{_id}} - {{name}} - {{artist}} - {{userId}} - Played {{played}} - VoteCount {{voteCount}} - Votes {{votes}}
+        {{_id}} - {{name}} - {{artist}} - PlaylistId {{hostedPlaylistId}} - {{userId}} - Played {{played}} - VoteCount {{voteCount}} - Votes {{votes}}
         <br/>
       {{/each}}
     </ul>
@@ -31,5 +31,5 @@
   <button class="btn btn-primary" id="btn-test">Get playlists</button>
   <button class="btn btn-primary" id="btn-test2">Get tracks</button>
 
-  {{> search }}
+  {{> search spotifyPlaylistId="TEST"}}
 </template>
