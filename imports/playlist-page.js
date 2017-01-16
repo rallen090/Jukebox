@@ -23,6 +23,7 @@ Template.playlist_page.helpers({
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    console.log(playlist.songs());
     return playlist ? playlist.songs() : [];
   },
   isOwner() {
@@ -47,8 +48,9 @@ Template.playlist_page.events({
 	  	var songId = event.currentTarget.id;
 	  		  	
 	  	var song = Songs.findOne({_id: songId});
-	  		  		  	
-	  	song.vote(Session.get("jukebox-active-user-id"));
+	  	
+	  	if(!song.didUserVote(Session.get("jukebox-active-user-id")))	  		  	
+	  		song.vote(Session.get("jukebox-active-user-id"));
 
 	  	/* a CSS way to implement vote tracking; progrematic is better
 	  	$("#"+songId+" .voter i").removeClass("fa-star-o");	  	

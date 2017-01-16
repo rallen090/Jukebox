@@ -102,5 +102,11 @@ Songs.helpers({
   },
   setPlayed() {
     this.played = true;
+  },
+  didUserVote(userId) {
+	var numUserVotes = Songs.find( { _id : this._id, votes : userId } ).count();
+	if(numUserVotes > 0)
+		return true;
+	return false;
   }
 });

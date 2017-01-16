@@ -100,7 +100,7 @@ HostedPlaylists.helpers({
     return nextSong.spotifyId;
   },
   songs() {
-    return Songs.find({ hostedPlaylistId: this._id }, { sort: { votes: -1 } });
+    return Songs.find({ hostedPlaylistId: this._id }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
     var playlistId = this._id;
