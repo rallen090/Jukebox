@@ -2,6 +2,7 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import SpotifyWebApi from'spotify-web-api-node';
 import './services/spotify.js';
+import './services/geolocator.js';
 
 import { Users } from './api/users.js';
 import { HostedPlaylists } from './api/hosted-playlists.js';
@@ -10,6 +11,16 @@ import { Songs } from './api/songs.js';
 import './debug.html';
 
 Template.debug_page.onCreated(function bodyOnCreated() {
+});
+
+Template.debug_page.onRendered(function debugOnRendered(){
+  getCurrentCoordinates(function(position){
+        console.log(position);
+      },function(error){
+        console.log(error);
+      },function(){
+        console.log("Geolocation not supported");
+      });
 });
 
 Template.debug_page.helpers({
@@ -39,5 +50,14 @@ Template.debug_page.events({
         alert(JSON.stringify(response));
       });
       //3V81yO5JWkFrXnwVZRV7CE
+  },
+  'click #btn-test3'() {
+      getCurrentCoordinates(function(position){
+        console.log(position);
+      },function(error){
+        console.log(error);
+      },function(){
+        console.log("Geolocation not supported");
+      });
   }
 });
