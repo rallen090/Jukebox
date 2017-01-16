@@ -12,55 +12,34 @@ Template.search.onRendered(function createPageOnRendered() {
   	$('.ui.search')
   .search({
     apiSettings: {
-      url: 'https://api.spotify.com/v1/search?q={query}&type=artist,track',
+      url: 'https://api.spotify.com/v1/search?q={query}&type=track',
       onResponse: function(spotifyResponse) {
         var
           response = {
-            results : {}
+            results : []
           }
         ;
 
-        function createCategory(categoryName){
-        	if(response.results[categoryName] === undefined) {
-	            response.results[categoryName] = {
-	              name    : categoryName,
-	              results : []
-	            };
-	          }
-        };
-        
-        createCategory("Artists");
-        createCategory("Songs");
-
         // translate Spotify API response to work with search
-        $.each(spotifyResponse.artists.items, function(index, artist) {
-          if(index >= 4) {
-            return false;
-          }
-
-          // add result to category
-          response.results["Artists"].results.push({
-            title       : artist.name,
-            url         : window.location.href
-          });
-        });
         $.each(spotifyResponse.tracks.items, function(index, song) {
-          if(index >= 4) {
+          if(index >= 10) {
             return false;
           }
 
-          // add result to category
-          response.results["Songs"].results.push({
+          var artist = song.artists[0].name;
+          response.results.push({
             title       : song.name,
-            description : "by " + song.artists[0].name,
-            url         : window.location.href
+            description : "by " + artist,
+            spotifyId: song.uri
           });
         });
         return response;
       },
     },
     minCharacters : 3,
-    type: 'category'
+    onSelect: function(result, response){
+    	alert(JSON.stringify(result));
+    }
   })
 ;
 
