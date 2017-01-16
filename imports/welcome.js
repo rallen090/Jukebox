@@ -35,8 +35,6 @@ Template.welcome_page.events({
     }
   },
   'click #nearby-button'() {
-    $("#nearby-button").addClass("loading");
-
     // load coordinates
     getCurrentCoordinates(function(position){
       var lat = position.coords.latitude;
@@ -58,31 +56,27 @@ Template.welcome_page.events({
         }); 
 
         if(count > 0){
-          $("#nearby-button").html("Nearby playlists");
+          $("#nearby-button").text("Nearby playlists");
           $("#selectable-playlists").show();
         }
         else{
           $("#nearby-button").html("No playlists nearby");
           $("#nearby-button").prop('disabled', true);
-          $("#nearby-button").removeClass("loading");
         }
       }
       else{
         $("#nearby-button").html("No playlists");
         $("#nearby-button").prop('disabled', true);
-        $("#nearby-button").removeClass("loading");
       }
 
     },function(error){
       console.log("Geo error: " + error);
       $("#nearby-button").html("Failed acquiring geolocation");
       $("#nearby-button").prop('disabled', true);
-      $("#nearby-button").removeClass("loading");
     },function(){
       console.log("Geolocation not supported");
       $("#nearby-button").html("Geolocation not supported on device");
       $("#nearby-button").prop('disabled', true);
-      $("#nearby-button").removeClass("loading");
     });
   },
   'click li'(event) {
