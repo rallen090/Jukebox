@@ -119,7 +119,8 @@ HostedPlaylists.helpers({
     return Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { voteCount: -1 } });
   },
   previousSongs() {
-    return Songs.find({ hostedPlaylistId: this._id, played: true }, { sort: { voteCount: -1 } });
+    // NOTE: we filter out the CURRENT song from this previous song list, despite it being marked as 'played' since that is treated as NOW-PLAYING
+    return Songs.find({ hostedPlaylistId: this._id, played: true, _id: { $ne: this.currentSongId } }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
     var playlistId = this._id;
