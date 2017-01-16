@@ -1,8 +1,9 @@
 <template name="search">
 <div class="ui search">
   <div class="ui left icon input">
-    <input class="prompt" type="text" placeholder="Search Spotify">
+    <input id="search-input" class="prompt" type="text" placeholder="Search Spotify">
     <i class="spotify icon"></i>
   </div>
+  <p id="playlistId" hidden>{{playlistId}}</p>
 </div>
 </template>
