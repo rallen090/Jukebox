@@ -48,7 +48,7 @@ Template.playlist_page.helpers({
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
-    
+
     if(playlist.previousSongIds.length > 0 && !playlist.currentSong && playlist.songs().count() === 0){
       return true;
     }
@@ -92,7 +92,6 @@ Template.playlist_page.events({
 	 },
   'click .delete-action'(event){
     var songId = event.currentTarget.id;
-    alert(songId);
     Songs.remove(songId);
   }
 });
