@@ -23,8 +23,8 @@ Template.playlist_page.helpers({
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
-    console.log(playlist.songs());
     return playlist ? playlist.songs() : [];
+    
   },
   isOwner() {
     const instance = Template.instance();
