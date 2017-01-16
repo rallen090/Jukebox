@@ -10,8 +10,8 @@
 
 
 <div class="welcomeOption" id="joinJukebox">
-	<span class="icon"><i class="fa fa-music fa-1x"></i></span> 
-	<h3>Join a jukebox</h3>
+	<span class="icon" style="margin-top: 0px;"><i class="fa fa-music fa-1x"></i></span> 
+	<h3>Join a jukebox by ID</h3>
 	<p>
 		Add songs and vote on what'll play next<br/>
 	</p>
@@ -24,10 +24,16 @@
 			</a>
 	</div>
 	
-	<div class="clear"></div>
+	<div class="clear"></div>	
 
-	<div class="playlists-container">
-	<button id="nearby-button" class="ui secondary inverted button">Nearby playlists</button>
+</div><!-- /#joinJukebox -->
+
+	<div class="clear"></div>	
+
+<div class="welcomeOption" id="nearby-button">
+	<span class="icon" style="margin-top: -8px;"><i class="fa fa-map fa-1x"></i></span> 
+	<h3>Join a nearby jukebox</h3>
+	
 	{{#if nearbyPlaylists}}
 	<ul id="selectable-playlists" style="display: none;">
 	      {{#each playlist in nearbyPlaylists}}
@@ -37,13 +43,8 @@
 	      {{/each}}
       </ul>
     {{/if}}
-	</div>
 
-</div><!-- /#joinJukebox -->
-
-<div class="ui horizontal divider">
-OR
-</div>
+</div><!-- /#nearby-button -->
 
 <a class="welcomeOption" id="createJukebox" href="create">
 	<span class="icon"><i class="fa fa-bullhorn fa-1x"></i></span> 
