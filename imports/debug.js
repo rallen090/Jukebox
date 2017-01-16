@@ -16,6 +16,8 @@ Template.debug_page.onCreated(function bodyOnCreated() {
 Template.debug_page.onRendered(function debugOnRendered(){
   getCurrentCoordinates(function(position){
         console.log(position);
+
+        console.log(getDistanceFromLatLonInMiles(position.coords.latitude, position.coords.longitude, position.coords.latitude, position.coords.longitude));
       },function(error){
         console.log(error);
       },function(){

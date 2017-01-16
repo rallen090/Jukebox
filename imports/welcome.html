@@ -28,11 +28,11 @@
 
 	<div class="playlists-container">
 	<button id="nearby-button" class="ui secondary inverted button">Nearby playlists</button>
-	{{#if playlists}}
-	<ul id="spotify-playlists">
-	      {{#each playlist in playlists}}
-	        <li id="{{playlist.spotifyId}}">
-	        <i class="spotify icon"></i> {{playlist.name}} ({{playlist.songCount}})
+	{{#if nearbyPlaylists}}
+	<ul id="selectable-playlists" style="display: none;">
+	      {{#each playlist in nearbyPlaylists}}
+	        <li id="{{playlist.publicId}}">
+				{{playlist.name}} ({{playlist.distanceInMiles}} miles)
 	        </li>
 	      {{/each}}
       </ul>

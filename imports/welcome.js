@@ -12,12 +12,13 @@ import './welcome.html';
 // storing playlists in a client-side meteor collection so they can load and be rendered dynamically (i.e. won't block page load)
 var NearbyPlaylists = new Meteor.Collection(null);
 
-Template.welcome_page.onCreated(function playPageOnCreated() {
+Template.welcome_page.onRendered(function playPageOnCreated() {
+//$("#nearby-playlists").hide();
 });
 
 Template.welcome_page.helpers({
-  nearbyPlaylist(){
-    return NearbyPlaylists.find();
+  nearbyPlaylists(){
+    return NearbyPlaylists.find({}, {sort: { distanceInMiles: 1 }});
   }
 });
 
@@ -27,7 +28,7 @@ Template.welcome_page.events({
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
 
     if(!playlist){
-      $('#invalidPlaylistAlert').display;;
+      $('#invalidPlaylistAlert').display;
     } 
     else {
       FlowRouter.go('Jukebox.playlist', { _id: playlistId });
@@ -38,22 +39,34 @@ Template.welcome_page.events({
 
     // load coordinates
     getCurrentCoordinates(function(position){
-      var lat = position.coords.latitiude;
+      var lat = position.coords.latitude;
       var long = position.coords.longitude;
 
       // iterate over only doc with lat/long
       if(HostedPlaylists.find().count()){
-        $.each(HostedPlaylists.find({latitude: { $exists: true }}, {longitude: { $exists: true }}), function( index, value ) {
-        console.log(value());
-          if(value){
-            var distance = getDistanceFromLatLonInMiles(lat, long, value.latitude, value.longitude);
-            alert("Distance: " + distance);
-            if(distance < /* max miles */ 5){
-              NearbyPlaylists.insert({name: value.name, publicId: value.publicId, distanceInMiles: distance});
+        var count = 0;
+        HostedPlaylists.find({latitude: { $exists: true }}, {longitude: { $exists: true }}).forEach(function (row) {
+            if(row){
+              console.log({a: lat, b: long, c: row.latitude, d: row.longitude});
+              var distance = getDistanceFromLatLonInMiles(lat, long, row.latitude, row.longitude);
+              if(distance < /* max miles */ 5){
+                var roundedDistance = Math.round( distance * 10 ) / 10;
+                NearbyPlaylists.insert({name: row.name, publicId: row.publicId, distanceInMiles: roundedDistance});
+                count++;
+              }
             }
-          }
-        });
-        $("#nearby-button").hide();
+        }); 
+
+        if(count > 0){
+          alert("FDsa");
+          $("#selectable-playlists").show();
+          $("#nearby-button").hide();
+        }
+        else{
+          $("#nearby-button").html("No playlists nearby");
+          $("#nearby-button").prop('disabled', true);
+          $("#nearby-button").removeClass("loading");
+        }
       }
       else{
         $("#nearby-button").html("No playlists");
@@ -72,12 +85,11 @@ Template.welcome_page.events({
       $("#nearby-button").prop('disabled', true);
       $("#nearby-button").removeClass("loading");
     });
-
-    // if(!playlist){
-    //   $('#invalidPlaylistAlert').display;;
-    // } 
-    // else {
-    //   FlowRouter.go('Jukebox.playlist', { _id: playlistId });
-    // }
   },
+  'click li'(event) {
+    // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked
+    var playlistPublicId = event.target.id;
+
+    FlowRouter.go('Jukebox.playlist', { _id: playlistPublicId });
+  }
 });

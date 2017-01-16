@@ -28,5 +28,5 @@ getCurrentCoordinates = function (positionFunc, errorFunc, notSupportedFunc) {
 };
 
 getDistanceFromLatLonInMiles = function(lat1,lon1,lat2,lon2) {
-	return getDistanceFromLatLonInKm * 0.621371;
+	return getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) * 0.621371;
 };
