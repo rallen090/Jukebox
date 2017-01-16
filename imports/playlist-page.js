@@ -74,9 +74,12 @@ Template.playlist_page.helpers({
     return playlistUserId === Session.get("jukebox-active-user-id");
   },
   hasVoted(votes){
-    console.log(votes);
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1;
+  },
+  hasVotedClass(votes){
+    var userId = Session.get("jukebox-active-user-id");
+    return $.inArray(userId, votes) > -1 ? "fa fa-star" : "fa fa-star-o";
   },
   getShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
