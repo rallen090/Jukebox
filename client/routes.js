@@ -109,9 +109,9 @@ function acquireSession() {
   // server-side data, which we need to check against for user info
   setTimeout(function(){
     // if there is no session stored OR the session is not a userId we recognize, set the session  
-    if(!userIdFromSession || Users.find(userIdFromSession).count() === 0){
+    if(!userIdFromSession /* || Users.find(userIdFromSession).count() === 0*/){ // TODO: re-evaluate this - it still creates unneeded users all the time
       var userId = Users.createNewUser();
       Session.setPersistent(sessionKey, userId);
     }
-  }, 500);
+  }, 0);
 };

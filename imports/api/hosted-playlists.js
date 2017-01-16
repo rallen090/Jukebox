@@ -52,7 +52,9 @@ HostedPlaylists.schema = new SimpleSchema({
   dateCreated: { type: Date },
   name: { type: String },
   currentSongId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
-  previousSongIds: { type: Array, optional: true }
+  previousSongIds: { type: Array, optional: true },
+  longitude: { type: Number, optional: true },
+  latitude: { type: Number, optional: true },
 });
 
 HostedPlaylists.attachSchema(HostedPlaylists.schema);
