@@ -24,7 +24,35 @@ Template.playlist_page.helpers({
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
     return playlist ? playlist.songs() : [];
+  },
+  previousSongs() {
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    return playlist ? playlist.previousSongs() : [];
+  },
+  currentSong(){
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+
+    if(!playlist.currentSongId){
+      return null;
+    }
+    else{
+      var song = Songs.findOne(playlist.currentSongId);
+      return song;
+    }
+  },
+  isFinished(){
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var playlist = HostedPlaylists.findOne({publicId: playlistId});
     
+    if(playlist.previousSongIds.length > 0 && !playlist.currentSong && playlist.songs().count() === 0){
+      return true;
+    }
+    return false;
   },
   isOwner() {
     const instance = Template.instance();

@@ -28,6 +28,23 @@
     {{#if songs}}
 	  <div class="nowPlayingHeader"><h3>Now playing</h3></div>
       <ul class="playlist">
+      <li>
+        {{#if currentSong}}
+          <span class="songName">{{currentSong.name}}</span> {{#if isOwner}}<span class="voteContainer delete-action" id="{{currentSong._id}}"><i class="fa fa-trash"></i></span>{{/if}} <span class="voteContainer vote-action" id="{{song._id}}"><span class="votes"><strong>{{currentSong.votes.length}}</strong></span><span class="voter"><i class="fa fa-star-o"></i></span></span> <br/>
+          <span class="songArtist">{{currentSong.artist}}</span>
+          <span>VOTED: {{hasVoted currentSong.votes}}</span>
+        {{else}}
+          {{#if isFinished}}
+            <i>
+              Playlist finished!
+            </i>
+            <br/>
+              Add more songs to keep it going!
+          {{else}}
+            <i>Waiting for host to begin</i>
+          {{/if}}
+        {{/if}}
+      </li>
       {{#each song in songs}}
         <li>
         <span class="songName">{{song.name}}</span> {{#if isOwner}}<span class="voteContainer delete-action" id="{{song._id}}"><i class="fa fa-trash"></i></span>{{/if}} <span class="voteContainer vote-action" id="{{song._id}}"><span class="votes"><strong>{{song.votes.length}}</strong></span><span class="voter"><i class="fa fa-star-o"></i></span></span> <br/>

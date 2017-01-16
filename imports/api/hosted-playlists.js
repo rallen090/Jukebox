@@ -53,6 +53,9 @@ HostedPlaylists.schema = new SimpleSchema({
   name: { type: String },
   currentSongId: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
   previousSongIds: { type: Array, optional: true },
+  'previousSongIds.$': {
+    type: String
+  },
   longitude: { type: Number, optional: true },
   latitude: { type: Number, optional: true },
 });
@@ -67,7 +70,10 @@ HostedPlaylists.publicFields = {
   userId: 1,
   dateCreated: 1,
   name: 1,
-  currentSong: 1
+  currentSongId: 1,
+  previousSongIds: 1,
+  longitude: 1,
+  latitude: 1
 };
 
 HostedPlaylists.helpers({
@@ -77,21 +83,29 @@ HostedPlaylists.helpers({
 
     // return null if we have no more songs
     if(!nextSong){
+      HostedPlaylists.update(this._id, {
+        $set: { currentSongId: null},
+      });
+
       return null;
     }
 
     // store previous songs in order
-    if(!this.previousSongs){
-      this.previousSongs = [];
+    if(!this.previousSongIds){
+      this.previousSongIds = [];
     }
-    this.previousSongs.push(nextSong._id);
+    this.previousSongIds.push(nextSong._id);
 
     // flag the song as played and set the current song pointer
     this.currentSongId = nextSong._id;
     nextSong.setPlayed();
 
     HostedPlaylists.update(this._id, {
-      $set: { currentSongId: this.currentSongId, previousSongs: this.previousSongs },
+      $push: { previousSongIds: nextSong._id},
+    });
+
+    HostedPlaylists.update(this._id, {
+      $set: { currentSongId: this.currentSongId },
     });
 
     Songs.update(nextSong._id, {
@@ -102,7 +116,10 @@ HostedPlaylists.helpers({
     return nextSong.spotifyId;
   },
   songs() {
-    return Songs.find({ hostedPlaylistId: this._id }, { sort: { voteCount: -1 } });
+    return Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { voteCount: -1 } });
+  },
+  previousSongs() {
+    return Songs.find({ hostedPlaylistId: this._id, played: true }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
     var playlistId = this._id;
