@@ -48,21 +48,23 @@ Template.playlist_page.helpers({
 
 Template.playlist_page.events({
 	
-	'click .voteContainer'(event) {
+	'click .vote-action'(event) {
 			
 	  	var songId = event.currentTarget.id;
 	  		  	
 	  	var song = Songs.findOne({_id: songId});
 	  	
-	  	if(!song.didUserVote(Session.get("jukebox-active-user-id")))	  		  	
-	  		song.vote(Session.get("jukebox-active-user-id"));
-
-	  	/* a CSS way to implement vote tracking; progrematic is better
-	  	$("#"+songId+" .voter i").removeClass("fa-star-o");	  	
-	  	$("#"+songId+" .voter i").addClass("fa-star");
-	  	*/
-	  	
+      var userId = Session.get("jukebox-active-user-id");
+	  	if(!song.didUserVote(userId)){
+        song.vote(userId);
+      }
+      else{
+        song.unvote(userId);
+      }	
 	 },
-
-	
+  'click .delete-action'(event){
+    var songId = event.currentTarget.id;
+    alert(songId);
+    Songs.remove(songId);
+  }
 });
