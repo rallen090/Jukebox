@@ -33,6 +33,15 @@ Template.create_page.onCreated(function createPageOnCreated() {
 });
 
 Template.create_page.onRendered(function createPageOnRendered() {
+    getCurrentCoordinates(function(position){
+        Session.set("jukebox-current-longitude", position.coords.longitude);
+        Session.set("jukebox-current-latitude", position.coords.latitude);
+      },function(error){
+        console.log("Geo error: " + error);
+      },function(){
+        console.log("Geolocation not supported");
+      });
+
   this.autorun(() => {
   });
 });
@@ -45,15 +54,25 @@ Template.create_page.helpers({
 
 Template.create_page.events({
   'click li'(event) {
+    // name
     var playlistName = $('#playlist-name').val();
+
     // we set the spotifyId on the actual list element to it is easy to access here without referencing the meteor collection
     var spotifyPlaylistId = event.target.id;
+
+    // geo
+    var longitude = Session.get("jukebox-current-longitude");
+    var latitude = Session.get("jukebox-current-latitude");
+    Session.clear("jukebox-current-longitude");
+    Session.clear("jukebox-current-latitude");
 
     var playlistSongs = [];
     function savePlaylistAndSongs(name, songs){
       var playlistId = HostedPlaylists.insert({
         name: name,
-        userId: Session.get("jukebox-active-user-id")
+        userId: Session.get("jukebox-active-user-id"),
+        latitude: latitude,
+        longitude: longitude
       })
       var newPlaylist = HostedPlaylists.findOne(playlistId);
       newPlaylist.initializeSongs(songs);
