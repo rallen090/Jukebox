@@ -22,6 +22,8 @@
   </div>
 -->
 
+  {{> search playlistId=playlist._id}}
+
   <div class="playlistContainer">
     {{#if songs}}
 	  <div class="nowPlayingHeader"><h3>Now playing</h3></div>
@@ -38,5 +40,4 @@
     {{/if}}
   </div>
 
-  {{> search playlistId=playlist._id}}
 </template>
