@@ -1,0 +1,21 @@
+    
+    
+    var userId = Session.get("jukebox-active-user-id");
+    localSongCollection.update( { votes : userId }, { $set: { localUserVoted : true } } );
+        
+	localSongCollection = new Meteor.Collection('');
+	
+	if (Meteor.isClient) 
+		{
+		Template.playlist_page.rendered = function()
+			{
+			this.handle = playlist.observeChanges(
+				{
+				added: function(id, doc) { doc._id = id; doc.localField = 666; LocalCollection.insert(doc); },
+				changed: function(id, fields) { LocalCollection.update(id, { $set: fields }); },
+				removed: function() { LocalCollection.remove(id); }
+				});
+			}
+		}
+   
+    
