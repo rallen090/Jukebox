@@ -16,10 +16,6 @@ function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
   return d;
 };
 
-function getDistanceFromLatLonInMiles(lat1,lon1,lat2,lon2) {
-	return getDistanceFromLatLonInKm * 0.621371;
-}
-
 getCurrentCoordinates = function (positionFunc, errorFunc, notSupportedFunc) {
 	if (navigator.geolocation)
     {
@@ -31,7 +27,6 @@ getCurrentCoordinates = function (positionFunc, errorFunc, notSupportedFunc) {
   	}
 };
 
-isWithinRadiusInMiles = function (latitude1, longitude, latitude2, longitude2, radiusMiles) {
-	var distanceInMiles = getDistanceFromLatLonInMiles(latitude1, longitude1, latitude2, longitude2);
-	return distanceInMiles < radiusMiles;
+getDistanceFromLatLonInMiles = function(lat1,lon1,lat2,lon2) {
+	return getDistanceFromLatLonInKm * 0.621371;
 };

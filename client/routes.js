@@ -21,6 +21,14 @@ FlowRouter.route('/', {
   },
 });
 
+FlowRouter.route('/home/', {
+  name: 'App.home',
+  triggersEnter: [acquireSession],
+  action() {
+    BlazeLayout.render('App_body', { main: 'welcome_page' });
+  },
+});
+
 FlowRouter.route('/jukebox/', {
   name: 'Jukebox.home',
   triggersEnter: [acquireSession],

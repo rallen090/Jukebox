@@ -5,6 +5,7 @@ import { Session } from 'meteor/session';
 import { HostedPlaylists } from './api/hosted-playlists.js';
 
 import './services/spotify.js';
+import './services/geolocator.js';
 
 import './create-page.html';
 
