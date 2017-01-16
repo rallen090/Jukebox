@@ -9,6 +9,7 @@ class SongsCollection extends Mongo.Collection {
     ourSong.voteCount = 0;
     ourSong.votes = [];
     ourSong.played = false;
+    ourSong.localUserVoted = false;
     ourSong.dateAdded = ourSong.dateAdded || new Date();
     const result = super.insert(ourSong, callback);
     return result;
