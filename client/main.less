@@ -23,13 +23,15 @@
 @color-secondary: #111; // darkest grey
 @color-tertiary: #222; // dark grey
 
+@rounded-box-radius: 5px;
+
 // ** Snippets **
 
 .rounded {
-	-webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    -border-radius: 10px;
-    border-radius: 10px;
+	-webkit-border-radius: @rounded-box-radius;
+    -moz-border-radius: @rounded-box-radius;
+    -border-radius: @rounded-box-radius;
+    border-radius: @rounded-box-radius;
 }
 
 /**************************************************
@@ -106,8 +108,8 @@ p.small {
 
 .welcomeOption {
 	background: rgba(0, 0, 0, 0.7);
-	padding: 15px 15px;	
-	margin: 10px 0px;
+	padding: 15px 15px 15px 15px;	
+	margin: 0px 0px 15px 0px;
 	display: block;
 	text-decoration: none;
 	color: #ccc;
@@ -117,7 +119,7 @@ p.small {
 .welcomeOption span.icon {
 	position: relative;
 	float: left;
-	font-size: 40px;
+	font-size: 35px;
 	margin: -10px 0px;
 	padding: 0px;	
 }
@@ -163,8 +165,10 @@ a.welcomeOption span.icon {
 }
 
 #footer a:hover {
-	color: #fff;
+	color: @color-primary;
 	background-color: #000;
+	border-bottom: @color-primary;
+
 }
 
 
@@ -223,7 +227,7 @@ a.welcomeOption span.icon {
 
 .inputPrefix {
 	font-size: 30px;
-	margin: 20px 0px;
+	margin: 15px 0px 0px 0px;
 	padding: 0 0 0 10px;
 	background-color: #161616;
 	border: 0px;
