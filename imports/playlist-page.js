@@ -54,6 +54,13 @@ Template.playlist_page.helpers({
     }
     return false;
   },
+  hasPastSongs(){
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+
+    return playlist.previousSongIds.length > 0;
+  },
   isOwner() {
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
@@ -100,6 +107,10 @@ Template.playlist_page.events({
 	'click .vote-action'(event) {
 			
 	  	var songId = event.currentTarget.id;
+
+      if(!songId){
+        return;
+      }
 	  		  	
 	  	var song = Songs.findOne({_id: songId});
 	  	
