@@ -15,7 +15,7 @@ var SpotifyPlaylists = new Meteor.Collection(null);
 Template.create_page.onCreated(function createPageOnCreated() {
   this.autorun(() => {
     // populate playlists
-    if(SpotifyPlaylists.find().count() === 0){
+    if(SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
       getUserPlaylists(function(response){
         var items = response.items;
         $.each(items, function( index, value ) {

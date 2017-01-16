@@ -58,8 +58,8 @@ Template.welcome_page.events({
         }); 
 
         if(count > 0){
+          $("#nearby-button").html("Nearby playlists");
           $("#selectable-playlists").show();
-          $("#nearby-button").hide();
         }
         else{
           $("#nearby-button").html("No playlists nearby");

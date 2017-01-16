@@ -33,17 +33,17 @@
 <div class="welcomeOption" id="joinGeoJukebox">
 	<span class="icon" style="margin-top: -2px;"><i class="fa fa-map-o fa-1x" style="font-size: 80%;"></i></span> 
 	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
-	
-	{{#if nearbyPlaylists}}
-	<ul id="selectable-playlists" style="display: none;">
+	<div class="playlists-container">
+		{{#if nearbyPlaylists}}
+		<ul id="selectable-playlists" style="display: none;">
 	      {{#each playlist in nearbyPlaylists}}
 	        <li id="{{playlist.publicId}}">
 				{{playlist.name}} ({{playlist.distanceInMiles}} miles)
 	        </li>
 	      {{/each}}
-      </ul>
+	  	</ul>
     {{/if}}
-
+	</div>
 </div><!-- /#joinGeoJukebox -->
 
 <a class="welcomeOption" id="createJukebox" href="create">
