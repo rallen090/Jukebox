@@ -58,7 +58,6 @@ Template.playlist_page.helpers({
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
-    alert(playlist.previousSongs().count());
     return playlist.previousSongIds.length > 0 && playlist.previousSongs().count() !== 0;
   },
   isOwner() {
