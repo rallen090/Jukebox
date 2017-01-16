@@ -71,6 +71,27 @@ Template.playlist_page.helpers({
     console.log(votes);
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1;
+  },
+  getShareLinkByOS(){
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var shareMessage = "Join the Jukebox: " + window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
+
+    // android
+    if (/android/i.test(userAgent)) {
+        console.log("Android " + shareMessage);
+        return "sms:1234?body=" + shareMessage;
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        console.log("iOS " + shareMessage);
+        return "sms:1234&body=" + shareMessage;
+    }
+
+    return "mailto:test@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
   }
 });
 
