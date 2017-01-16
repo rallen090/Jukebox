@@ -1,7 +1,7 @@
 <template name="create_page">
 	
-<div class="welcomeOption">
-	<span class="icon"><i class="fa fa-rocket fa-1x"></i></span> 
+<div class="subcontainer">
+	<span class="icon" style="margin-top: 2px;"><i class="fa fa-rocket fa-1x"></i></span> 
 	<h3>Let's get this party started</h3>
 	<p>
 		Just give your jukebox a name and start adding songs. You'll need our iPhone app to play music.<br/>
@@ -21,16 +21,16 @@
 	</p>
 
 	<div class="playlists-container">
-	<h3>Select a playlist</h3>
+	<h3>Pre-populate with music?</h3>
 	
       <ul id="selectable-playlists">
       	<li>
-        + New playlist
+        <i class="fa fa-file-o"></i> &nbsp;Blank playlist <span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
         </li>
         {{#if playlists}}
 	      {{#each playlist in playlists}}
 	        <li id="{{playlist.spotifyId}}">
-	        <i class="spotify icon"></i> {{playlist.name}} ({{playlist.songCount}})
+	        <i class="fa fa-spotify"></i> &nbsp;{{playlist.name}} ({{playlist.songCount}}) <span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
 	        </li>
 	      {{/each}}
 	    {{/if}}
@@ -39,8 +39,8 @@
 
 </div>
 
-<div class="welcomeOption">
-	<span class="icon"><i class="fa fa-question-circle-o fa-1x"></i></span> 
+<div class="subcontainer">
+	<span class="icon" style="margin-top: 0px;"><i class="fa fa-question-circle-o fa-1x"></i></span> 
 	<p><strong>Why do I need the Jukebox iPhone app?</strong></p>
 	<p class="small">
 		Spotify doesn't allow music to be played directly from web apps, so we built an iPhone app for hosts. Fortunately, your guests don't need to download anything extra. 
