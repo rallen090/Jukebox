@@ -26,6 +26,19 @@
 	
 	<div class="clear"></div>
 
+	<div class="playlists-container">
+	<button id="nearby-button" class="ui secondary inverted button">Nearby playlists</button>
+	{{#if playlists}}
+	<ul id="spotify-playlists">
+	      {{#each playlist in playlists}}
+	        <li id="{{playlist.spotifyId}}">
+	        <i class="spotify icon"></i> {{playlist.name}} ({{playlist.songCount}})
+	        </li>
+	      {{/each}}
+      </ul>
+    {{/if}}
+	</div>
+
 </div><!-- /#joinJukebox -->
 
 <a class="welcomeOption" id="createJukebox" href="create">
