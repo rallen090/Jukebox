@@ -48,7 +48,11 @@ Template.search.onRendered(function createPageOnRendered() {
 	    minCharacters : 3,
 	    onSelect: function(result, response){
 	    	var spotifyId = result.spotifyId;
-	    	// $("#search-input").text("");
+
+	    	// the semenatic-ui search component is manipulating the box right after the selection, so we need to wait a short period
+	    	// before we do anything to it, othertwise our changes are overwritten
+	    	setTimeout(function(){ $("#search-input").select();}, 50);
+
 	    	Songs.insert({
 		        spotifyId: spotifyId,
 		        name: result.title,
