@@ -58,7 +58,6 @@ Template.welcome_page.events({
         }); 
 
         if(count > 0){
-          alert("FDsa");
           $("#selectable-playlists").show();
           $("#nearby-button").hide();
         }
