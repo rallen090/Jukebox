@@ -106,7 +106,7 @@ p.small {
 	margin: 0 0 20px 0;
 }
 
-.welcomeOption {
+.welcomeOption, .subcontainer {
 	background: rgba(0, 0, 0, 0.7);
 	padding: 15px 15px 15px 15px;	
 	margin: 0px 0px 15px 0px;
@@ -116,7 +116,7 @@ p.small {
 	.rounded;
 }
 
-.welcomeOption span.icon {
+.welcomeOption span.icon, .subcontainer span.icon {
 	position: relative;
 	float: left;
 	font-size: 35px;
@@ -137,12 +137,12 @@ a.welcomeOption span.icon {
 	margin: 0px 0px;
 }
 
-.welcomeOption h3 {
+.welcomeOption h3, .subcontainer h3 {
 	margin-left: 50px;
 	padding: 0 0 5px 0;
 }
 
-.welcomeOption p {
+.welcomeOption p, .subcontainer p {
 	margin-left: 50px;
 }
 
@@ -159,16 +159,20 @@ a.welcomeOption span.icon {
 
 
 #footer a {
-	color: #fff;
+	color: @color-primary;
 	text-decoration: none;
-	border-bottom: 1px dotted #fff;
+	border-bottom: 1px dotted @color-primary;
 }
 
 #footer a:hover {
-	color: @color-primary;
+	color: #fff;
 	background-color: #000;
-	border-bottom: @color-primary;
+	border-bottom: 1px dotted #fff;
 
+}
+
+.beer:hover {
+	color: @color-primary;
 }
 
 
@@ -177,9 +181,20 @@ a.welcomeOption span.icon {
 }
 
 .big-input {
+	font-size: 16px;
+	padding: 5px 10px;
+	margin: 15px 0px;
+	width: 300px;
+	background-color: #111;
+	border: 1px solid @color-primary;
+	color: @color-primary;
+	.rounded;
+}
+
+.bigger-input {
 	font-size: 30px;
 	padding: 10px 10px;
-	margin: 20px 0px;
+	margin: 0px 0px;
 	width: 300px;
 	background-color: #161616;
 	border: 0px;
@@ -366,7 +381,8 @@ span.voter {
 /* Container with border and rounded corners */
 .playlists-container ul {
     margin-left: 50px;
-    border: 1px solid #ccc;
+    border: 1px solid @color-primary;
+    color: @color-primary;
     width: 100%;
     /* precise size to fit exactly full items in the list without seeing partial blocks */
     max-height: 186px;
@@ -378,7 +394,7 @@ span.voter {
 /* Only add border to bottom of <li> */
 .playlists-container li {
     padding: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid @color-primary;
 }
 
 /* Get rid of the last <li>'s bottom border to stop overlap with <ul>'s border */
@@ -389,8 +405,18 @@ span.voter {
 
 /* background highlight on hovered playlists */
 .playlists-container li:hover { 
-    background-color: #b62990;
+    background-color: @color-primary;
+    color: #111;
     cursor: pointer;
+}
+
+.selectArrow {
+	float: right;
+	display: none;
+}
+
+.playlists-container li:hover .selectArrow {
+	display: inline;
 }
 
 .search{
