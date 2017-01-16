@@ -38,6 +38,11 @@ Template.playlist_page.helpers({
 
     var playlistUserId = playlist.userId;
     return playlistUserId === Session.get("jukebox-active-user-id");
+  },
+  hasVoted(votes){
+    console.log(votes);
+    var userId = Session.get("jukebox-active-user-id");
+    return $.inArray(userId, votes) > -1;
   }
 });
 
