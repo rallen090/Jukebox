@@ -69,6 +69,9 @@ Songs.schema = new SimpleSchema({
   played: {
     type: Boolean
   },
+  localUserVoted: {
+	  type: Boolean
+  },
 });
 
 Songs.attachSchema(Songs.schema);
@@ -85,6 +88,7 @@ Songs.publicFields = {
   votes: 1,
   voteCount: 1,
   played: 1,
+  localUserVoted: 1,
 };
 
 Songs.helpers({
