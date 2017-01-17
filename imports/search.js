@@ -52,8 +52,9 @@ Template.search.onRendered(function createPageOnRendered() {
 	    	// the semenatic-ui search component is manipulating the box right after the selection, so we need to wait a short period
 	    	// before we do anything to it, othertwise our changes are overwritten
 	    	setTimeout(function(){ 
-	    		$("#search-input").select();
-    			$(".search .results").remove();
+	    		$("#search-input").val('');
+	    		$("#search-input").focusout();
+    			// $(".search .results").remove();
 	    	}, 200);
 
 	    	Songs.insert({
@@ -72,7 +73,7 @@ Template.search.onRendered(function createPageOnRendered() {
 			var box = $(".ui .results");
 			if(box && box.offset() && box.offset().left > 0){
 				// box.css('margin-left','-' + (box.offset().left - 50) + 'px');
-				box.css('width', ($(document).width()) + 'px');
+				box.css('width', ($(document).width() - 12) + 'px');
 			}
 			else{
 				adjustResultsBox();

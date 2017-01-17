@@ -11,6 +11,7 @@ function spotifyLogin(callback) {
   Session.setPersistent("jukebox-spotify-auth-redirect", redirectUrl);
 
   var authRedirect = window.location.protocol + "//" + window.location.host + "/spotify/auth";
+
   function getLoginURL(scopes) {
       return 'https://accounts.spotify.com/authorize?client_id=' + CLIENT_ID +
         '&redirect_uri=' + encodeURIComponent(authRedirect) + 

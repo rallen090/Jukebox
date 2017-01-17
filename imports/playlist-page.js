@@ -13,6 +13,8 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
+
+  
       this.find('ul')._uihooks = {
         insertElement: function (node) {
           $(node).insertAfter($("li").last()).hide().show('fast');
@@ -109,16 +111,16 @@ Template.playlist_page.helpers({
     // android
     if (/android/i.test(userAgent)) {
         console.log("Android " + shareMessage);
-        return "sms:1234?body=" + shareMessage;
+        return "sms:?body=" + shareMessage;
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
         console.log("iOS " + shareMessage);
-        return "sms:1234&body=" + shareMessage;
+        return "sms:&body=" + shareMessage;
     }
 
-    return "mailto:test@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
+    return "mailto@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
   }
 });
 
