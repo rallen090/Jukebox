@@ -68,8 +68,8 @@ Template.search.onRendered(function createPageOnRendered() {
 		setTimeout(function(){
 			var box = $(".ui .results");
 			if(box && box.offset().left > 0){
-				box.css('margin-left','-' + (box.offset().left - 10) + 'px');
-				box.css('width', ($(document).width() - 18) + 'px');
+				// box.css('margin-left','-' + (box.offset().left - 50) + 'px');
+				box.css('width', ($(document).width()) + 'px');
 			}
 			else{
 				adjustResultsBox();
