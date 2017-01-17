@@ -351,7 +351,6 @@ span.voter {
 .playlistShare {
 	float: right;
 	padding: 5px;
-	display: table-cell; vertical-align: middle; height: 100%;
 }
 
 .playlistShare p {
@@ -379,8 +378,12 @@ span.voter {
 	cursor: hand;
 }
 
+.voteContainer:hover{
+	color: white;
+}
+
 .playlistShare:hover span{
-	color: black;
+	color: white;
 }
 
 .clear {
@@ -484,16 +487,11 @@ span.voter {
 	padding-top: 15px;
 }
 
-.voted{
-	content: "YOU VOTED";
-}
-
-.not-voted{
-	content: "YOU DIDNT VOTE";
-}
-
 .logo-container{
-	
+	background: rgba(0, 0, 0, 0.7);
+	margin: 0px 0px 0px 0px;
+	color: @color-primary;
+	.rounded;
 }
 
 #jukebox-logo{

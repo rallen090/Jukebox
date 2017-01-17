@@ -24,11 +24,12 @@ Template.welcome_page.helpers({
 
 Template.welcome_page.events({
   'click #js-party-joiner'() {
+
   	var playlistId = parseInt($('#playlist-id').val(), 10);
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
 
     if(!playlist){
-      $('#invalidPlaylistAlert').display;
+      $('#invalidPlaylistAlert').show();
     } 
     else {
       FlowRouter.go('Jukebox.playlist', { _id: playlistId });
