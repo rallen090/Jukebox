@@ -81,7 +81,7 @@ Template.welcome_page.events({
     });
   },
   'click #createJukebox'(event){
-    FlowRouter.go('Jukebox.create');
+    window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=true";
   },
   'click li'(event) {
     // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked
