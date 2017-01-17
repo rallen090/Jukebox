@@ -51,7 +51,7 @@ Template.search.onRendered(function createPageOnRendered() {
 
 	    	// the semenatic-ui search component is manipulating the box right after the selection, so we need to wait a short period
 	    	// before we do anything to it, othertwise our changes are overwritten
-	    	setTimeout(function(){ $("#search-input").select();}, 50);
+	    	setTimeout(function(){ $("#search-input").select();}, 150);
 
 	    	Songs.insert({
 		        spotifyId: spotifyId,
