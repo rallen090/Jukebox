@@ -78,7 +78,7 @@ FlowRouter.route('/spotify/auth/', {
       return matches ? matches[1] : null;
     }
     var token = getHashValue('access_token');
-    
+
     // handle the token
     if(!token){
       Session.setPersistent("jukebox-spotify-access-denied", "true");
@@ -92,7 +92,8 @@ FlowRouter.route('/spotify/auth/', {
     Session.clear(redirectKey);
 
     if(!originalUrl){
-      window.location = window.location.protocol + "//" + window.location.hostname + "/create?useSpotify=false";
+      FlowRouter.setQueryParams({useSpotify: "true"});
+      FlowRouter.go('Jukebox.create');
     }
     else{
       window.location = originalUrl;

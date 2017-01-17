@@ -11,13 +11,13 @@ import './create-page.html';
 
 // storing playlists in a client-side meteor collection so they can load and be rendered dynamically (i.e. won't block page load)
 var SpotifyPlaylists = new Meteor.Collection(null);
-var noSpotify = () => FlowRouter.getQueryParam("noSpotify");
+var useSpotify = () => FlowRouter.getQueryParam("useSpotify");
 var spotifyAuthFailed = () => Session.get("jukebox-spotify-access-denied");
 
 Template.create_page.onCreated(function createPageOnCreated() {
   this.autorun(() => {
     // populate playlists
-    if(!noSpotify() && !spotifyAuthFailed() && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
+    if(useSpotify() && !spotifyAuthFailed() && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
       getUserPlaylists(function(response){
         var items = response.items;
         $.each(items, function( index, value ) {
@@ -36,7 +36,8 @@ Template.create_page.onCreated(function createPageOnCreated() {
 });
 
 Template.create_page.onRendered(function createPageOnRendered() {
-    if(spotifyAuthFailed() || noSpotify()){
+    var useSpotifyParam = useSpotify();
+    if((useSpotifyParam !== null && (useSpotifyParam === "false" || useSpotifyParam === false)) || spotifyAuthFailed()){
       $('#invalidPlaylistAlert').show();
     }
 
