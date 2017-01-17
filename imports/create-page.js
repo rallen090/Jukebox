@@ -14,9 +14,11 @@ var SpotifyPlaylists = new Meteor.Collection(null);
 var useSpotify = () => FlowRouter.getQueryParam("useSpotify");
 
 Template.create_page.onCreated(function createPageOnCreated() {
+  var useSpotifyParam = useSpotify();
+  var loadFromSpotify = useSpotifyParam && (useSpotifyParam === true || useSpotifyParam === "true");
   this.autorun(() => {
     // populate playlists
-    if(useSpotify() && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
+    if(loadFromSpotify && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
       getUserPlaylists(function(response){
         var items = response.items;
         $.each(items, function( index, value ) {
