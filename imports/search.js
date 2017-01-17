@@ -100,7 +100,15 @@ Template.search.events({
 	 	var input = $("#search-input");
 	 	if(event.which === 13){
 	 		if($("#search-input").val() === "do a barrel roll"){
-		 		var barrelRollCss = ".container { -moz-animation-name: roll; -moz-animation-duration: 4s; -moz-animation-iteration-count: 1; -webkit-animation-name: roll; -webkit-animation-duration: 4s; -webkit-animation-iteration-count: 1; }";
+		 		var barrelRollCss = "\
+					.result {\
+					-moz-animation-name: roll;\
+					-moz-animation-duration: 5s;\
+					-moz-animation-iteration-count: 1;\
+					-webkit-animation-name: roll;\
+					-webkit-animation-duration: 5s;\
+					-webkit-animation-iteration-count: 1;\
+					}";
 	 			var style = document.createElement('style');
 				style.type = 'text/css';
 				style.innerHTML = barrelRollCss;
