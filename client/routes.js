@@ -78,13 +78,25 @@ FlowRouter.route('/spotify/auth/', {
       return matches ? matches[1] : null;
     }
     var token = getHashValue('access_token');
-    Session.setPersistent("jukebox-spotify-access-token", token);
+    
+    // handle the token
+    if(!token){
+      Session.setPersistent("jukebox-spotify-access-denied", "true");
+    }else{
+      Session.setPersistent("jukebox-spotify-access-token", token);
+    }
 
     // then read back our redirect so we can return to wherever we were
     const redirectKey = "jukebox-spotify-auth-redirect";
     var originalUrl = Session.get(redirectKey);
     Session.clear(redirectKey);
-    window.location = originalUrl;
+
+    if(!originalUrl){
+      window.location = window.location.protocol + "//" + window.location.hostname + "/create?useSpotify=false";
+    }
+    else{
+      window.location = originalUrl;
+    }
   },
 });
 

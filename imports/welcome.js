@@ -13,7 +13,6 @@ import './welcome.html';
 var NearbyPlaylists = new Meteor.Collection(null);
 
 Template.welcome_page.onRendered(function playPageOnCreated() {
-//$("#nearby-playlists").hide();
 });
 
 Template.welcome_page.helpers({
@@ -80,6 +79,9 @@ Template.welcome_page.events({
       $("#nearby-button").html("Geolocation not supported on device");
       $("#nearby-button").prop('disabled', true);
     });
+  },
+  'click #createJukebox'(event){
+    FlowRouter.go('Jukebox.create');
   },
   'click li'(event) {
     // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked

@@ -125,6 +125,12 @@ p.small {
 }
 
 /* for hover effects, we must disable for mobile since the effect sticks after a touch, and so instead we just allow 'active' so there is still some effect */
+html.touch .welcomeOption, html.touch .welcomeOption, html.touch .welcomeOption, html.touch .welcomeOption {
+	i:hover, h3:hover, div:hover, span:hover, a:hover{
+		color: @color-primary;
+	}
+}
+
 html.nontouch .welcomeOption:hover, .welcomeOption:active {
 	cursor: pointer; 
 	cursor: hand;
@@ -167,7 +173,6 @@ a.welcomeOption span.icon {
 
 #footer a:hover {
 	color: #fff;
-	background-color: #000;
 	border-bottom: 1px dotted #fff;
 }
 

@@ -11,11 +11,13 @@ import './create-page.html';
 
 // storing playlists in a client-side meteor collection so they can load and be rendered dynamically (i.e. won't block page load)
 var SpotifyPlaylists = new Meteor.Collection(null);
+var noSpotify = () => FlowRouter.getQueryParam("noSpotify");
+var spotifyAuthFailed = () => Session.get("jukebox-spotify-access-denied");
 
 Template.create_page.onCreated(function createPageOnCreated() {
   this.autorun(() => {
     // populate playlists
-    if(SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
+    if(!noSpotify() && !spotifyAuthFailed() && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
       getUserPlaylists(function(response){
         var items = response.items;
         $.each(items, function( index, value ) {
@@ -34,6 +36,10 @@ Template.create_page.onCreated(function createPageOnCreated() {
 });
 
 Template.create_page.onRendered(function createPageOnRendered() {
+    if(spotifyAuthFailed() || noSpotify()){
+      $('#invalidPlaylistAlert').show();
+    }
+
     getCurrentCoordinates(function(position){
         Session.set("jukebox-current-longitude", position.coords.longitude);
         Session.set("jukebox-current-latitude", position.coords.latitude);
@@ -49,7 +55,7 @@ Template.create_page.onRendered(function createPageOnRendered() {
 
 Template.create_page.helpers({
   playlists(){
-    return SpotifyPlaylists.find();
+    return SpotifyPlaylists.find({songCount: {$ne: 0}});
   }
 });
 
