@@ -29,6 +29,7 @@ Template.welcome_page.events({
     var playlist = HostedPlaylists.findOne({publicId: playlistId});
 
     if(!playlist){
+      // show invalid input message
       $('#invalidPlaylistAlert').show();
     } 
     else {
@@ -85,5 +86,10 @@ Template.welcome_page.events({
     var playlistPublicId = event.target.id;
 
     FlowRouter.go('Jukebox.playlist', { _id: playlistPublicId });
+  },
+  'keydown #playlist-id' (event){
+      if(event.which === 13){
+        $("#js-party-joiner").click();
+     }
   }
 });
