@@ -67,7 +67,7 @@ Template.search.onRendered(function createPageOnRendered() {
 	function adjustResultsBox (){
 		setTimeout(function(){
 			var box = $(".ui .results");
-			if(box && box.offset().left > 0){
+			if(box && box.offset() && box.offset().left > 0){
 				// box.css('margin-left','-' + (box.offset().left - 50) + 'px');
 				box.css('width', ($(document).width()) + 'px');
 			}
@@ -95,23 +95,30 @@ Template.search.events({
 	        scrollTop: $("#search-input").offset().top
 	    }, 500);
 	 },
-	 // TODO: it seems like readonly applied to an input does not close the keyboard - so we need a different solution here.
-	 // on-enter key press, close the mobile keyboard
-	 // 'keydown .input'(event) {
+	 // on-enter key press handler
+	 'keydown .input'(event) {
+	 	var input = $("#search-input");
+	 	if(event.which === 13){
+	 		if($("#search-input").val() === "do a barrel roll"){
+		 		var barrelRollCss = ".container { -moz-animation-name: roll; -moz-animation-duration: 4s; -moz-animation-iteration-count: 1; -webkit-animation-name: roll; -webkit-animation-duration: 4s; -webkit-animation-iteration-count: 1; }";
+	 			var style = document.createElement('style');
+				style.type = 'text/css';
+				style.innerHTML = barrelRollCss;
+				$('head').append(style);
+	 		}
 
-	 // 	var input = $("#search-input");
-	 // 	if(event.which === 13){
-	 // 		input.attr('readonly', true);
-	 // 	}
-	 // 	else if(input.attr('readonly')){
-	 // 		if ((event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90)){
-	 // 			input.val(input.val() + event.key);
-	 // 		}
-	 // 		else if(event.which === 8){
-	 // 			input.val(input.val().slice(0, -1));
-	 // 		}
+	 		//input.attr('readonly', true);
+	 	}
+	 	// NOTE: this readonly attr solution for closing mobile keyboards does not seem to work - we should find a alternative solution
+	 	// else if(input.attr('readonly')){
+	 	// 	if ((event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90)){
+	 	// 		input.val(input.val() + event.key);
+	 	// 	}
+	 	// 	else if(event.which === 8){
+	 	// 		input.val(input.val().slice(0, -1));
+	 	// 	}
 
-		// 	input.attr('readonly', false);
-	 // 	}
-	 // }
+			// input.attr('readonly', false);
+	 	// }
+	 }
 });
