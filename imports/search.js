@@ -95,22 +95,23 @@ Template.search.events({
 	        scrollTop: $("#search-input").offset().top
 	    }, 500);
 	 },
+	 // TODO: it seems like readonly applied to an input does not close the keyboard - so we need a different solution here.
 	 // on-enter key press, close the mobile keyboard
-	 'keydown .input'(event) {
+	 // 'keydown .input'(event) {
 
-	 	var input = $("#search-input");
-	 	if(event.which === 13){
-	 		input.attr('readonly', true);
-	 	}
-	 	else if(input.attr('readonly')){
-	 		if ((event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90)){
-	 			input.val(input.val() + event.key);
-	 		}
-	 		else if(event.which === 8){
-	 			input.val(input.val().slice(0, -1));
-	 		}
+	 // 	var input = $("#search-input");
+	 // 	if(event.which === 13){
+	 // 		input.attr('readonly', true);
+	 // 	}
+	 // 	else if(input.attr('readonly')){
+	 // 		if ((event.which >= 48 && event.which <= 57) || (event.which >= 65 && event.which <= 90)){
+	 // 			input.val(input.val() + event.key);
+	 // 		}
+	 // 		else if(event.which === 8){
+	 // 			input.val(input.val().slice(0, -1));
+	 // 		}
 
-			input.attr('readonly', false);
-	 	}
-	 }
+		// 	input.attr('readonly', false);
+	 // 	}
+	 // }
 });
