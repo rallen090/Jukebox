@@ -14,21 +14,15 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
       this.find('ul')._uihooks = {
-        insertElement: function (node, next) {
-          if (next) {
-            $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-          } else {
-            $(this).append(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-          }
+        insertElement: function (node) {
+          // insert logic
+          $(this).append(node);
         },
         removeElement: function (node) {
             //Remove logic
-            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
-            });
+            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
         },
         moveElement: function (node, next) {
-          console.log(node);
-            console.log(next);
             //move logic
             $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
               $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
