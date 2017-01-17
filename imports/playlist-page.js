@@ -12,6 +12,31 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   this.getPlaylistId = () => parseInt(FlowRouter.getParam('_id'), 10);
 });
 
+Template.playlist_page.onRendered(function playlistPageOnRendered(){
+      this.find('ul')._uihooks = {
+        insertElement: function (node, next) {
+          if (next) {
+            $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+          } else {
+            $(this).append(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+          }
+        },
+        removeElement: function (node) {
+            //Remove logic
+            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
+            });
+        },
+        moveElement: function (node, next) {
+          console.log(node);
+            console.log(next);
+            //move logic
+            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
+              $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+            });
+        } 
+    };
+});
+
 Template.playlist_page.helpers({
   playlist() {
     const instance = Template.instance();
