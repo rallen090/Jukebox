@@ -9,13 +9,13 @@
       <div class="content-overlay"></div>
 
       <div id="content-container">
-	      
           {{#if Template.subscriptionsReady}}
             {{> Template.dynamic template=main}}
           {{else}}
-            <p>loading</p>
+            <div class="ui active dimmer">
+              <div class="ui text loader">Loading</div>
+            </div>
           {{/if}}
-          
       </div>
       
     </div>
