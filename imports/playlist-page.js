@@ -15,12 +15,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
       this.find('ul')._uihooks = {
         insertElement: function (node) {
-          console.log(this);
-
-          // insert logic
-          //$("ul").append(node);
-
-          $(node).insertAfter($("li").last());
+          $(node).insertAfter($("li").last()).hide().show('fast');
         },
         removeElement: function (node) {
             //Remove logic
