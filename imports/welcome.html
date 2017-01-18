@@ -34,11 +34,12 @@
 	<span class="icon" style="margin-top: -2px;"><i class="fa fa-map-o fa-1x" style="font-size: 80%;"></i></span> 
 	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
 	
+	{{#if nearbyPlaylists}}
 	<div class="playlists-container">
+	<br/>
 	<div class="scroll-box-border" style="display: none;">
 	<div class="scroll-box">
-		<div >
-			{{#if nearbyPlaylists}}
+		<div>
 			<ul id="selectable-playlists">
 		      {{#each playlist in nearbyPlaylists}}
 		        <li id="{{playlist.publicId}}">
@@ -46,11 +47,11 @@
 		        </li>
 		      {{/each}}
 		  	</ul>
-	    {{/if}}
 		</div>
 	</div>
 	</div>
 	</div>
+	{{/if}}
 </div><!-- /#joinGeoJukebox -->
 
 <div class="welcomeOption" id="createJukebox">
