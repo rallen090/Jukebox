@@ -58,7 +58,7 @@ Template.welcome_page.events({
 
         if(count > 0){
           $("#nearby-button").text("Nearby playlists");
-          $(".scroll-box-border").show();
+          $(".playlists-container").show();
         }
         else{
           $("#nearby-button").html("No playlists nearby");
