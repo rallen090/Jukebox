@@ -63,6 +63,8 @@ Template.create_page.helpers({
 
 Template.create_page.events({
   'click li'(event) {
+    $("#create-load").addClass("active");
+
     // name
     var playlistName = $('#playlist-name').val();
 
