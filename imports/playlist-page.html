@@ -49,7 +49,7 @@
         {{/if}}
       </li>
       {{#each song in songs}}
-        <li>
+        <li class="song-row">
         <span class="songName">{{song.name}}</span> {{#if isOwner}}<span class="voteContainer delete-action" id="{{song._id}}"><i class="fa fa-trash"></i></span>{{/if}} <span class="voteContainer vote-action" id="{{song._id}}"><span class="votes"><strong>{{song.votes.length}}</strong></span><span class="voter"><i class="{{hasVotedClass song.votes}}"></i></span></span> <br/>
         <span class="songArtist">{{song.artist}}</span>
         </li>
