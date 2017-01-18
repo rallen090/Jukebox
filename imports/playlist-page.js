@@ -16,6 +16,12 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
       this.find('.playlistContainer ul')._uihooks = {
         insertElement: function (node) {
           $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
+
+          // this is hacky - but for some reason, if this page loads with zero songs then the animations/sorting is broken
+          // once more songs are added. if the page on-load has songs, though, it is fine. so we just force a reload after the first song...
+          if($(".song-row").length === 1){
+            location.reload();
+          }
         },
         removeElement: function (node) {
             //Remove logic

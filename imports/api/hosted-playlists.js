@@ -79,7 +79,7 @@ HostedPlaylists.publicFields = {
 HostedPlaylists.helpers({
   playNextSong() {
     // to play the next song, we look at this playlist's songs and grab unplayed sorted by votes then by date
-    var nextSong = Songs.findOne({ hostedPlaylistId: this._id, played: false }, {sort: { voteCount: -1, dateAdded: -1 }});
+    var nextSong = Songs.findOne({ hostedPlaylistId: this._id, played: false }, {sort: { voteCount: -1, dateAdded: 1 }});
 
     // return null if we have no more songs
     if(!nextSong){
@@ -116,7 +116,7 @@ HostedPlaylists.helpers({
     return nextSong.spotifyId;
   },
   songs() {
-    return Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { voteCount: -1 } });
+    return Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { voteCount: -1, dateAdded: 1 } });
   },
   previousSongs() {
     // NOTE: we filter out the CURRENT song from this previous song list, despite it being marked as 'played' since that is treated as NOW-PLAYING
