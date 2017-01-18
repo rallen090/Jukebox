@@ -34,17 +34,22 @@
 	<span class="icon" style="margin-top: -2px;"><i class="fa fa-map-o fa-1x" style="font-size: 80%;"></i></span> 
 	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
 	
-	<div class="playlists-container" id="selectable-playlists" style="display: none;">
-	<br/>
-		{{#if nearbyPlaylists}}
-		<ul >
-	      {{#each playlist in nearbyPlaylists}}
-	        <li id="{{playlist.publicId}}">
-				{{playlist.name}} ({{playlist.distanceInMiles}} miles)
-	        </li>
-	      {{/each}}
-	  	</ul>
-    {{/if}}
+	<div class="playlists-container">
+	<div class="scroll-box-border" style="display: none;">
+	<div class="scroll-box">
+		<div >
+			{{#if nearbyPlaylists}}
+			<ul id="selectable-playlists">
+		      {{#each playlist in nearbyPlaylists}}
+		        <li id="{{playlist.publicId}}">
+					{{playlist.name}} ({{playlist.distanceInMiles}} miles)
+		        </li>
+		      {{/each}}
+		  	</ul>
+	    {{/if}}
+		</div>
+	</div>
+	</div>
 	</div>
 </div><!-- /#joinGeoJukebox -->
 
