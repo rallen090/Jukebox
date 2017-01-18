@@ -2,6 +2,10 @@ import { Session } from 'meteor/session';
 import SpotifyWebApi from'spotify-web-api-node';
 
 const CLIENT_ID = 'e03e15b112774918a9d3dfd5e2e78ba5';
+const SPOTIFY_SCOPES = [
+      //'user-read-email',
+      'playlist-read-private',
+      'playlist-read-collaborative'];
 
 function spotifyLogin(callback) {
   var redirectUrl = window.location.href.split("#")[0]; // return to original URL
@@ -19,9 +23,7 @@ function spotifyLogin(callback) {
         '&response_type=token';
   }
   
-  var url = getLoginURL([
-      'user-read-email'
-  ]);
+  var url = getLoginURL(SPOTIFY_SCOPES);
 
   window.addEventListener("message", function(event) {
       var hash = JSON.parse(event.data);
@@ -79,18 +81,25 @@ getUserPlaylists = function (ajaxSuccessFunc) {
     });
 };
 
-getSongsForPlaylist = function (playlistId, ajaxSuccessFunc) {
+getSongsForPlaylist = function (playlistId, userId, ajaxSuccessFunc) {
 	var accessToken = acquireSpotifyAccessToken();
 
-	return ajaxWithReauthentication({
-        url: 'https://api.spotify.com/v1/me',
-        headers: {
-           'Authorization': 'Bearer ' + accessToken
-        },
-        success: function(response){
-        	getSongsForPlaylistInternal(accessToken, response.id, playlistId, ajaxSuccessFunc);
-        }
-    });
+  return ajaxWithReauthentication({
+      url: 'https://api.spotify.com/v1/users/' + userId + '/playlists/' + playlistId + '/tracks',
+      headers: {
+         'Authorization': 'Bearer ' + accessToken
+      },
+      success: ajaxSuccessFunc
+  });
+	// return ajaxWithReauthentication({
+ //        url: 'https://api.spotify.com/v1/me',
+ //        headers: {
+ //           'Authorization': 'Bearer ' + accessToken
+ //        },
+ //        success: function(response){
+ //        	getSongsForPlaylistInternal(accessToken, response.id, playlistId, ajaxSuccessFunc);
+ //        }
+ //    });
 };
 
 searchArtists = function (query, ajaxSuccessFunc) {

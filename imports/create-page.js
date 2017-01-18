@@ -25,6 +25,7 @@ Template.create_page.onCreated(function createPageOnCreated() {
           if(value){
             SpotifyPlaylists.insert({
             spotifyId: value.id,
+            ownerId: value.owner.id,
             name: value.name,
             imgUrl: value.images.url,
             songCount: value.tracks.total
@@ -70,6 +71,7 @@ Template.create_page.events({
 
     // we set the spotifyId on the actual list element to it is easy to access here without referencing the meteor collection
     var spotifyPlaylistId = event.target.id;
+    var spotifyOwnerId = SpotifyPlaylists.findOne({spotifyId: spotifyPlaylistId}).ownerId;
 
     // geo
     var longitude = Session.get("jukebox-current-longitude");
@@ -78,7 +80,7 @@ Template.create_page.events({
     Session.clear("jukebox-current-latitude");
 
     var playlistSongs = [];
-    function savePlaylistAndSongs(name, songs){
+    function savePlaylistAndSongs(name, spotifyOwnerId, songs){
       var playlistId = HostedPlaylists.insert({
         name: name,
         userId: Session.get("jukebox-active-user-id"),
@@ -94,7 +96,7 @@ Template.create_page.events({
     
     // if a spotify playlist was chosen, then populate songs from that
     if(spotifyPlaylistId){
-      getSongsForPlaylist(spotifyPlaylistId, function(response){
+      getSongsForPlaylist(spotifyPlaylistId, spotifyOwnerId, function(response){
         var rawSongs = response.items;
 
         // convert response to playlistSongs to insert
@@ -107,14 +109,14 @@ Template.create_page.events({
             spotifyId: track.uri
           });
         });
-
+console.log(playlistSongs);
         // save and redirect
-        savePlaylistAndSongs(playlistName, playlistSongs);
+        savePlaylistAndSongs(playlistName, spotifyOwnerId, playlistSongs);
       });
     }
     // otherwise, submit with an empty playlist
     else{
-      savePlaylistAndSongs(playlistName, playlistSongs);
+      savePlaylistAndSongs(playlistName, spotifyOwnerId, playlistSongs);
     }
   }
 });
