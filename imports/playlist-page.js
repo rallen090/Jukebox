@@ -13,11 +13,9 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
-
-  
-      this.find('ul')._uihooks = {
+      this.find('.playlistContainer ul')._uihooks = {
         insertElement: function (node) {
-          $(node).insertAfter($("li").last()).hide().show('fast');
+          $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
         },
         removeElement: function (node) {
             //Remove logic
