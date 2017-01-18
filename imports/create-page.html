@@ -22,6 +22,8 @@
 
 	<div class="playlists-container">
 	<h3>Pre-populate with music?</h3>
+	<div class="scroll-box-border">
+	<div class="scroll-box">
 	
       <ul id="selectable-playlists">
       	<li>
@@ -35,7 +37,9 @@
 	      {{/each}}
 	    {{/if}}
       </ul>
-    <div class="ui dimmer">
+      </div>
+      </div>
+    <div id="create-load" class="ui dimmer">
       <div class="ui text loader">Loading</div>
     </div>
       <div id="invalidPlaylistAlert"><p><i class="fa fa-exclamation-triangle"></i>Failed to authenticate with Spotify</p></div>

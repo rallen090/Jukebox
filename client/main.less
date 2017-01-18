@@ -421,16 +421,51 @@ html.nontouch .playlistShare:hover span, .playlistShare:active span{
 	margin-right: 100px;
 }
 
-/* Container with border and rounded corners */
-.playlists-container ul {
+.scroll-box::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: @color-primary;
+}
+
+.scroll-box::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: @color-primary;
+}
+
+.scroll-box::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+	border: 2px solid #555555;
+}
+
+/* to get a contantly-rounded scrollable block with the scroll bar outside of the content, we needed to use these scroll wrappers */
+.scroll-box-border{
+	color: @color-primary;
+	max-height: 186px;
     margin-left: 50px;
-    border: 1px solid @color-primary;
-    color: @color-primary;
-    width: 100%;
+    .rounded;
+    width: 351px;
+    border:1px solid @color-primary;
+}
+.scroll-box {
+    overflow-y:scroll;
+	width: 90%;
+	width: 380px;
     /* precise size to fit exactly full items in the list without seeing partial blocks */
     max-height: 186px;
-    overflow: scroll;
-    overflow-x: hidden;
+    .rounded;
+}
+#selectable-playlists {
+    width: 350px;
+    y-overflow:hidden;
+    height: 100%;
+}
+
+/* Container with border and rounded corners */
+.playlists-container ul {
+    width: 100%;
+
 	.rounded;
 	}
 
