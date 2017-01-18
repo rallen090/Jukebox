@@ -17,7 +17,7 @@ Template.welcome_page.onRendered(function playPageOnCreated() {
 
 Template.welcome_page.helpers({
   nearbyPlaylists(){
-    return NearbyPlaylists.find({}, {sort: { distanceInMiles: 1 }});
+    return NearbyPlaylists.find({}, {sort: { distanceInMiles: 1, dateCreated: 1 }});
   }
 });
 
@@ -46,11 +46,10 @@ Template.welcome_page.events({
         var count = 0;
         HostedPlaylists.find({latitude: { $exists: true }}, {longitude: { $exists: true }}).forEach(function (row) {
             if(row){
-              console.log({a: lat, b: long, c: row.latitude, d: row.longitude});
               var distance = getDistanceFromLatLonInMiles(lat, long, row.latitude, row.longitude);
               if(distance < /* max miles */ 5){
                 var roundedDistance = Math.round( distance * 10 ) / 10;
-                NearbyPlaylists.insert({name: row.name, publicId: row.publicId, distanceInMiles: roundedDistance});
+                NearbyPlaylists.insert({name: row.name, publicId: row.publicId, distanceInMiles: roundedDistance, dateCreated: row.dateCreated});
                 count++;
               }
             }
