@@ -507,7 +507,18 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 
 #search-input{
 	.rounded;
-}
+	background-color: @color-tertiary;
+	color: @color-primary !important;
+	border: 1px solid @color-primary;
+	}
+
+#search-input::placeholder {
+	color: @color-primary !important;
+	}
+
+#search-input i {
+	color: @color-primary !important;
+	}
 
 .ui .results{
 	float: left;
