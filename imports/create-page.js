@@ -71,7 +71,6 @@ Template.create_page.events({
 
     // we set the spotifyId on the actual list element to it is easy to access here without referencing the meteor collection
     var spotifyPlaylistId = event.target.id;
-    var spotifyOwnerId = SpotifyPlaylists.findOne({spotifyId: spotifyPlaylistId}).ownerId;
 
     // geo
     var longitude = Session.get("jukebox-current-longitude");
@@ -96,6 +95,7 @@ Template.create_page.events({
     
     // if a spotify playlist was chosen, then populate songs from that
     if(spotifyPlaylistId){
+      var spotifyOwnerId = SpotifyPlaylists.findOne({spotifyId: spotifyPlaylistId}).ownerId;
       getSongsForPlaylist(spotifyPlaylistId, spotifyOwnerId, function(response){
         var rawSongs = response.items;
 
@@ -109,14 +109,14 @@ Template.create_page.events({
             spotifyId: track.uri
           });
         });
-console.log(playlistSongs);
+
         // save and redirect
         savePlaylistAndSongs(playlistName, spotifyOwnerId, playlistSongs);
       });
     }
     // otherwise, submit with an empty playlist
     else{
-      savePlaylistAndSongs(playlistName, spotifyOwnerId, playlistSongs);
+      savePlaylistAndSongs(playlistName, null, playlistSongs);
     }
   }
 });
