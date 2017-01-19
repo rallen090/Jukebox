@@ -13,27 +13,34 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
-      this.find('.playlistContainer ul')._uihooks = {
-        insertElement: function (node) {
-          $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
+  // set up animations
+  this.find('.playlistContainer ul')._uihooks = {
+    insertElement: function (node) {
+      $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
 
-          // this is hacky - but for some reason, if this page loads with zero songs then the animations/sorting is broken
-          // once more songs are added. if the page on-load has songs, though, it is fine. so we just force a reload after the first song...
-          if($(".song-row").length === 1){
-            location.reload();
-          }
-        },
-        removeElement: function (node) {
-            //Remove logic
-            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-        },
-        moveElement: function (node, next) {
-            //move logic
-            $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
-              $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-            });
-        } 
-    };
+      // this is hacky - but for some reason, if this page loads with zero songs then the animations/sorting is broken
+      // once more songs are added. if the page on-load has songs, though, it is fine. so we just force a reload after the first song...
+      if($(".song-row").length === 1){
+        location.reload();
+      }
+    },
+    removeElement: function (node) {
+        //Remove logic
+        $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+    },
+    moveElement: function (node, next) {
+        //move logic
+        $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
+          $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+        });
+    } 
+  };
+
+  tryExecuteQueuedAction({savePlaylist: () => {
+    $("#save-action").prop('disabled', true);
+    $("#save-action").css('color', 'white');
+  }})
+
 });
 
 Template.playlist_page.helpers({
@@ -129,9 +136,7 @@ Template.playlist_page.helpers({
 });
 
 Template.playlist_page.events({
-	
 	'click .vote-action'(event) {
-			
 	  	var songId = event.currentTarget.id;
 
       if(!songId){
@@ -151,5 +156,21 @@ Template.playlist_page.events({
   'click .delete-action'(event){
     var songId = event.currentTarget.id;
     Songs.remove(songId);
+  },
+  'click #save-action'(event) {
+    var playlistName = $("#playlist-name").text().trim();
+    const instance = Template.instance();
+    var publicPlaylistId = instance.getPlaylistId();
+    var playlistId = HostedPlaylists.findOne({publicId: publicPlaylistId})._id;
+    var songIds = [];
+    Songs.find({hostedPlaylistId: playlistId}, {spotifyId: 1}).forEach(function(row){
+        songIds.push(row.spotifyId);
+    });
+    if(songIds.length > 0){
+      savePlaylist(playlistName, songIds, function(){
+        $("#save-action").prop('disabled', true);
+        $("#save-action").css('color', 'white');
+      });
+    }
   }
 });
