@@ -7,7 +7,6 @@ const SPOTIFY_SCOPES = [
       'playlist-read-private',
       'playlist-read-collaborative',
       'playlist-modify-public'];
-const SESSION_KEY_SPOTIFY_TOKEN = "jukebox-spotify-access-token"; 
 const SESSION_KEY_ACTION = "jukebox-spotify-auth-action";
 
 function spotifyLogin(callback, action) {
@@ -55,10 +54,7 @@ function ajaxWithReauthentication(ajaxRequestArguments, queuedAction){
 
 		// assume first failure is because expires accessToken to re-auth
 		if(failCount === 0){
-      // so we clear the token and force a reacquisition of the token (note: important that we clear this, in case we fail again,
-      // because otherwise we could be leaving around a stale token that could be re-tried again)
-      Session.clear(SESSION_KEY_SPOTIFY_TOKEN);
-			acquireSpotifyAccessToken(/* reacquire */ true, queuedAction);
+			acquireSpotifyAccessToken(/* reacquire */ true, queuedAction)
 		}
 	};
 	return $.ajax(ajaxRequestArguments);
@@ -68,7 +64,6 @@ function ajaxWithReauthentication(ajaxRequestArguments, queuedAction){
 // the passed in postActionMapping is run after a corresponding action if it exists (e.g. {save: saveFunc, create: createFunc}))
 tryExecuteQueuedAction = function(postActionMapping){
   var actionInfo = Session.get(SESSION_KEY_ACTION);
-  var accessToken = Session.get(SESSION_KEY_SPOTIFY_TOKEN);
 
   function postAction(){
     // run post-action
@@ -78,15 +73,14 @@ tryExecuteQueuedAction = function(postActionMapping){
     };
   };
 
-  // for save: must have the action + a token
-  if(accessToken && actionInfo && actionInfo.action === "savePlaylist"){
+  if(actionInfo && actionInfo.action === "savePlaylist"){
     Session.clear(SESSION_KEY_ACTION);
     this.savePlaylist(actionInfo.playlistName, actionInfo.songUris, postAction);
   }
 };
 
 acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire, queuedAction) {
-	const tokenKey = SESSION_KEY_SPOTIFY_TOKEN;
+	const tokenKey = "jukebox-spotify-access-token";
 
 	var accessToken = Session.get(tokenKey);
 	if(!accessToken || reacquire){
