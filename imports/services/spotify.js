@@ -106,10 +106,6 @@ acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire, queued
 getUserPlaylists = function (ajaxSuccessFunc) {
 	var accessToken = acquireSpotifyAccessToken();
 
-  if(!accessToken){
-    return;
-  }
-
 	return ajaxWithReauthentication({
         url: 'https://api.spotify.com/v1/me/playlists',
         headers: {
