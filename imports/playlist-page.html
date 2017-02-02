@@ -30,6 +30,21 @@
   <!-- search bar -->
   {{> search playlistId=playlist._id}}
 
+  <!-- music player -->
+  <div class="musicPlayer">
+  <div class="musicActions">
+    <span class="musicAction">
+      <a><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
+      </span>
+      <span class="musicAction">
+      <a><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
+      </span>
+      <span class="musicAction">
+      <a><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
+    </span>
+    </div>
+  </div>
+
   <!-- current songs -->
   <div class="playlistContainer">
     {{#if songs}}
