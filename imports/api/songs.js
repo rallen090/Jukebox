@@ -55,6 +55,11 @@ Songs.schema = new SimpleSchema({
     max: 200,
     optional: true,
   },
+  imageUrl: {
+    type: String,
+    max: 250,
+    optional: true,
+  },
   dateAdded: {
     type: Date,
   },
@@ -85,6 +90,7 @@ Songs.publicFields = {
   spotifyId: 1,
   name: 1,
   artist: 1,
+  imageUrl: 1,
   dateAdded: 1,
   votes: 1,
   voteCount: 1,

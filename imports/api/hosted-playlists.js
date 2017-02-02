@@ -123,7 +123,6 @@ HostedPlaylists.helpers({
     return Songs.find({ hostedPlaylistId: this._id, played: true, _id: { $ne: this.currentSongId } }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
-    console.log(songs);
     var playlistId = this._id;
     $.each(songs, function( index, value ) {
       Songs.insert({
@@ -131,6 +130,7 @@ HostedPlaylists.helpers({
         name: value.name,
         artist: value.artist,
         hostedPlaylistId: playlistId,
+        imageUrl: value.imageUrl
       });
     });
     return;
