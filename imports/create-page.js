@@ -19,6 +19,11 @@ Template.create_page.onCreated(function createPageOnCreated() {
   this.autorun(() => {
     // populate playlists
     if(loadFromSpotify && SpotifyPlaylists.find().count() === 0 && SpotifyPlaylists.find({soungCount: {$gt : 0}}).count() === 0){
+      // before redirecting, we want to modify the history so that hitting back from the spotify login page will take you to the
+      // this same page but with the useSpotify param set to false - this way, we don't strictly force people to login to create
+      history.pushState(null, document.title, location.pathname + "?useSpotify=false");
+
+      // get user playlists (auth redirect if necessary)
       getUserPlaylists(function(response){
         var items = response.items;
         $.each(items, function( index, value ) {

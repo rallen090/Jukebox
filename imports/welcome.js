@@ -49,6 +49,7 @@ Template.welcome_page.events({
               var distance = getDistanceFromLatLonInMiles(lat, long, row.latitude, row.longitude);
               if(distance < /* max miles */ 5){
                 var roundedDistance = Math.round( distance * 10 ) / 10;
+                NearbyPlaylists.remove({}); // clear
                 NearbyPlaylists.insert({name: row.name, publicId: row.publicId, distanceInMiles: roundedDistance, dateCreated: row.dateCreated});
                 count++;
               }
@@ -61,22 +62,18 @@ Template.welcome_page.events({
         }
         else{
           $("#nearby-button").html("No playlists nearby");
-          $("#nearby-button").prop('disabled', true);
         }
       }
       else{
         $("#nearby-button").html("No playlists");
-        $("#nearby-button").prop('disabled', true);
       }
 
     },function(error){
       console.log("Geo error: " + error);
       $("#nearby-button").html("Failed acquiring geolocation");
-      $("#nearby-button").prop('disabled', true);
     },function(){
       console.log("Geolocation not supported");
       $("#nearby-button").html("Geolocation not supported on device");
-      $("#nearby-button").prop('disabled', true);
     });
   },
   'click #createJukebox'(event){
