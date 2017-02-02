@@ -592,6 +592,20 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	margin: 20px;
 }
 
+/* song info must be in blocks to make side-by-side with ablum art */
+.songInfo{	
+	display: inline-block; 
+	vertical-align:top; 
+	margin-top: 15px;
+}
+/* mobile vs non requires different widths to place the action buttons on the far right of screen */
+html.touch .songInfo{
+	width: 82%;
+}
+html.nontouch .songInfo{
+	width: 96%;
+}
+
 /**************************************************
 	Mobile/small screen overrides 
 **************************************************/
