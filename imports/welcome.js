@@ -42,14 +42,14 @@ Template.welcome_page.events({
       var long = position.coords.longitude;
 
       // iterate over only doc with lat/long
-      if(HostedPlaylists.find().count()){
+      if(HostedPlaylists.find().count() !== 0){
         var count = 0;
+        NearbyPlaylists.remove({}); // clear
         HostedPlaylists.find({latitude: { $exists: true }}, {longitude: { $exists: true }}).forEach(function (row) {
             if(row){
               var distance = getDistanceFromLatLonInMiles(lat, long, row.latitude, row.longitude);
-              if(distance < /* max miles */ 5){
+              if(distance < /* max miles */ 3){
                 var roundedDistance = Math.round( distance * 10 ) / 10;
-                NearbyPlaylists.remove({}); // clear
                 NearbyPlaylists.insert({name: row.name, publicId: row.publicId, distanceInMiles: roundedDistance, dateCreated: row.dateCreated});
                 count++;
               }
