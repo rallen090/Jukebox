@@ -34,12 +34,24 @@ Template.search.onRendered(function createPageOnRendered() {
 	            return false;
 	          }
 
+	          var imageUrl = null;	          
+	          if(song.album && song.album.images && song.album.images.length > 0){
+	          	imageUrl = song.album.images.sort(function(a, b){
+	      		  if (a.height < b.height)
+				    return -1;
+				  if (a.height > b.height)
+				    return 1;
+				  return 0;
+	          	})[0].url; // take first, which is smallest after sorting
+	          }
+
 	          var artist = song.artists[0].name;
 	          response.results.push({
 	            title       : song.name,
 	            artist 	: artist,
 	            description : "by " + artist,
-	            spotifyId: song.uri
+	            spotifyId: song.uri,
+	            imageUrl: imageUrl
 	          });
 	        });
 	        return response;
@@ -61,7 +73,8 @@ Template.search.onRendered(function createPageOnRendered() {
 		        spotifyId: spotifyId,
 		        name: result.title,
 		        artist: result.artist,
-		        hostedPlaylistId: playlistId
+		        hostedPlaylistId: playlistId,
+		        imageUrl: result.imageUrl
 		    });
 	    }
 	  })

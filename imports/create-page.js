@@ -105,11 +105,25 @@ Template.create_page.events({
         // convert response to playlistSongs to insert
         $.each(rawSongs, function( index, value ) {
           var track = value.track;
+          
+          // TODO: this is duplicated logic from search - we should consolidate
+          var imageUrl = null;            
+          if(track.album && track.album.images && track.album.images.length > 0){
+            imageUrl = track.album.images.sort(function(a, b){
+            if (a.height < b.height)
+              return -1;
+            if (a.height > b.height)
+              return 1;
+            return 0;
+            })[0].url; // take first, which is smallest after sorting
+          }  
+
           playlistSongs.push({
             name: track.name,
             artist: track.artists[0].name,
             // track.id is the ID portion only - while track.uri has the 'spotify:track:' prefix as well
-            spotifyId: track.uri
+            spotifyId: track.uri,
+            imageUrl: imageUrl
           });
         });
 
