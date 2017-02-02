@@ -40,6 +40,10 @@ function spotifyLogin(callback, action) {
           callback(hash.access_token);
       }
   }, false);
+
+  // before redirecting, we want to modify the history so that hitting back from the spotify login page will take you to the this same page but with
+  // the useSpotify param set to false - this way, we don't strictly force people into a spotify auth state that can't be backed out of
+  history.pushState(null, document.title, location.pathname + "?useSpotify=false");
   
   window.location = url;
 };
@@ -90,6 +94,9 @@ acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire, queued
 	    }, 
       // propogate any post-auth action
       queuedAction);
+
+    // abandon thread since we just kicked off a thread to redirect
+    exit();
 	}
 
 	// otherwise, return the valid accessToken
@@ -98,6 +105,10 @@ acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire, queued
 
 getUserPlaylists = function (ajaxSuccessFunc) {
 	var accessToken = acquireSpotifyAccessToken();
+
+  if(!accessToken){
+    return;
+  }
 
 	return ajaxWithReauthentication({
         url: 'https://api.spotify.com/v1/me/playlists',
