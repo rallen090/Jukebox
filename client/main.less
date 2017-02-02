@@ -391,12 +391,12 @@ to   { transform: rotate(360deg) }
 	margin-right: 5px;
 }
 
-.playlistShare a{
+.playlistShare a, .musicAction a{
 	color: @color-primary;
 	text-decoration: none;
 }
 
-html.nontouch .playlistShare:hover, .playlistShare:active {
+html.nontouch .playlistShare:hover, .playlistShare:active, html.nontouch .musicAction:hover, .musicAction:active{
 	cursor: pointer; 
 	cursor: hand;
 }
@@ -407,7 +407,7 @@ html.nontouch .voteContainer:hover, .voteContainer:active{
 	color: white;
 }
 
-html.nontouch .playlistShare:hover span, .playlistShare:active span{
+html.nontouch .playlistShare:hover span, .playlistShare:active span, html.nontouch .musicAction:hover a, .musicAction:active a{
 	cursor: pointer; 
 	cursor: hand;
 	color: white;
@@ -568,6 +568,27 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	text-decoration: none;
 	color: #ccc;
 	.rounded;
+}
+
+.musicPlayer{
+	background: rgba(0, 0, 0, 0.7);
+	padding: 15px 15px 15px 15px;	
+	margin: 10px 0px 10px 0px;
+	text-decoration: none;
+	color: #ccc;
+	.rounded;
+}
+
+/* center the actions */
+.musicActions{
+   display:block;
+   width:200px;
+   height: 100%;
+   margin: 0 auto;
+}
+
+.musicAction{
+	margin: 20px;
 }
 
 /**************************************************
