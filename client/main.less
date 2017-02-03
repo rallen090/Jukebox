@@ -333,13 +333,23 @@ span.songName{
 	font-size: 20px;
 }
 
-span.songName, span.artistName {
+html.touch span.songName, html.touch span.songArtist {
 	/* everything below is to force ellipses nowrap when the text gets too long */
-	width: 100% - 40px;
+	width: 100% - 38px;
 	display:inline-block;
-	overflow: hidden;
-  	text-overflow: ellipsis;
+	overflow-x: scroll;
+	overflow-y: hidden;
 	white-space: nowrap;
+}
+
+/* special case for small screens - we can't possible fit one row, so we put image on one and eveyrthing else on other */
+@media screen and (device-aspect-ratio: 2/3), screen and (device-aspect-ratio: 40/71) {
+	html.touch span.songName, html.touch span.songArtist{
+		width: 50% !important;
+	}
+	html.touch .songInfo{
+		width: 100% !important;
+	}
 }
 
 /* song info must be in blocks to make side-by-side with ablum art */
