@@ -331,13 +331,15 @@ a.link-playlist-new {
 
 span.songName {
 	font-size: 18px;
-	width: 25px;
-	overflow-x: hidden;
+	width: 100%;
+	display:inline-block;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 span.songArtist {
 		width: 25px;
-	overflow-x: scroll;
 }
 
 span.voteContainer {
@@ -601,7 +603,6 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	display: inline-block; 
 	vertical-align:top; 
 	margin-top: 15px;
-	overflow: visible;
 }
 /* mobile vs non requires different widths to place the action buttons on the far right of screen */
 html.touch .songInfo{
