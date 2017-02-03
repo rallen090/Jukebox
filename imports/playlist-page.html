@@ -71,9 +71,11 @@
       </li>
       {{#each song in songs}}
         <li class="song-row">
-        <img src="{{song.imageUrl}}"/>
+        <div style="float: left">
+          <img src="{{song.imageUrl}}"/>
+        </div>
         <div class="songInfo">
-        <span class="songName">{{song.name}}</span> 
+        <span class="songName">{{song.name}}</span>
         {{#if isOwner}}
           <span class="voteContainer delete-action" id="{{song._id}}"><i class="fa fa-trash"></i></span>{{/if}} 
           <span class="voteContainer vote-action" id="{{song._id}}">

@@ -17,7 +17,7 @@ Template.welcome_page.onRendered(function playPageOnCreated() {
 
 Template.welcome_page.helpers({
   nearbyPlaylists(){
-    return NearbyPlaylists.find({}, {sort: { distanceInMiles: 1, dateCreated: 1 }});
+    return NearbyPlaylists.find({}, {sort: { distanceInMiles: 1, dateCreated: -1 }});
   }
 });
 
