@@ -82,6 +82,8 @@ FlowRouter.route('/spotify/auth/', {
     // handle the token
     Session.setPersistent("jukebox-spotify-access-token", token);
 
+    // TODO: persist token to our DB so we can use it as an auth token
+
     // then read back our redirect so we can return to wherever we were
     const redirectKey = "jukebox-spotify-auth-redirect";
     var originalUrl = Session.get(redirectKey);

@@ -28,6 +28,9 @@ class HostedPlaylistCollection extends Mongo.Collection {
       }
     }
 
+    ourList.hostToken = newGuid();
+    ourList.privateId = newGuid();
+
     return super.insert(ourList, callback);
   }
   remove(selector, callback) {
@@ -48,6 +51,11 @@ HostedPlaylists.allow({
 HostedPlaylists.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
   publicId: { type: Number },
+  privateId: { type: String },
+  privateAccess: { type: Boolean },
+  privateControl: { type: Boolean },
+  password: { type: String, optional: true },
+  hostToken: { type: String },
   userId: { type: String, regEx: SimpleSchema.RegEx.Id},
   dateCreated: { type: Date },
   name: { type: String },
@@ -67,6 +75,8 @@ HostedPlaylists.attachSchema(HostedPlaylists.schema);
 // them here to keep them private to the server.
 HostedPlaylists.publicFields = {
   publicId: 1,
+  privateAccess: 1,
+  privateControl: 1,
   userId: 1,
   dateCreated: 1,
   name: 1,
@@ -134,5 +144,39 @@ HostedPlaylists.helpers({
       });
     });
     return;
+  },
+  getPrivateShareLink(userAuthToken) {
+    var playlistId = this._id;
+    $.each(songs, function( index, value ) {
+      Songs.insert({
+        spotifyId: value.spotifyId,
+        name: value.name,
+        artist: value.artist,
+        hostedPlaylistId: playlistId,
+        imageUrl: value.imageUrl
+      });
+    });
+    return;
+  },
+  getHostLink(userAuthToken) {
+    var playlistId = this._id;
+    $.each(songs, function( index, value ) {
+      Songs.insert({
+        spotifyId: value.spotifyId,
+        name: value.name,
+        artist: value.artist,
+        hostedPlaylistId: playlistId,
+        imageUrl: value.imageUrl
+      });
+    });
+    return;
   }
 });
+
+function newGuid() {
+  // ref: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
+};
