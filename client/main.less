@@ -481,7 +481,7 @@ html.nontouch .playlistShare:hover span, .playlistShare:active span, html.nontou
     border:1px solid @color-primary;
 }
 .scroll-box {
-    overflow-y:scroll;
+    overflow-y: scroll;
 	width: 90%;
 	width: 315px;
     /* precise size to fit exactly full items in the list without seeing partial blocks */
@@ -649,22 +649,4 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	font-size: 12px;
 	text-align: center;
 }
-
-/* to get a contantly-rounded scrollable block with the scroll bar outside of the content, we needed to use these scroll wrappers */
-.scroll-box-border{
-	max-height: 100%;
-    width: 100%;
-    border:1px solid @color-primary;
-}
-.scroll-box {
-    overflow-y: visible;
-	width: 100%;
-    max-height: 100%;
-}
-#selectable-playlists {
-    max-height: 100%;
-    height: 100%;
-    width: 100%;
-}
-
 }
