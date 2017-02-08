@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Session } from 'meteor/session';
-import { HostedPlaylists } from './api/hosted-playlists.js';
+//import { HostedPlaylists } from './api/hosted-playlists.js';
 
 import './services/spotify.js';
 import './services/geolocator.js';
@@ -105,7 +105,7 @@ Template.create_page.events({
         // convert response to playlistSongs to insert
         $.each(rawSongs, function( index, value ) {
           var track = value.track;
-          
+
           // TODO: this is duplicated logic from search - we should consolidate
           var imageUrl = null;            
           if(track.album && track.album.images && track.album.images.length > 0){

@@ -3,7 +3,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Session } from 'meteor/session';
 
 import { Users } from '../imports/api/users.js';
-import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
+//import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
 import { Songs } from '../imports/api/songs.js';
 
 import '../imports/create-page.js';
