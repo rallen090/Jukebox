@@ -6,11 +6,13 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/public-api/playlist-api.js';
 
-Meteor.publish('users', function () {
+// publishing of the db collections from the server
+// note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
+Meteor.publish('jukeboxUsers', function () {
   return Users.find();
 });
 Meteor.publish('playlists', function () {
-  return HostedPlaylists.find();
+  return HostedPlaylists.find({}, { fields: {privateId: 0 } });
 });
 Meteor.publish('songs', function () {
   return Songs.find();

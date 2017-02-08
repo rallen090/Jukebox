@@ -12,11 +12,9 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-
-  this.subscribe('users');
+  this.subscribe('jukeboxUsers');
   this.subscribe('playlists');
   this.subscribe('songs');
-
 });
 
 Template.App_body.helpers({
