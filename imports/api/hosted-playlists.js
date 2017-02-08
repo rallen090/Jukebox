@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import SimpleSchema from 'simpl-schema';
 
+import { Users } from './users.js';
 import { Songs } from './songs.js';
 
 import crypto from 'crypto';
@@ -43,6 +44,15 @@ class HostedPlaylistCollection extends Mongo.Collection {
   remove(selector, callback) {
     Songs.remove({ hostedPlaylistId: selector });
     return super.remove(selector, callback);
+  }
+  getHostIdWithAuthToken(playlistId, token){
+    var user = Users.findOne({spotifyAuthToken: token});
+    var playlist = super.findOne(playlistId);
+    return user._id;
+    // if(user && playlist && user._id === playlist.userId){
+    //   return playlist.hostId;
+    // }
+    // return null;
   }
 }
 

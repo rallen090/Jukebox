@@ -37,7 +37,7 @@ Template.debug_page.helpers({
   },
   songs() {
     return Songs.find();
-  },
+  }
 });
 
 Template.debug_page.events({
