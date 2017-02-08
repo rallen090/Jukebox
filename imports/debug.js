@@ -4,6 +4,9 @@ import SpotifyWebApi from'spotify-web-api-node';
 import './services/spotify.js';
 import './services/geolocator.js';
 
+import base64url from 'base64url';
+import crypto from 'crypto';
+
 import { Users } from './api/users.js';
 import { HostedPlaylists } from './api/hosted-playlists.js';
 import { Songs } from './api/songs.js';
@@ -63,3 +66,7 @@ Template.debug_page.events({
       });
   }
 });
+
+function newGuid(bytes) {
+  return base64url(crypto.randomBytes(bytes));
+};
