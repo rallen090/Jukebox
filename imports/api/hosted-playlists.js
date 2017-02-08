@@ -3,6 +3,9 @@ import SimpleSchema from 'simpl-schema';
 
 import { Songs } from './songs.js';
 
+import crypto from 'crypto';
+import base64url from 'base64url';
+
 class HostedPlaylistCollection extends Mongo.Collection {
   insert(list, callback) {
     const ourList = list;
@@ -27,9 +30,13 @@ class HostedPlaylistCollection extends Mongo.Collection {
         ourList.name = `${defaultName} ${nextLetter}`;
       }
     }
+    ourList.hostToken = newUrlSafeGuid(5);
+    ourList.privateId = newUrlSafeGuid(5);
 
-    ourList.hostToken = newGuid();
-    ourList.privateId = newGuid();
+    // default access/control policies
+    ourList.privateAccess = false;
+    ourList.privateControl = true;
+    ourList.password = null;
 
     return super.insert(ourList, callback);
   }
@@ -173,10 +180,14 @@ HostedPlaylists.helpers({
   }
 });
 
-function newGuid() {
-  // ref: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-    return v.toString(16);
-  });
+function newUrlSafeGuid(bytes) {
+  // generate ids until we get a unique one (base64 should prevent collision problems)
+  var id;
+  do
+  {
+    id = base64url(crypto.randomBytes(bytes));
+  }
+  while(HostedPlaylists.findOne({privateId: id}));
+  
+  return id;
 };
