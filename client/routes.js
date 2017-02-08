@@ -1,9 +1,10 @@
+import { Meteor } from 'meteor/meteor';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 import { BlazeLayout } from 'meteor/kadira:blaze-layout';
 import { Session } from 'meteor/session';
 
 import { Users } from '../imports/api/users.js';
-//import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
+import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
 import { Songs } from '../imports/api/songs.js';
 
 import '../imports/create-page.js';
@@ -11,7 +12,10 @@ import '../imports/playlist-page.js';
 import '../imports/welcome.js';
 import '../imports/debug.js';
 import '../imports/search.js';
+import '../imports/auth.js';
 import '../imports/app-body.js';
+
+Meteor.subscribe('jukeboxUsers');
 
 FlowRouter.route('/', {
   name: 'App.home',
@@ -72,29 +76,8 @@ FlowRouter.route('/p/:_id', {
 FlowRouter.route('/spotify/auth/', {
   name: 'Jukebox.spotify',
   action() {
-    // get the returned spotify token and persist it
-    function getHashValue(key) {
-      var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
-      return matches ? matches[1] : null;
-    }
-    var token = getHashValue('access_token');
-
-    // handle the token
-    Session.setPersistent("jukebox-spotify-access-token", token);
-
-    // TODO: persist token to our DB so we can use it as an auth token
-
-    // then read back our redirect so we can return to wherever we were
-    const redirectKey = "jukebox-spotify-auth-redirect";
-    var originalUrl = Session.get(redirectKey);
-    Session.clear(redirectKey);
-
-    if(!originalUrl){
-      window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=false";
-    }
-    else{
-      window.location = originalUrl;
-    }
+    // RTA: contains auth JS logic - which we need a template for because otherwise we can't access subscriptions here in this action
+    BlazeLayout.render('App_body', { main: 'auth_page' });
   },
 });
 
@@ -120,7 +103,8 @@ FlowRouter.notFound = {
 
 // trigger for managing session across routes
 function acquireSession() {
-  const sessionKey = "jukebox-active-user-id";
+  if(Meteor.isClient){
+      const sessionKey = "jukebox-active-user-id";
   var userIdFromSession = Session.get(sessionKey);
   
   // NOTE: we perform the session storage logic on a delay because this is run before the client is sent the actual 
@@ -132,4 +116,6 @@ function acquireSession() {
       Session.setPersistent(sessionKey, userId);
     }
   }, 0);
+  }
+
 };

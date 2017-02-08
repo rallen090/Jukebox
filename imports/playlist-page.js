@@ -3,8 +3,9 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
 
-//import { HostedPlaylists } from './api/hosted-playlists.js';
+import { HostedPlaylists } from './api/hosted-playlists.js';
 import { Songs } from './api/songs.js';
+import { Users } from './api/users.js';
 
 import './playlist-page.html';
 
@@ -132,6 +133,13 @@ Template.playlist_page.helpers({
     }
 
     return "mailto@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
+  },
+  getHostId(){
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var authToken = Session.get("jukebox-spotify-access-token");
+    var hostId = HostedPlaylists.getHostIdWithAuthToken(playlistId, authToken);
+    return hostId;
   }
 });
 

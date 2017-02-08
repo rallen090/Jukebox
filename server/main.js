@@ -12,7 +12,7 @@ Meteor.publish('jukeboxUsers', function () {
   return Users.find();
 });
 Meteor.publish('playlists', function () {
-  return HostedPlaylists.find({}, { fields: {privateId: 0 } });
+  return HostedPlaylists.find({}, { fields: { privateId: 0, hostId: 0 } });
 });
 Meteor.publish('songs', function () {
   return Songs.find();
