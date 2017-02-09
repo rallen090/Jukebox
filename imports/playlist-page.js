@@ -101,8 +101,9 @@ Template.playlist_page.helpers({
   getShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    var playlist = getPlaylistForTemplate();
-    var playlistId = playlist.privateId;
+    // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
     var shareMessage = "Join the Jukebox: " + window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
 
     // android
@@ -117,15 +118,12 @@ Template.playlist_page.helpers({
         return "sms:&body=" + shareMessage;
     }
 
-    return "mailto@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
+    return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
   },
   getHostToken(){
     var playlist = getPlaylistForTemplate();
-    var playlistId = playlist.publicId;
+    var playlistId = playlist._id;
     var authToken = Session.get("jukebox-spotify-access-token");
-    // Meteor.call('getHostToken', {playlistId, authToken}, function(error, result){
-    //   alert(result);
-    // });
     var hostToken = ReactiveMethod.call('getHostToken', playlistId, authToken);
     
     return hostToken;
