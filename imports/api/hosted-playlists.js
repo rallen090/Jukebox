@@ -49,9 +49,6 @@ class HostedPlaylistCollection extends Mongo.Collection {
     Songs.remove({ hostedPlaylistId: selector });
     return super.remove(selector, callback);
   }
-  getPlaylistByPrivateId(privateId){
-    return super.findOne({privateId: privateId});
-  }
 }
 
 export const HostedPlaylists = new HostedPlaylistCollection('playlists');
