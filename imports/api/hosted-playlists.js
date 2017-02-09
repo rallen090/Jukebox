@@ -62,7 +62,7 @@ HostedPlaylists.allow({
 
 HostedPlaylists.schema = new SimpleSchema({
   _id: { type: String, regEx: SimpleSchema.RegEx.Id },
-  publicId: { type: Number },
+  publicId: { type: Number, },
   privateId: { type: String },
   privateAccess: { type: Boolean },
   privateControl: { type: Boolean },
@@ -83,6 +83,10 @@ HostedPlaylists.schema = new SimpleSchema({
 });
 
 HostedPlaylists.attachSchema(HostedPlaylists.schema);
+
+if(Meteor.isServer){
+  HostedPlaylists._ensureIndex('publicId', {unique: 1});  
+}
 
 // This represents the keys from Lists objects that should be published
 // to the client. If we add secret properties to List objects, don't list

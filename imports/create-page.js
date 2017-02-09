@@ -14,6 +14,8 @@ var SpotifyPlaylists = new Meteor.Collection(null);
 var useSpotify = () => FlowRouter.getQueryParam("useSpotify");
 
 Template.create_page.onCreated(function createPageOnCreated() {
+  this.subscribe('playlists');
+
   var useSpotifyParam = useSpotify();
   var loadFromSpotify = useSpotifyParam && (useSpotifyParam === true || useSpotifyParam === "true");
 

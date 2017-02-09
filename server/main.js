@@ -8,7 +8,7 @@ import '../imports/public-api/playlist-api.js';
 
 // publishing of the db collections from the server
 // note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
-Meteor.publish('jukeboxUsers', function () {
+Meteor.publish('jukeboxUsers', function () { // ONLY FOR DEBUGGING - should remove
   return Users.find({}, { fields: { spotifyAuthToken: 0 } });
 });
 Meteor.publish('playlists', function () {
@@ -63,5 +63,38 @@ Meteor.methods({
 		  return playlist.privateId;
 		}
 		return null;
-	}
+	},
+	// createNewUserIfNotExists(userId) {
+	// 	if(userId){
+	// 		var user = Users.findOne({spotifyAuthToken: token});
+	// 		if(user){
+	// 			return user._id;
+	// 		}
+	// 	}
+
+	// 	var id = Users.insert({});
+	// 	return id;
+	// },
+	updateUserWithAuthToken(userId, token) {
+	    var userWithTokenAlready = Users.findOne({spotifyAuthToken: token});
+
+	    if(userWithTokenAlready){
+	      var id = userWithTokenAlready._id;
+	      Users.update(id, {$set: { spotifyAuthToken: token }});
+	      return id;
+	    }
+	    else{
+	      if(userId){
+	        var id = Users.findOne({_id: userId});
+	        if(id){
+	          Users.update(userId, {$set: { spotifyAuthToken: token }});
+	          return userId;
+	        }
+	      }
+
+	      var id = Users.insert({});
+	      Users.update(id, {$set: { spotifyAuthToken: token }});
+	      return id;
+	    }
+  }
 });

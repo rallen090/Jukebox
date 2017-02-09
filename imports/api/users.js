@@ -4,34 +4,8 @@ import SimpleSchema from 'simpl-schema';
 import { HostedPlaylists } from './hosted-playlists.js';
 
 class UsersCollection extends Mongo.Collection {
-  createNewUser() {
-    var id = super.insert({});
-    return id;
-  }
   getCount(){
     return super.find().count();
-  }
-  updateUserWithAuthToken(userId, token) {
-    var userWithTokenAlready = super.findOne({spotifyAuthToken: token});
-
-    if(userWithTokenAlready){
-      var id = userWithTokenAlready._id;
-      super.update(id, {$set: { spotifyAuthToken: token }});
-      return id;
-    }
-    else{
-      if(userId){
-        var id = super.findOne({_id: userId});
-        if(id){
-          super.update(userId, {$set: { spotifyAuthToken: token }});
-          return userId;
-        }
-      }
-
-      var id = super.insert({});
-      super.update(id, {$set: { spotifyAuthToken: token }});
-      return id;
-    }
   }
 }
 

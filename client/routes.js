@@ -15,8 +15,6 @@ import '../imports/search.js';
 import '../imports/auth.js';
 import '../imports/app-body.js';
 
-Meteor.subscribe('jukeboxUsers');
-
 FlowRouter.route('/', {
   name: 'App.home',
   triggersEnter: [acquireSession],
@@ -105,17 +103,23 @@ FlowRouter.notFound = {
 function acquireSession() {
   if(Meteor.isClient){
       const sessionKey = "jukebox-active-user-id";
-  var userIdFromSession = Session.get(sessionKey);
-  
-  // NOTE: we perform the session storage logic on a delay because this is run before the client is sent the actual 
-  // server-side data, which we need to check against for user info
-  setTimeout(function(){
-    // if there is no session stored OR the session is not a userId we recognize, set the session  
-    if(!userIdFromSession /* || Users.find(userIdFromSession).count() === 0*/){ // TODO: re-evaluate this - it still creates unneeded users all the time
-      var userId = Users.createNewUser();
-      Session.setPersistent(sessionKey, userId);
-    }
-  }, 0);
+      var userIdFromSession = Session.get(sessionKey);
+      var token = Session.get("jukebox-spotify-access-token", token);
+
+      // server call to manage user
+      Meteor.call('updateUserWithAuthToken', userIdFromSession, token, function(error, result){
+        Session.setPersistent(sessionKey, result);
+      });
+      
+      // // NOTE: we perform the session storage logic on a delay because this is run before the client is sent the actual 
+      // // server-side data, which we need to check against for user info
+      // setTimeout(function(){
+      //   // if there is no session stored OR the session is not a userId we recognize, set the session  
+      //   if(!userIdFromSession /* || Users.find(userIdFromSession).count() === 0*/){ // TODO: re-evaluate this - it still creates unneeded users all the time
+      //     var userId = Users.createNewUser();
+      //     Session.setPersistent(sessionKey, userId);
+      //   }
+      // }, 0);
   }
 
 };
