@@ -194,5 +194,6 @@ function getPlaylistForTemplate(){
 
   // we check for the privateIds first since they are very likely non-numeric, but still have to check
   // here at the end in the case where a privateId happened to be purely numeric by chance
-  return HostedPlaylists.getPlaylistByPrivateId(playlistId);
+  var privatePlaylist = ReactiveMethod.call('getPlaylistIdByPrivateId', playlistId);
+  return cachedId;
 }
