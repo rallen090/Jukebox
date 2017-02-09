@@ -30,7 +30,7 @@ Template.debug_page.onRendered(function debugOnRendered(){
 
 Template.debug_page.helpers({
   users() {
-    return Users.find();
+    return Users.find({}, {sort: { spotifyAuthToken: 1 }, limit: 1});
   },
   hostedPlaylists() {
     return HostedPlaylists.find();
