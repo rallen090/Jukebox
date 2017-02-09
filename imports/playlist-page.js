@@ -176,9 +176,8 @@ function getPlaylistForTemplate(){
   var nonNumeric = isNaN(playlistId);
 
   if(nonNumeric){
-    //alert(playlistId);
-    var privatePlaylist = HostedPlaylists.getPlaylistByPrivateId(playlistId);
-    return privatePlaylist;
+    var id = ReactiveMethod.call('getPlaylistIdByPrivateId', playlistId);
+    return HostedPlaylists.findOne(id);
   }
 
   var intPlaylistId = parseInt(playlistId, 10);

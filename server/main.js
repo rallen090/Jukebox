@@ -12,7 +12,7 @@ Meteor.publish('jukeboxUsers', function () {
   return Users.find();
 });
 Meteor.publish('playlists', function () {
-  return HostedPlaylists.find({}, { fields: { hostId: 0 } });
+  return HostedPlaylists.find({}, { fields: { privateId: 0, hostToken: 0 } });
 });
 Meteor.publish('songs', function () {
   return Songs.find();
@@ -36,6 +36,16 @@ Meteor.methods({
     var playlist = HostedPlaylists.findOne(playlistId);
     if(user && playlist && user._id === playlist.userId){
       return playlist.privateId;
+    }
+    return null;
+  },
+  getPlaylistIdByPrivateId(privateId){
+  	console.log(privateId);
+    var playlist = HostedPlaylists.findOne({privateId: privateId});
+    console.log(playlist);
+    if(playlist)
+    {
+    	return playlist._id;
     }
     return null;
   }
