@@ -14,6 +14,7 @@ import { Songs } from './api/songs.js';
 import './debug.html';
 
 Template.debug_page.onCreated(function bodyOnCreated() {
+  this.subscribe('currentPlaylist', "_KI7BYI");
 });
 
 Template.debug_page.onRendered(function debugOnRendered(){
@@ -33,7 +34,7 @@ Template.debug_page.helpers({
     return Users.find({}, {sort: { spotifyAuthToken: 1 }, limit: 1});
   },
   hostedPlaylists() {
-    return HostedPlaylists.find();
+    return [HostedPlaylists.findOne()];
   },
   songs() {
     return Songs.find();

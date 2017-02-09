@@ -11,6 +11,8 @@ import './playlist-page.html';
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
   this.getPlaylistId = () => FlowRouter.getParam('_id');
+
+  this.subscribe('currentPlaylist', this.getPlaylistId());
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
@@ -46,18 +48,18 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
 
 Template.playlist_page.helpers({
   playlist() {
-    return getPlaylistForTemplate();
+    return HostedPlaylists.findOne();
   },
   songs() {
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
     return playlist ? playlist.songs() : [];
   },
   previousSongs() {
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
     return playlist ? playlist.previousSongs() : [];
   },
   currentSong(){
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
 
     if(!playlist.currentSongId){
       return null;
@@ -68,19 +70,19 @@ Template.playlist_page.helpers({
     }
   },
   isFinished(){
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
 
-    if(playlist.previousSongIds.length > 0 && !playlist.currentSong && playlist.songs().count() === 0){
+    if(playlist && playlist.previousSongIds.length > 0 && !playlist.currentSong && playlist.songs().count() === 0){
       return true;
     }
     return false;
   },
   hasPastSongs(){
-    var playlist = getPlaylistForTemplate();
-    return playlist.previousSongIds.length > 0 && playlist.previousSongs().count() !== 0;
+    var playlist = HostedPlaylists.findOne();
+    return playlist && playlist.previousSongIds.length > 0 && playlist.previousSongs().count() !== 0;
   },
   isOwner() {
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
 
     // fall out if this playlist does not exist
     if(!playlist){
@@ -121,11 +123,15 @@ Template.playlist_page.helpers({
     return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
   },
   getHostToken(){
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
+
+    if(!playlist){
+      return null;
+    }
+
     var playlistId = playlist._id;
     var authToken = Session.get("jukebox-spotify-access-token");
     var hostToken = ReactiveMethod.call('getHostToken', playlistId, authToken);
-    
     return hostToken;
   }
 });
@@ -154,7 +160,7 @@ Template.playlist_page.events({
   },
   'click #save-action'(event) {
     var playlistName = $("#playlist-name").text().trim();
-    var playlist = getPlaylistForTemplate();
+    var playlist = HostedPlaylists.findOne();
     var playlistId = playlist.publicId;
     var songIds = [];
     Songs.find({hostedPlaylistId: playlistId}, {spotifyId: 1}).forEach(function(row){
@@ -168,32 +174,3 @@ Template.playlist_page.events({
     }
   }
 });
-
-function getPlaylistForTemplate(){
-  const instance = Template.instance();
-  const playlistId = instance.getPlaylistId();
-
-  var nonNumeric = isNaN(playlistId);
-
-  if(nonNumeric){
-    var id = ReactiveMethod.call('getPlaylistIdByPrivateId', playlistId);
-    return HostedPlaylists.findOne(id);
-  }
-
-  var intPlaylistId = parseInt(playlistId, 10);
-  var publicPlaylist = HostedPlaylists.findOne({publicId: intPlaylistId});
-
-  if(publicPlaylist){
-    if(publicPlaylist.isPrivate){
-      return null;
-    }
-    else{
-      return publicPlaylist;
-    }
-  }
-
-  // we check for the privateIds first since they are very likely non-numeric, but still have to check
-  // here at the end in the case where a privateId happened to be purely numeric by chance
-  var privatePlaylist = ReactiveMethod.call('getPlaylistIdByPrivateId', playlistId);
-  return cachedId;
-}
