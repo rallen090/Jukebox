@@ -125,26 +125,11 @@ Template.playlist_page.helpers({
 
     return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
   },
-  getHostToken(){
-    var playlist = HostedPlaylists.findOne();
-
-    if(!playlist){
-      return null;
-    }
-
-    var playlistId = playlist._id;
-    var authToken = Session.get("jukebox-spotify-access-token");
-    var hostToken = ReactiveMethod.call('getHostToken', playlistId, authToken);
-    return hostToken;
-  },
-  getHostToken2(){
-    this.getHostToken();
-  },
-  getHostLink(userAuthToken) {
-    var user = Users.findOne({spotifyAuthToken: userAuthToken});
-
-    if(user._id === this.userId){
-      return "jukeboxapp://host?hostToken=" + this.hostToken + "&playlistId=" + this.privateId;
+  getHostLink() {
+    var info = getHostInfoInternal();
+    console.log(info);
+    if(info && info.privateId && info.hostToken){
+      return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
     }
 
     return null;
@@ -190,3 +175,16 @@ Template.playlist_page.events({
     }
   }
 });
+
+function getHostInfoInternal(){
+  var playlist = HostedPlaylists.findOne();
+
+  if(!playlist){
+    return null;
+  }
+
+  var playlistId = playlist._id;
+  var authToken = Session.get("jukebox-spotify-access-token");
+  var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
+  return hostToken;
+};
