@@ -16,33 +16,36 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
-  // set up animations
-  this.find('.playlistContainer ul')._uihooks = {
-    insertElement: function (node) {
-      $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
+  // set up animations (in timeout to allow for load time)
+  var self = this;
+  setTimeout(function(){
+    self.find('.playlistContainer ul')._uihooks = {
+      insertElement: function (node) {
+        $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
 
-      // this is hacky - but for some reason, if this page loads with zero songs then the animations/sorting is broken
-      // once more songs are added. if the page on-load has songs, though, it is fine. so we just force a reload after the first song...
-      if($(".song-row").length === 1){
-        location.reload();
-      }
-    },
-    removeElement: function (node) {
-        //Remove logic
-        $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-    },
-    moveElement: function (node, next) {
-        //move logic
-        $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
-          $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
-        });
-    } 
-  };
+        // this is hacky - but for some reason, if this page loads with zero songs then the animations/sorting is broken
+        // once more songs are added. if the page on-load has songs, though, it is fine. so we just force a reload after the first song...
+        if($(".song-row").length === 1){
+          location.reload();
+        }
+      },
+      removeElement: function (node) {
+          //Remove logic
+          $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+      },
+      moveElement: function (node, next) {
+          //move logic
+          $(node).animate({ height: 'toggle', opacity: 'toggle' }, 'fast').promise().done(function(){
+            $(node).insertBefore(next).animate({ height: 'toggle', opacity: 'toggle' }, 'fast');
+          });
+      } 
+    };
+  }, 1000);
 
   tryExecuteQueuedAction({savePlaylist: () => {
     $("#save-action").prop('disabled', true);
     $("#save-action").css('color', 'white');
-  }})
+  }});
 
 });
 
@@ -61,7 +64,7 @@ Template.playlist_page.helpers({
   currentSong(){
     var playlist = HostedPlaylists.findOne();
 
-    if(!playlist.currentSongId){
+    if(!playlist || !playlist.currentSongId){
       return null;
     }
     else{
@@ -106,7 +109,7 @@ Template.playlist_page.helpers({
     // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
-    var shareMessage = "Join the Jukebox: " + window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
+    var shareMessage = "Join the Jukebox: " + "www." + window.location.host + "/p/" + playlistId;
 
     // android
     if (/android/i.test(userAgent)) {
