@@ -162,15 +162,16 @@ Template.playlist_page.events({
     Songs.remove(songId);
   },
   'click #save-action'(event) {
-    var playlistName = $("#playlist-name").text().trim();
     var playlist = HostedPlaylists.findOne();
-    var playlistId = playlist.publicId;
+    var playlistId = playlist._id;
+
     var songIds = [];
-    Songs.find({hostedPlaylistId: playlistId}, {spotifyId: 1}).forEach(function(row){
+    Songs.find({hostedPlaylistId: playlistId}).forEach(function(row){
         songIds.push(row.spotifyId);
     });
+    
     if(songIds.length > 0){
-      savePlaylist(playlistName, songIds, function(){
+      savePlaylist(playlist.name, songIds, function(){
         $("#save-action").prop('disabled', true);
         $("#save-action").css('color', 'white');
       });
