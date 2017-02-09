@@ -49,15 +49,6 @@ class HostedPlaylistCollection extends Mongo.Collection {
     Songs.remove({ hostedPlaylistId: selector });
     return super.remove(selector, callback);
   }
-  getHostTokenWithAuthToken(playlistId, token){
-    var user = Users.findOne({spotifyAuthToken: token});
-    var playlist = super.findOne({publicId: playlistId});
-    return playlist.hostToken;
-    // if(user && playlist && user._id === playlist.userId){
-    //   return playlist.hostToken;
-    // }
-    // return null;
-  }
   getPlaylistByPrivateId(privateId){
     return super.findOne({privateId: privateId});
   }

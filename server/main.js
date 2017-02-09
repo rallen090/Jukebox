@@ -24,9 +24,19 @@ Meteor.startup(() => {
 
 Meteor.methods({
   getHostToken: function (playlistId, authToken) {
-  	console.log(playlistId);
-  	console.log(authToken);
-    var hostId = HostedPlaylists.getHostTokenWithAuthToken(playlistId, authToken);
-    return hostId;
+    var user = Users.findOne({spotifyAuthToken: authToken});
+    var playlist = HostedPlaylists.findOne(playlistId);
+    if(user && playlist && user._id === playlist.userId){
+      return playlist.hostToken;
+    }
+    return null;
+  },
+  getPrivateId: function (playlistId, authToken) {
+    var user = Users.findOne({spotifyAuthToken: authToken});
+    var playlist = HostedPlaylists.findOne(playlistId);
+    if(user && playlist && user._id === playlist.userId){
+      return playlist.privateId;
+    }
+    return null;
   }
 });
