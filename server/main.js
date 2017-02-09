@@ -9,7 +9,7 @@ import '../imports/public-api/playlist-api.js';
 // publishing of the db collections from the server
 // note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
 Meteor.publish('jukeboxUsers', function () {
-  return Users.find();
+  return Users.find({}, { fields: { spotifyAuthToken: 0 } });
 });
 Meteor.publish('playlists', function () {
   return HostedPlaylists.find({}, { fields: { privateId: 0, hostToken: 0 } });
@@ -40,9 +40,7 @@ Meteor.methods({
     return null;
   },
   getPlaylistIdByPrivateId(privateId){
-  	console.log(privateId);
     var playlist = HostedPlaylists.findOne({privateId: privateId});
-    console.log(playlist);
     if(playlist)
     {
     	return playlist._id;
