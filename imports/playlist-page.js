@@ -136,7 +136,19 @@ Template.playlist_page.helpers({
     var authToken = Session.get("jukebox-spotify-access-token");
     var hostToken = ReactiveMethod.call('getHostToken', playlistId, authToken);
     return hostToken;
-  }
+  },
+  getHostToken2(){
+    this.getHostToken();
+  },
+  getHostLink(userAuthToken) {
+    var user = Users.findOne({spotifyAuthToken: userAuthToken});
+
+    if(user._id === this.userId){
+      return "jukeboxapp://host?hostToken=" + this.hostToken + "&playlistId=" + this.privateId;
+    }
+
+    return null;
+  },
 });
 
 Template.playlist_page.events({
@@ -169,7 +181,7 @@ Template.playlist_page.events({
     Songs.find({hostedPlaylistId: playlistId}).forEach(function(row){
         songIds.push(row.spotifyId);
     });
-    
+
     if(songIds.length > 0){
       savePlaylist(playlist.name, songIds, function(){
         $("#save-action").prop('disabled', true);

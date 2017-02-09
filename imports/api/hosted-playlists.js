@@ -203,24 +203,6 @@ HostedPlaylists.helpers({
     });
     return;
   },
-  getPrivateShareLink(userAuthToken) {
-    var user = Users.findOne({spotifyAuthToken: userAuthToken});
-
-    if(user._id === this.userId){
-      return window.location.protocol + "//" + window.location.host + "/playlist/" + this.privateId;
-    }
-
-    return null;
-  },
-  getHostLink(userAuthToken) {
-    var user = Users.findOne({spotifyAuthToken: userAuthToken});
-
-    if(user._id === this.userId){
-      return "jukeboxapp://host?hostToken=" + this.hostToken + "&playlistId=" + this.privateId;
-    }
-
-    return null;
-  },
   isPlaying(){
     // check (a) that the current song has been set
     if(this.currentSongId 
