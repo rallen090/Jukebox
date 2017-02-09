@@ -51,12 +51,15 @@ class HostedPlaylistCollection extends Mongo.Collection {
   }
   getHostTokenWithAuthToken(playlistId, token){
     var user = Users.findOne({spotifyAuthToken: token});
-    var playlist = super.findOne(playlistId);
-    return user._id;
+    var playlist = super.findOne({publicId: playlistId});
+    return playlist.hostToken;
     // if(user && playlist && user._id === playlist.userId){
     //   return playlist.hostToken;
     // }
     // return null;
+  }
+  getPlaylistByPrivateId(privateId){
+    return super.findOne({privateId: privateId});
   }
 }
 
@@ -66,7 +69,7 @@ export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 HostedPlaylists.allow({
   'insert': function () {
     return true; 
-  },
+  }
 });
 
 HostedPlaylists.schema = new SimpleSchema({
@@ -187,7 +190,7 @@ HostedPlaylists.helpers({
       isPaused: this.isPaused,
       lastHostCheckIn: this.lastHostCheckIn
     };
-  }
+  },
   songs() {
     return Songs.find({ hostedPlaylistId: this._id, played: false }, { sort: { voteCount: -1, dateAdded: 1 } });
   },

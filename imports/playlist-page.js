@@ -10,7 +10,7 @@ import { Users } from './api/users.js';
 import './playlist-page.html';
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
-  this.getPlaylistId = () => parseInt(FlowRouter.getParam('_id'), 10);
+  this.getPlaylistId = () => FlowRouter.getParam('_id');
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
@@ -46,26 +46,18 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
 
 Template.playlist_page.helpers({
   playlist() {
-
-
-    return playlist;
+    return getPlaylistForTemplate();
   },
   songs() {
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    var playlist = getPlaylistForTemplate();
     return playlist ? playlist.songs() : [];
   },
   previousSongs() {
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    var playlist = getPlaylistForTemplate();
     return playlist ? playlist.previousSongs() : [];
   },
   currentSong(){
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    var playlist = getPlaylistForTemplate();
 
     if(!playlist.currentSongId){
       return null;
@@ -76,9 +68,7 @@ Template.playlist_page.helpers({
     }
   },
   isFinished(){
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    var playlist = getPlaylistForTemplate();
 
     if(playlist.previousSongIds.length > 0 && !playlist.currentSong && playlist.songs().count() === 0){
       return true;
@@ -86,15 +76,11 @@ Template.playlist_page.helpers({
     return false;
   },
   hasPastSongs(){
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+    var playlist = getPlaylistForTemplate();
     return playlist.previousSongIds.length > 0 && playlist.previousSongs().count() !== 0;
   },
   isOwner() {
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({ publicId: playlistId });
+    var playlist = getPlaylistForTemplate();
 
     // fall out if this playlist does not exist
     if(!playlist){
@@ -115,8 +101,8 @@ Template.playlist_page.helpers({
   getShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
+    var playlist = getPlaylistForTemplate();
+    var playlistId = playlist.privateId;
     var shareMessage = "Join the Jukebox: " + window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
 
     // android
@@ -134,11 +120,15 @@ Template.playlist_page.helpers({
     return "mailto@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
   },
   getHostToken(){
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
+    var playlist = getPlaylistForTemplate();
+    var playlistId = playlist.publicId;
     var authToken = Session.get("jukebox-spotify-access-token");
-    var hostId = HostedPlaylists.getHostTokenWithAuthToken(playlistId, authToken);
-    return hostId;
+    // Meteor.call('getHostToken', {playlistId, authToken}, function(error, result){
+    //   alert(result);
+    // });
+    var hostToken = ReactiveMethod.call('getHostToken', playlistId, authToken);
+    
+    return hostToken;
   }
 });
 
@@ -166,9 +156,8 @@ Template.playlist_page.events({
   },
   'click #save-action'(event) {
     var playlistName = $("#playlist-name").text().trim();
-    const instance = Template.instance();
-    var publicPlaylistId = instance.getPlaylistId();
-    var playlistId = HostedPlaylists.findOne({publicId: publicPlaylistId})._id;
+    var playlist = getPlaylistForTemplate();
+    var playlistId = playlist.publicId;
     var songIds = [];
     Songs.find({hostedPlaylistId: playlistId}, {spotifyId: 1}).forEach(function(row){
         songIds.push(row.spotifyId);
@@ -185,7 +174,28 @@ Template.playlist_page.events({
 function getPlaylistForTemplate(){
   const instance = Template.instance();
   const playlistId = instance.getPlaylistId();
-  var playlist = HostedPlaylists.findOne({publicId: playlistId});
 
-  return playlist;
+  var nonNumeric = isNaN(playlistId);
+
+  if(nonNumeric){
+    //alert(playlistId);
+    var privatePlaylist = HostedPlaylists.getPlaylistByPrivateId(playlistId);
+    return privatePlaylist;
+  }
+
+  var intPlaylistId = parseInt(playlistId, 10);
+  var publicPlaylist = HostedPlaylists.findOne({publicId: intPlaylistId});
+
+  if(publicPlaylist){
+    if(publicPlaylist.isPrivate){
+      return null;
+    }
+    else{
+      return publicPlaylist;
+    }
+  }
+
+  // we check for the privateIds first since they are very likely non-numeric, but still have to check
+  // here at the end in the case where a privateId happened to be purely numeric by chance
+  return HostedPlaylists.getPlaylistByPrivateId(playlistId);
 }
