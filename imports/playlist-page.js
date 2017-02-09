@@ -46,9 +46,8 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
 
 Template.playlist_page.helpers({
   playlist() {
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var playlist = HostedPlaylists.findOne({publicId: playlistId});
+
+
     return playlist;
   },
   songs() {
@@ -134,11 +133,11 @@ Template.playlist_page.helpers({
 
     return "mailto@mail.com?body=" + shareMessage + "&subject=JukeboxInvite";
   },
-  getHostId(){
+  getHostToken(){
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
     var authToken = Session.get("jukebox-spotify-access-token");
-    var hostId = HostedPlaylists.getHostIdWithAuthToken(playlistId, authToken);
+    var hostId = HostedPlaylists.getHostTokenWithAuthToken(playlistId, authToken);
     return hostId;
   }
 });
@@ -182,3 +181,11 @@ Template.playlist_page.events({
     }
   }
 });
+
+function getPlaylistForTemplate(){
+  const instance = Template.instance();
+  const playlistId = instance.getPlaylistId();
+  var playlist = HostedPlaylists.findOne({publicId: playlistId});
+
+  return playlist;
+}
