@@ -64,37 +64,26 @@ Meteor.methods({
 		}
 		return null;
 	},
-	// createNewUserIfNotExists(userId) {
-	// 	if(userId){
-	// 		var user = Users.findOne({spotifyAuthToken: token});
-	// 		if(user){
-	// 			return user._id;
-	// 		}
-	// 	}
-
-	// 	var id = Users.insert({});
-	// 	return id;
-	// },
 	updateUserWithAuthToken(userId, token) {
-	    var userWithTokenAlready = Users.findOne({spotifyAuthToken: token});
+		if(token){
+			var userWithTokenAlready = Users.findOne({spotifyAuthToken: token});
+			if(userWithTokenAlready){
+		      var id = userWithTokenAlready._id;
+		      Users.update(id, {$set: { spotifyAuthToken: token }});
+		      return id;
+		    }
+		}
+		
+		if(userId){
+			var id = Users.findOne({_id: userId});
+			if(id){
+				Users.update(userId, {$set: { spotifyAuthToken: token }});
+				return userId;
+			}
+		}
 
-	    if(userWithTokenAlready){
-	      var id = userWithTokenAlready._id;
-	      Users.update(id, {$set: { spotifyAuthToken: token }});
-	      return id;
-	    }
-	    else{
-	      if(userId){
-	        var id = Users.findOne({_id: userId});
-	        if(id){
-	          Users.update(userId, {$set: { spotifyAuthToken: token }});
-	          return userId;
-	        }
-	      }
-
-	      var id = Users.insert({});
-	      Users.update(id, {$set: { spotifyAuthToken: token }});
-	      return id;
-	    }
+		var id = Users.insert({});
+		Users.update(id, {$set: { spotifyAuthToken: token }});
+		return id;
   }
 });
