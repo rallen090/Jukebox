@@ -12,7 +12,6 @@ Meteor.startup(() => {
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
-  this.subscribe('jukeboxUsers');
   this.subscribe('songs');
 });
 

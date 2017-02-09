@@ -20,7 +20,8 @@ Template.auth_page.onRendered(function authOnRendered(){
     const sessionKey = "jukebox-active-user-id";
     var userIdFromSession = Session.get(sessionKey);
     // if the token matches an existing user, we switch to that new userId to keep in sync  
-    var updatedUserId = Users.updateUserWithAuthToken(userIdFromSession, token);
+    //var updatedUserId = Users.updateUserWithAuthToken(userIdFromSession, token);
+    var updatedUserId = ReactiveMethod.call('updateUserWithAuthToken', userIdFromSession, token);
     Session.setPersistent(sessionKey, updatedUserId);
 
     // then read back our redirect so we can return to wherever we were
