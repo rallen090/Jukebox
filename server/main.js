@@ -6,13 +6,16 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/public-api/playlist-api.js';
 
+import crypto from 'crypto';
+import base64url from 'base64url';
+
 // publishing of the db collections from the server
 // note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
 Meteor.publish('jukeboxUsers', function () { // ONLY FOR DEBUGGING - should remove
   return Users.find({}, { fields: { spotifyAuthToken: 0 } });
 });
-Meteor.publish('playlists', function () {
-  return HostedPlaylists.find({}, { fields: { privateId: 0, hostToken: 0 } });
+Meteor.publish('publicPlaylists', function () {
+  return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0 } });
 });
 Meteor.publish('currentPlaylist', function (playlistId) {
   var nonNumeric = isNaN(playlistId);
@@ -47,6 +50,50 @@ Meteor.startup(() => {
 
 Meteor.methods({
 	// exposing private fields via server calls with an auth token
+	createPlaylist(list, songs) {
+		const ourList = list;
+		ourList.dateCreated = ourList.dateCreated || new Date();
+		ourList.previousSongIds = [];
+		// increment public id that is used in URLs
+		var largestId = 1;
+
+		var highestPlaylist = HostedPlaylists.findOne({}, {sort: {'publicId': -1}});
+		if(highestPlaylist){
+			largestId = highestPlaylist.publicId + 1;
+		}
+		ourList.publicId = largestId;
+
+		if (!ourList.name) {
+		  const defaultName = "Default Playlist";
+		  let nextLetter = 'A';
+		  ourList.name = `${defaultName} ${nextLetter}`;
+
+		  while (HostedPlaylists.findOne({ name: ourList.name })) {
+		    // not going to be too smart here, can go past Z
+		    nextLetter = String.fromCharCode(nextLetter.charCodeAt(0) + 1);
+		    ourList.name = `${defaultName} ${nextLetter}`;
+		  }
+		}
+		ourList.hostToken = newUrlSafeGuid(5, token => HostedPlaylists.findOne({hostToken: token}));
+		ourList.privateId = newUrlSafeGuid(5, id => HostedPlaylists.findOne({privateId: id}));
+
+		// default access/control policies
+		ourList.privateAccess = false;
+		ourList.privateControl = true;
+		ourList.password = null;
+
+		// set state
+		ourList.lastHostCheckIn = null;
+		ourList.isPaused = false;
+
+		var id = HostedPlaylists.insert(ourList);
+		var playlist = HostedPlaylists.findOne(id);
+		console.log(songs);
+		playlist.initializeSongs(songs);
+
+		// return the privateId of the new list
+		return ourList.privateId;
+	},
 	getHostInfo: function (playlistId, authToken) {
 		var user = Users.findOne({spotifyAuthToken: authToken});
 		var playlist = HostedPlaylists.findOne(playlistId);
@@ -87,3 +134,15 @@ Meteor.methods({
 		return false;
 	},
 });
+
+function newUrlSafeGuid(bytes, matcher) {
+  // generate ids until we get a unique one (base64 should prevent collision problems)
+  var id;
+  do
+  {
+    id = base64url(crypto.randomBytes(bytes));
+  }
+  while(matcher(id));
+  
+  return id;
+};

@@ -4,47 +4,7 @@ import SimpleSchema from 'simpl-schema';
 import { Users } from './users.js';
 import { Songs } from './songs.js';
 
-import crypto from 'crypto';
-import base64url from 'base64url';
-
 class HostedPlaylistCollection extends Mongo.Collection {
-  insert(list, callback) {
-    const ourList = list;
-    ourList.dateCreated = ourList.dateCreated || new Date();
-    ourList.previousSongIds = [];
-    // increment public id that is used in URLs
-    var largestId = 0;
-    try {
-       largestId = this.findOne({}, {sort: {'publicId': -1}}).publicId;
-    }
-    catch (e) {
-    }
-    ourList.publicId = largestId ? largestId + 1 : 1;
-    if (!ourList.name) {
-      const defaultName = "Default Playlist";
-      let nextLetter = 'A';
-      ourList.name = `${defaultName} ${nextLetter}`;
-
-      while (this.findOne({ name: ourList.name })) {
-        // not going to be too smart here, can go past Z
-        nextLetter = String.fromCharCode(nextLetter.charCodeAt(0) + 1);
-        ourList.name = `${defaultName} ${nextLetter}`;
-      }
-    }
-    ourList.hostToken = newUrlSafeGuid(5, token => HostedPlaylists.findOne({hostToken: token}));
-    ourList.privateId = newUrlSafeGuid(5, id => HostedPlaylists.findOne({privateId: id}));
-
-    // default access/control policies
-    ourList.privateAccess = false;
-    ourList.privateControl = true;
-    ourList.password = null;
-
-    // set state
-    ourList.lastHostCheckIn = null;
-    ourList.isPaused = false;
-
-    return super.insert(ourList, callback);
-  }
 }
 
 export const HostedPlaylists = new HostedPlaylistCollection('playlists');
@@ -52,7 +12,7 @@ export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 // allow inserts (note: best practice is to DENY crud operations and expose them via methods.js, but we can do that later if  we want to)
 HostedPlaylists.allow({
   'insert': function () {
-    return true; 
+    return false; 
   },
   'update': function () {
     return false; 
@@ -193,8 +153,9 @@ HostedPlaylists.helpers({
     return Songs.find({ hostedPlaylistId: this._id, played: true, _id: { $ne: this.currentSongId } }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
+    console.log($);
     var playlistId = this._id;
-    $.each(songs, function( index, value ) {
+    songs.forEach(function(value) {
       Songs.insert({
         spotifyId: value.spotifyId,
         name: value.name,
@@ -217,15 +178,3 @@ HostedPlaylists.helpers({
     return false;
   }
 });
-
-function newUrlSafeGuid(bytes, matcher) {
-  // generate ids until we get a unique one (base64 should prevent collision problems)
-  var id;
-  do
-  {
-    id = base64url(crypto.randomBytes(bytes));
-  }
-  while(matcher(id));
-  
-  return id;
-};
