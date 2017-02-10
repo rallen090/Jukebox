@@ -72,7 +72,7 @@ FlowRouter.route('/p/:_id', {
   },
 });
 
-FlowRouter.route('/p/settings/:_id', {
+FlowRouter.route('/p/:_id/settings', {
   name: 'Jukebox.settings',
   triggersEnter: [acquireSession],
   action() {
