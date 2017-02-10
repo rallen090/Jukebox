@@ -1,22 +1,32 @@
 <template name="settings_page">
 {{#if isOwner}}
+<!-- playlist name -->
 <div class="playlistTitle">
+	<h2 id="playlist-name">
+	  {{playlist.name}}
+	</h2>
+</div>
+
+<div class="playlistTitle">
+	<!-- access -->
 	<div class="ui toggle checkbox">
-	  <input type="checkbox" name="public">
+	  <input type="checkbox" id="private-control-checkbox" checked="{{playlist.privateControl}}">
 	  <label>Private music control&nbsp;&nbsp;
 	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
 	  	<div class="tooltiptext">
-		  	<strong>Private music control</strong> allows only the playlist owner to control a playlist that is actively being hosted from the playlist page.
+		  	<strong>Private music control</strong> allows only the playlist owner to control a playlist that is actively being hosted on the app.
 		  	<br/><br/>
-		  	Disabling this allows anyone who accesses the playlist page to use the music controls. Note that this does not allow others to host the playlist on the iOS app.
-		  	Hosting ability can only be shared with others by sending a host link from the playlist page.
+		  	Disabling this allows anyone who accesses the playlist page to use the music controls. Note that this does not allow others to host the playlist on the app.
+		  	Hosting ability can only be shared with others by the owner sending a 'host URL' from the playlist page.
 	  	</div>
 	  	</span>
 	  </label>
 	</div>
 	<br/><br/>
+
+	<!-- control -->
 	<div class="ui toggle checkbox" >
-	  <input type="checkbox" name="public">
+	  <input type="checkbox" id="private-access-checkbox" checked="{{playlist.privateAccess}}">
 	  	<label>Private access&nbsp;&nbsp;
 	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
 	  	<div class="tooltiptext">
@@ -28,23 +38,40 @@
 	  	</label>
 	</div>
 	<br/><br/>
+
+	<!-- password -->
 	<div class="ui form">
 	  <div class="field">
-	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
-	  	<div class="tooltiptext">
-		  	<strong>Setting a password</strong> will restrict access to your playlist page with the password.
-	  	</div>
-	  	</span>
-	    <label style="color: white">Require password</label>
-	    <input type="password" placeholder="No password required">
+	    <label style="color: white">Require password&nbsp;&nbsp;
+	    	<span class="tooltip"><i class="fa fa-info-circle"></i>
+		  	<div class="tooltiptext">
+			  	<strong>Setting a password</strong> will restrict access to your playlist page with the password.
+		  	</div>
+		  	</span>
+	    </label>
+	    <input type="password" id="password-input" placeholder="No password required" value="{{playlist.password}}">
 	  </div>
 	</div>
-	<br/><br/>
+	<br/>
+
+	<!-- buttons -->
+	<button class="ui button" id="cancel">
+	  Cancel
+	</button>
 	<button class="ui button" id="save">
-	  Save
+	  Save<div id="save-loading-icon" class="ui active inline loader" style="display: none;"></div>
 	</button>
 	</div>
+
+	<!-- confirmation -->
+	<div class="ui basic modal">
+	  <div id="save-message" class="ui icon header">
+	  </div>
+	  <div class="actions">
+	    <div id="save-message-button" class="ui inverted ok button">
+	      OK
+	    </div>
+	  </div>
+	</div>
 {{/if}}
-<p>{{playlist.privateAccess}}</p>
-<p>{{playlist.privateControl}}</p>
 </template>

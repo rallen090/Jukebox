@@ -4,11 +4,19 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 
 import { Users } from './api/users.js';
 import { HostedPlaylists } from './api/hosted-playlists.js';
+
+import './services/spotify.js';
  
 import './settings.html';
 
+var playlistId = null;
+
 Template.settings_page.onCreated(function settingsOnCreated() {
+    // verify that we are authenticated w/ spotify so that we have an access token to use for saving
+    acquireSpotifyAccessToken(/* reacquire */false, /* queuedAction */ null);
+
     this.getPlaylistId = () => FlowRouter.getParam('_id');
+    playlistId = this.getPlaylistId();
     this.subscribe('currentPlaylist', this.getPlaylistId());
 });
 
@@ -29,13 +37,57 @@ Template.settings_page.helpers({
 
       var playlistUserId = playlist.userId;
       return playlistUserId === Session.get("jukebox-active-user-id");
+  },
+  privateAccess(){
+    var playlist = HostedPlaylists.findOne();
+    return playlist && playlist.privateAccess;
+  },
+  privateControl(){
+    var playlist = HostedPlaylists.findOne();
+    return playlist && playlist.privateAccess;
   }
 });
 
 Template.settings_page.events({
     'click #save'(event) {
-        // Meteor.call('updateSettings', playlistId, authToken, settings, function(error, result){
+        $('save-loading-icon').show();
 
-        // });
+        var authToken = acquireSpotifyAccessToken(/* reacquire */false, /* queuedAction */ null);
+        var playlist = HostedPlaylists.findOne();
+
+        if(!playlist){
+          return;
+        }
+
+        var privateAccess = $('#private-access-checkbox').is(":checked");
+        var privateControl = $('#private-control-checkbox').is(":checked");
+        var password = $('#password-input').val();
+
+        var settings = {
+          privateAccess: privateAccess,
+          privateControl: privateControl,
+          password: password
+        };
+
+        Meteor.call('updateSettings', playlist._id, authToken, settings, function(error, result){
+          if(result === true){
+            $('#save-message').html("Playlist saved!");
+            $('#save-message-button').addClass('green');
+          }
+          else{
+            $('#save-message').html("Failed to save playlist");
+            $('#save-message-button').addClass('red');
+          }
+
+          $('.ui.basic.modal')
+            .modal({
+              onApprove : function() {
+                window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
+              }})
+            .modal('show');
+        });
     },
+    'click #cancel'(event) {
+      window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
+    }
 });
