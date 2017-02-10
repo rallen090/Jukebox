@@ -13,6 +13,7 @@ import '../imports/welcome.js';
 import '../imports/debug.js';
 import '../imports/search.js';
 import '../imports/auth.js';
+import '../imports/settings.js';
 import '../imports/app-body.js';
 
 FlowRouter.route('/', {
@@ -68,6 +69,14 @@ FlowRouter.route('/p/:_id', {
   triggersEnter: [acquireSession],
   action() {
     BlazeLayout.render('App_body', { main: 'playlist_page' });
+  },
+});
+
+FlowRouter.route('/p/settings/:_id', {
+  name: 'Jukebox.settings',
+  triggersEnter: [acquireSession],
+  action() {
+    BlazeLayout.render('App_body', { main: 'settings_page' });
   },
 });
 

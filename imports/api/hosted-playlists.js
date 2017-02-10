@@ -45,10 +45,6 @@ class HostedPlaylistCollection extends Mongo.Collection {
 
     return super.insert(ourList, callback);
   }
-  remove(selector, callback) {
-    Songs.remove({ hostedPlaylistId: selector });
-    return super.remove(selector, callback);
-  }
 }
 
 export const HostedPlaylists = new HostedPlaylistCollection('playlists');
@@ -57,6 +53,12 @@ export const HostedPlaylists = new HostedPlaylistCollection('playlists');
 HostedPlaylists.allow({
   'insert': function () {
     return true; 
+  },
+  'update': function () {
+    return false; 
+  },
+  'remove': function () {
+    return false; 
   }
 });
 

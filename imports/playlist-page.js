@@ -85,15 +85,11 @@ Template.playlist_page.helpers({
     return playlist && playlist.previousSongIds.length > 0 && playlist.previousSongs().count() !== 0;
   },
   isOwner() {
+    return isOwnerInternal()
+  },
+  isControllable() {
     var playlist = HostedPlaylists.findOne();
-
-    // fall out if this playlist does not exist
-    if(!playlist){
-      return false;
-    }
-
-    var playlistUserId = playlist.userId;
-    return playlistUserId === Session.get("jukebox-active-user-id");
+    return playlist && (!playlist.privateControl || isOwnerInternal());
   },
   hasVoted(votes){
     var userId = Session.get("jukebox-active-user-id");
@@ -188,3 +184,15 @@ function getHostInfoInternal(){
   var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
   return hostToken;
 };
+
+function isOwnerInternal(){
+  var playlist = HostedPlaylists.findOne();
+
+  // fall out if this playlist does not exist
+  if(!playlist){
+    return false;
+  }
+
+  var playlistUserId = playlist.userId;
+  return playlistUserId === Session.get("jukebox-active-user-id");
+}

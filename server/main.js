@@ -76,5 +76,14 @@ Meteor.methods({
 		var id = Users.insert({});
 		Users.update(id, {$set: { spotifyAuthToken: token }});
 		return id;
-  }
+  	},
+	updateSettings (playlistId, authToken, settings) {
+		var user = Users.findOne({spotifyAuthToken: authToken});
+		var playlist = HostedPlaylists.findOne(playlistId);
+		if(user && playlist && user._id === playlist.userId){
+		  HostedPlaylists.update(playlistId, {$set: settings});
+		  return true;
+		}
+		return false;
+	},
 });
