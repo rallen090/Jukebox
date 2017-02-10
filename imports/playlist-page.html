@@ -1,16 +1,8 @@
 <template name="playlist_page">
 
 <div class="playlistTitle">
-	
-	<div class="playlistShare">
-		<p>
-    <a href="{{getShareLinkByOS}}">
-      <span class="playlistShareId"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
-    </a>
-		</p>
-	</div>
   <div class="playlistShare">
-    <a id="save-action"><span class="playlistShareId"><i class="fa fa-floppy-o" aria-hidden="true"></i></span></a>
+    <a id="settings-action"><span class="playlistShareId"><i class="fa fa-cog fa-1x" aria-hidden="true"></i></span></a>
   </div>
 
 	<h2 id="playlist-name">
@@ -18,6 +10,19 @@
 	</h2>
 	
 </div>
+
+<!-- <div class="playlistTitle">
+  <div class="playlistShare">
+    <a id="save-action"><span class="playlistShareId"><i class="fa fa-floppy-o" aria-hidden="true"></i></span></a>
+  </div>
+  <div class="playlistShare">
+    <p>
+    <a href="{{getShareLinkByOS}}">
+      <span class="playlistShareId"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
+    </a>
+    </p>
+  </div>
+</div> -->
 
 <!--
   <div>
@@ -31,22 +36,22 @@
   {{> search playlistId=playlist._id}}
 
   <!-- music player - TODO - complete this -->
-  <!--
+  {{#if isControllable}}
   <div class="musicPlayer">
   <div class="musicActions">
-    <span class="musicAction">
-      <a id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
-      </span>
-      <span class="musicAction">
-      <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
+    <div class="musicAction">
+      <a style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
+      </div>
+      <div class="musicAction">
+      <!-- <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a> -->
       <a id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
-      </span>
-      <span class="musicAction">
+      </div>
+      <div class="musicAction">
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
-    </span>
+    </div>
     </div>
   </div>
-  -->
+  {{/if}}
 
   <!-- current songs -->
   <div class="playlistContainer">
