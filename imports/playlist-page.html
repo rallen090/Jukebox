@@ -1,28 +1,26 @@
 <template name="playlist_page">
 
 <div class="playlistTitle">
-  <div class="playlistShare">
-    <a id="settings-action"><span class="playlistShareId"><i class="fa fa-cog fa-1x" aria-hidden="true"></i></span></a>
+  <div class="playlistSettings icon-action">
+    <a id="settings-action"><span class="icon-content"><i class="fa fa-cog fa-1x" aria-hidden="true"></i></span></a>
   </div>
-
-	<h2 id="playlist-name">
-	  {{playlist.name}}
-	</h2>
-	
+  <h2 id="playlist-name">
+    {{playlist.name}}
+  </h2>
 </div>
 
-<!-- <div class="playlistTitle">
-  <div class="playlistShare">
-    <a id="save-action"><span class="playlistShareId"><i class="fa fa-floppy-o" aria-hidden="true"></i></span></a>
-  </div>
-  <div class="playlistShare">
+<div class="actionBar">
+  <div class="playlistShare icon-action">
     <p>
     <a href="{{getShareLinkByOS}}">
-      <span class="playlistShareId"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
+      <span class="icon-content"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
     </a>
     </p>
   </div>
-</div> -->
+  <div class="playlistSave icon-action">
+    <a id="save-action"><span class="icon-content"><i class="fa fa-floppy-o" aria-hidden="true"></i></span></a>
+  </div>
+</div>
 
 <!--
   <div>
@@ -39,14 +37,14 @@
   {{#if isControllable}}
   <div class="musicPlayer">
   <div class="musicActions">
-    <div class="musicAction">
+    <div class="musicAction icon-action">
       <a style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
       </div>
-      <div class="musicAction">
+      <div class="musicAction icon-action">
       <!-- <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a> -->
       <a id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
       </div>
-      <div class="musicAction">
+      <div class="musicAction icon-action">
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>

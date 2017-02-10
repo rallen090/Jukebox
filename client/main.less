@@ -404,8 +404,8 @@ to   { transform: rotate(360deg) }
 }
 
 .playlistShare {
-	float: right;
-	padding: 5px;
+	float: left;
+	vertical-align: middle;
 }
 
 .playlistShare p {
@@ -413,22 +413,32 @@ to   { transform: rotate(360deg) }
 	text-align: center;
 }
 
-.playlistShare .playlistShareId {
+.playlistShare .icon-content, .playlistSave .icon-content, .playlistSettings .icon-content {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 30px;
 	font-weight: bold;
 }
 
-.playlistShare .fa {
-	margin-right: 5px;
+.playlistSave, .playlistSettings {
+	float: right;
+	vertical-align: middle;
 }
 
-.playlistShare a, .musicAction a{
+.playlistSave p, .playlistSettings p {
+	font-size: 12px;
+	text-align: center;
+}
+
+.playlistSettings {
+	padding: 8px 0;
+}
+
+.icon-action a{
 	color: @color-primary;
 	text-decoration: none;
 }
 
-html.nontouch .playlistShare:hover, .playlistShare:active, html.nontouch .musicAction:hover, .musicAction:active{
+html.nontouch .icon-action:hover, .icon-action:active{
 	cursor: pointer; 
 	cursor: hand;
 }
@@ -439,7 +449,7 @@ html.nontouch .voteContainer:hover, .voteContainer:active{
 	color: white;
 }
 
-html.nontouch .playlistShare:hover span, .playlistShare:active span, html.nontouch .musicAction:hover a, .musicAction:active a{
+html.nontouch .icon-action:hover span, .icon-action:active span, html.nontouch .icon-action:hover a, .icon-action:active a{
 	cursor: pointer; 
 	cursor: hand;
 	color: white;
@@ -603,6 +613,17 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	.rounded;
 }
 
+.actionBar{
+	background: rgba(0, 0, 0, 0.7);
+	padding: 15px 15px 15px 15px;	
+	margin: 0px 0px 10px 0px;
+	display: block;
+	text-decoration: none;
+	color: #ccc;
+	.rounded;
+	height: 60px;
+}
+
 .musicPlayer{
 	background: rgba(0, 0, 0, 0.7);
 	padding: 15px 15px 15px 15px;	
@@ -619,6 +640,8 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
    width:200px;
    height: 100%;
    margin: 0 auto;
+   /* compensate for the fact that we can't set the musicActions to exactly 33% since they wrap */
+   padding-left: 10px;
 }
 
 .musicAction{
