@@ -3,20 +3,48 @@
 <div class="playlistTitle">
 	<div class="ui toggle checkbox">
 	  <input type="checkbox" name="public">
-	  <label>Private access to playlist</label>
+	  <label>Private music control&nbsp;&nbsp;
+	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
+	  	<div class="tooltiptext">
+		  	<strong>Private music control</strong> allows only the playlist owner to control a playlist that is actively being hosted from the playlist page.
+		  	<br/><br/>
+		  	Disabling this allows anyone who accesses the playlist page to use the music controls. Note that this does not allow others to host the playlist on the iOS app.
+		  	Hosting ability can only be shared with others by sending a host link from the playlist page.
+	  	</div>
+	  	</span>
+	  </label>
 	</div>
-	<br/>
-	<div class="ui toggle checkbox">
+	<br/><br/>
+	<div class="ui toggle checkbox" >
 	  <input type="checkbox" name="public">
-	  <label>Private music control</label>
+	  	<label>Private access&nbsp;&nbsp;
+	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
+	  	<div class="tooltiptext">
+		  	<strong>Private access</strong> makes your playlist accessible only through a shareable URL that can be sent from the playlist page.
+		  	<br/><br/>
+		  	Your playlist will not show up as a nearby playlist by location nor can it by accessed with a juke code (e.g. #123).
+	  	</div>
+	  	</span>
+	  	</label>
 	</div>
-	<br/>
+	<br/><br/>
+	<div class="ui form">
+	  <div class="field">
+	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
+	  	<div class="tooltiptext">
+		  	<strong>Setting a password</strong> will restrict access to your playlist page with the password.
+	  	</div>
+	  	</span>
+	    <label style="color: white">Require password</label>
+	    <input type="password" placeholder="No password required">
+	  </div>
+	</div>
+	<br/><br/>
 	<button class="ui button" id="save">
 	  Save
 	</button>
 	</div>
 {{/if}}
-
 <p>{{playlist.privateAccess}}</p>
 <p>{{playlist.privateControl}}</p>
 </template>
