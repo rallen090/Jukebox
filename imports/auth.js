@@ -19,18 +19,22 @@ Template.auth_page.onRendered(function authOnRendered(){
     var userIdFromSession = Session.get(sessionKey);
     // if the token matches an existing user, we switch to that new userId to keep in sync  
     //var updatedUserId = Users.updateUserWithAuthToken(userIdFromSession, token);
-    var updatedUserId = ReactiveMethod.call('updateUserWithAuthToken', userIdFromSession, token);
-    Session.setPersistent(sessionKey, updatedUserId);
+    var updatedUserId = Meteor.call('updateUserWithAuthToken', userIdFromSession, token, function(error, result){
+        var updatedUserId = result;
+        if(updatedUserId){
+            Session.setPersistent(sessionKey, updatedUserId);
+        }
 
-    // then read back our redirect so we can return to wherever we were
-    const redirectKey = "jukebox-spotify-auth-redirect";
-    var originalUrl = Session.get(redirectKey);
-    Session.clear(redirectKey);
+        // then read back our redirect so we can return to wherever we were
+        const redirectKey = "jukebox-spotify-auth-redirect";
+        var originalUrl = Session.get(redirectKey);
+        Session.clear(redirectKey);
 
-    if(!originalUrl){
-      window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=false";
-    }
-    else{
-      window.location = originalUrl;
-    }
+        if(!originalUrl){
+          window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=false";
+        }
+        else{
+          window.location = originalUrl;
+      }
+    });
 });

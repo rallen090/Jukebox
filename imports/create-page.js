@@ -14,8 +14,6 @@ var SpotifyPlaylists = new Meteor.Collection(null);
 var useSpotify = () => FlowRouter.getQueryParam("useSpotify");
 
 Template.create_page.onCreated(function createPageOnCreated() {
-  this.subscribe('playlists');
-
   var useSpotifyParam = useSpotify();
   var loadFromSpotify = useSpotifyParam && (useSpotifyParam === true || useSpotifyParam === "true");
 
@@ -85,17 +83,25 @@ Template.create_page.events({
 
     var playlistSongs = [];
     function savePlaylistAndSongs(name, spotifyOwnerId, songs){
-      var playlistId = HostedPlaylists.insert({
+      var playlist = {
         name: name,
         userId: Session.get("jukebox-active-user-id"),
         latitude: latitude,
         longitude: longitude
-      })
-      var newPlaylist = HostedPlaylists.findOne(playlistId);
-      newPlaylist.initializeSongs(songs);
+      };
+      Meteor.call('createPlaylist', playlist, songs, function(error, result){
+        if(error || !result){
+          window.alert("Error creating playlist! Please try again.");
+          console.log(error);
+          console.log(result);
+          //window.location.href = window.location.origin;
+        }
 
-      // then redirect to the new playlist
-      FlowRouter.go('Jukebox.playlist', { _id: newPlaylist.publicId });
+        var privateId = result;
+
+        // then redirect to the new playlist
+        FlowRouter.go('Jukebox.playlist', { _id: privateId });
+      });
     };
     
     // if a spotify playlist was chosen, then populate songs from that
