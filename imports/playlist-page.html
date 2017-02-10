@@ -1,9 +1,11 @@
 <template name="playlist_page">
 
 <div class="playlistTitle">
+  {{#if isOwner}}
   <div class="playlistSettings icon-action">
     <a id="settings-action"><span class="icon-content"><i class="fa fa-cog fa-1x" aria-hidden="true"></i></span></a>
   </div>
+  {{/if}}
   <h2 id="playlist-name">
     {{playlist.name}}
   </h2>
