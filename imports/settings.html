@@ -1,0 +1,22 @@
+<template name="settings_page">
+{{#if isOwner}}
+<div class="playlistTitle">
+	<div class="ui toggle checkbox">
+	  <input type="checkbox" name="public">
+	  <label>Private access to playlist</label>
+	</div>
+	<br/>
+	<div class="ui toggle checkbox">
+	  <input type="checkbox" name="public">
+	  <label>Private music control</label>
+	</div>
+	<br/>
+	<button class="ui button" id="save">
+	  Save
+	</button>
+	</div>
+{{/if}}
+
+<p>{{playlist.privateAccess}}</p>
+<p>{{playlist.privateControl}}</p>
+</template>
