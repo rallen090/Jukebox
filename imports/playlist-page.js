@@ -338,3 +338,7 @@ function isPlayingInternal(){
 function isHostActive(lastHostCheckIn){
   return ((new Date() - lastHostCheckIn) / 1000 < 10);
 };
+
+function refreshTimeout(){
+
+};
