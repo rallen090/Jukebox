@@ -43,7 +43,7 @@ Template.create_page.onCreated(function createPageOnCreated() {
 Template.create_page.onRendered(function createPageOnRendered() {
     var useSpotifyParam = useSpotify();
     if((useSpotifyParam !== null && (useSpotifyParam === "false" || useSpotifyParam === false))){
-      $('#invalidPlaylistAlert').show();
+      $('#invalidAlert').show();
     }
 
     getCurrentCoordinates(function(position){
