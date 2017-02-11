@@ -189,18 +189,18 @@ Template.playlist_page.events({
     window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + currentPlaylistId + "/settings";
   },
   'click #playSong'(event){
-    if(isOwnerInternal()){
-      getHostLinkInternal(function(link){
-        handleLink(link);
+
+    var playlist = HostedPlaylists.findOne();
+    if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
+      Meteor.call('unpauseSong', playlist._id, /* token */ null, function(error, result){
       });
-      return;
     }
     else{
-      var playlist = HostedPlaylists.findOne();
-      if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('unpauseSong', playlist._id, /* token */ null, function(error, result){
-          alert("done");
+      if(isOwnerInternal()){
+        getHostLinkInternal(function(link){
+          handleLink(link);
         });
+        return;
       }
       else{
         alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -209,9 +209,8 @@ Template.playlist_page.events({
   },
   'click #pauseSong'(event){
       var playlist = HostedPlaylists.findOne();
-      if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
+      if(!playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('pauseSong', playlist._id, /* token */ null, function(error, result){
-          alert("done");
         });
       }
       else{
@@ -230,7 +229,6 @@ Template.playlist_page.events({
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('playNextSong', playlist._id, /* token */ null, function(error, result){
-          alert("done");
         });
       }
       else{
@@ -249,7 +247,6 @@ Template.playlist_page.events({
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('playPreviousSong', playlist._id, /* token */ null, function(error, result){
-          alert("done");
         });
       }
       else{

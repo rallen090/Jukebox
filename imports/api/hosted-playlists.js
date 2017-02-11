@@ -94,7 +94,7 @@ HostedPlaylists.helpers({
 
     // to play the next song, we look at this playlist's songs and grab unplayed sorted by votes then by date
     var nextSong = Songs.findOne({ hostedPlaylistId: this._id, played: false }, {sort: { voteCount: -1, dateAdded: 1 }});
-    
+
     // return null if we have no more songs
     if(!nextSong){
       HostedPlaylists.update(this._id, {
@@ -158,7 +158,7 @@ HostedPlaylists.helpers({
 
       // set up previous song
       if(this.previousSongIds.length > 0){
-        var previousSongId = this.previousSongIds[previousSongIds.length - 1];
+        var previousSongId = this.previousSongIds[this.previousSongIds.length - 1];
         var previousSong = Songs.findOne(previousSongId);
         newCurrentSpotifyId = previousSong.spotifyId;
 
@@ -191,7 +191,7 @@ HostedPlaylists.helpers({
     if(nextSong){
       nextSongId = nextSong.spotifyId;
     }
-    var currentSongId = (this.previousSongIds && this.previousSongIds.length >= 1) ? this.previousSongIds[this.previousSongIds.length - 1] : null;
+    var currentSongId = this.currentSongId;
 
     return {
       currentSong: currentSongId,
