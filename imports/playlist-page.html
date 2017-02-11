@@ -43,8 +43,11 @@
       <a style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
       </div>
       <div class="musicAction icon-action">
-      <!-- <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a> -->
-      <a id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
+      {{#if isPlaying}}
+        <a id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
+      {{else}}
+        <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
+      {{/if}}
       </div>
       <div class="musicAction icon-action">
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>

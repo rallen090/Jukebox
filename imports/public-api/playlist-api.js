@@ -27,7 +27,7 @@ if (Meteor.isServer) {
         return { message: "Playlist does not exist", endOfPlaylist: "true" };
       }
 
-      var nextSong = playlist.playNextSong();
+      var nextSong = playlist.playNextSong(/* fromtHost */ true);
 
       if(!nextSong){
         return { message: "Playlist is now empty", endOfPlaylist: "true" };
@@ -65,7 +65,7 @@ if (Meteor.isServer) {
         return FAILURE_403;
       }
 
-      var nextSongId = playlist.playNextSong();
+      var nextSongId = playlist.playNextSong(/* fromtHost */ true);
 
       if(!nextSong){
         return { success: false, message: "Playlist is now empty", nextSong: null, endOfPlaylist: "true" };

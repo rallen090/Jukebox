@@ -92,9 +92,7 @@ Template.create_page.events({
       Meteor.call('createPlaylist', playlist, songs, function(error, result){
         if(error || !result){
           window.alert("Error creating playlist! Please try again.");
-          console.log(error);
-          console.log(result);
-          //window.location.href = window.location.origin;
+          window.location.href = window.location.origin;
         }
 
         var privateId = result;
