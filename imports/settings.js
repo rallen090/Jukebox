@@ -70,7 +70,9 @@ Template.settings_page.events({
         };
 
         Meteor.call('updateSettings', playlist._id, authToken, settings, function(error, result){
-          if(result === true){
+          // the return value is the privateId since we want to make sure we return w/ that in the case where access became private
+          var privateId = result;
+          if(privateId){
             $('#save-message').html("Playlist saved!");
             $('#save-message-button').addClass('green');
           }
@@ -82,7 +84,7 @@ Template.settings_page.events({
           $('.ui.basic.modal')
             .modal({
               onApprove : function() {
-                window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + playlistId;
+                window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + privateId;
               }})
             .modal('show');
         });

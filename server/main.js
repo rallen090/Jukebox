@@ -25,14 +25,14 @@ Meteor.publish('currentPlaylist', function (playlistId) {
   }
 
   var intPlaylistId = parseInt(playlistId, 10);
-  var publicPlaylist = HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0 } });
+  var publicPlaylist = HostedPlaylists.findOne({publicId: intPlaylistId});
 
   if(publicPlaylist){
-    if(publicPlaylist.isPrivate){
+    if(publicPlaylist.privateAccess){
       return null;
     }
     else{
-      return publicPlaylist;
+      return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0 } });
     }
   }
 
@@ -129,9 +129,9 @@ Meteor.methods({
 		var playlist = HostedPlaylists.findOne(playlistId);
 		if(user && playlist && user._id === playlist.userId){
 		  HostedPlaylists.update(playlistId, {$set: settings});
-		  return true;
+		  return playlist.privateId;
 		}
-		return false;
+		return null;
 	},
 });
 
