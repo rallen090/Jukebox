@@ -40,8 +40,28 @@ Meteor.publish('currentPlaylist', function (playlistId) {
   // here at the end in the case where a privateId happened to be purely numeric by chance
   return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0 } });
 });
-Meteor.publish('songs', function () {
-  return Songs.find();
+Meteor.publish('songs', function (playlistId) {
+	var nonNumeric = isNaN(playlistId);
+	var baseId = null;
+	if(!nonNumeric){
+		var id = parseInt(playlistId, 10);
+		var playlist = HostedPlaylists.findOne({publicId: id});
+		if(playlist){
+			baseId = playlist._id;
+		}
+	}
+	else{
+		var playlist = HostedPlaylists.findOne({privateId: playlistId});
+		if(playlist){
+			baseId = playlist._id;
+		}
+	}
+
+	if(!baseId){
+		return null;
+	}
+	
+  	return Songs.find({hostedPlaylistId: baseId});
 });
 
 Meteor.startup(() => {

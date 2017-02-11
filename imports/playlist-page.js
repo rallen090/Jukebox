@@ -17,6 +17,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   currentPlaylistId = this.getPlaylistId();
 
   this.subscribe('currentPlaylist', this.getPlaylistId());
+  this.subscribe('songs', this.getPlaylistId());
 
   // set up reactive checking up if the playlist is active using a timer
   this.isPlaying = new ReactiveVar(false);
@@ -110,8 +111,6 @@ Template.playlist_page.helpers({
     return playlist && (!playlist.privateControl || isOwnerInternal());
   },
   isPlaying(){
-      //     var playlist = HostedPlaylists.findOne();
-      // return playlist && (!playlist.isPaused && playlist.currentSongId && isHostActive(playlist.lastHostCheckIn));
     return Template.instance().isPlaying.get();
   },
   hasVoted(votes){
@@ -247,6 +246,7 @@ Template.playlist_page.events({
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('playPreviousSong', playlist._id, /* token */ null, function(error, result){
+          
         });
       }
       else{
