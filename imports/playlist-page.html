@@ -1,5 +1,5 @@
 <template name="playlist_page">
-
+{{#if playlist}}
 <div class="playlistTitle">
   {{#if isOwner}}
   <div class="playlistSettings icon-action">
@@ -122,4 +122,10 @@
   <!-- we show this as a way to artificially extend the page height, which is used to enable placing the search bar at the top of the page, 
   no matter how big the page is. this is important for mobile since the keyboard can get in the way of search results without being able to scroll -->
   <div id="height-extender" style="height: 1000px; display:none;"></div>
+  {{else}}
+    Playlist either does not exist or is private. 
+    <br/>
+    <br/>
+    For private playlists, you must be sent a shareable URL from the owner for access.
+  {{/if}}
 </template>

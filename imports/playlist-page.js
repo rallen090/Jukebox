@@ -9,8 +9,11 @@ import { Users } from './api/users.js';
 
 import './playlist-page.html';
 
+var currentPlaylistId = null;
+
 Template.playlist_page.onCreated(function playPageOnCreated() {
   this.getPlaylistId = () => FlowRouter.getParam('_id');
+  currentPlaylistId = this.getPlaylistId();
 
   this.subscribe('currentPlaylist', this.getPlaylistId());
 });
@@ -19,6 +22,10 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
   // set up animations (in timeout to allow for load time)
   var self = this;
   setTimeout(function(){
+    if(!self.find('.playlistContainer ul')){
+      return;
+    }
+
     self.find('.playlistContainer ul')._uihooks = {
       insertElement: function (node) {
         $(node).insertAfter($(".playlistContainer li").last()).hide().show('fast');
@@ -169,6 +176,9 @@ Template.playlist_page.events({
         $("#save-action").css('color', 'white');
       });
     }
+  },
+  'click #settings-action'(event){
+    window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + currentPlaylistId + "/settings";
   }
 });
 
