@@ -53,6 +53,8 @@
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>
+      <div id="invalidAlert">
+      </div>
   </div>
   {{/if}}
 
@@ -121,6 +123,21 @@
 
   </div>
   {{/if}}
+
+    <!-- confirmation -->
+  <div class="ui basic modal">
+    <div class="ui icon header">
+      Get the jukebox app to play your playlist
+    </div>
+    <div class="actions">
+      <div id="save-message-button" class="ui inverted ok button">
+        See in iOS app store
+      </div>
+      <div id="save-message-button" class="ui inverted cancel button">
+        Got it
+      </div>
+    </div>
+  </div>
 
   <!-- we show this as a way to artificially extend the page height, which is used to enable placing the search bar at the top of the page, 
   no matter how big the page is. this is important for mobile since the keyboard can get in the way of search results without being able to scroll -->

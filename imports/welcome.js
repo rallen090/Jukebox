@@ -29,7 +29,7 @@ Template.welcome_page.events({
 
     if(!playlist){
       // show invalid input message
-      $('#invalidPlaylistAlert').show();
+      $('#invalidAlert').show();
     } 
     else {
       FlowRouter.go('Jukebox.playlist', { _id: playlistId });

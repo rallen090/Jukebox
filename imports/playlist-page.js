@@ -119,13 +119,11 @@ Template.playlist_page.helpers({
 
     // android
     if (/android/i.test(userAgent)) {
-        console.log("Android " + shareMessage);
         return "sms:?body=" + shareMessage;
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        console.log("iOS " + shareMessage);
         return "sms:&body=" + shareMessage;
     }
 
@@ -180,7 +178,7 @@ Template.playlist_page.events({
   'click #playSong'(event){
     if(isOwnerInternal()){
       getHostLinkInternal(function(link){
-        window.location.href = link;
+        handleLink(link);
       });
       return;
     }
@@ -206,7 +204,7 @@ Template.playlist_page.events({
       else{
         if(isOwnerInternal()){
           getHostLinkInternal(function(link){
-            window.location.href = link;
+            handleLink(link);
           });
           return;
         }
@@ -225,7 +223,7 @@ Template.playlist_page.events({
       else{
         if(isOwnerInternal()){
           getHostLinkInternal(function(link){
-            window.location.href = link;
+            handleLink(link);
           });
           return;
         }
@@ -244,7 +242,7 @@ Template.playlist_page.events({
       else{
         if(isOwnerInternal()){
           getHostLinkInternal(function(link){
-            window.location.href = link;
+            handleLink(link);
           });
           return;
         }
@@ -295,7 +293,10 @@ function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var link = "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+          var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+          var link = (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
+            ? "fb://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId
+            : null;
           if(asyncCallback){
             asyncCallback(link);
           }
@@ -309,6 +310,23 @@ function getHostLinkInternal(asyncCallback){
     }
 
     return getLink(getHostInfoInternal());
+};
+
+function handleLink(link){
+  // TODO: replace w/ our own jukebox URL (it tries deep one first, then we can go to app store if not exist)
+  if(link){
+    window.open("http://appurl.io/iz1pvgvq");
+  }else{
+    $('.ui.basic.modal')
+      .modal({
+        onApprove : function() {
+          window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
+        },
+        onDeny : function() {
+          // noop
+          }})
+      .modal('show');
+  }
 };
 
 function isPlayingInternal(){
