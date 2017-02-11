@@ -83,6 +83,7 @@ Meteor.methods({
 		ourList.password = null;
 
 		// set state
+		ourList.currentSongId = null;
 		ourList.lastHostCheckIn = null;
 		ourList.isPaused = false;
 
