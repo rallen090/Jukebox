@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { ReactiveVar } from 'meteor/reactive-var'
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import { FlowRouter } from 'meteor/kadira:flow-router';
@@ -16,6 +17,16 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   currentPlaylistId = this.getPlaylistId();
 
   this.subscribe('currentPlaylist', this.getPlaylistId());
+
+  // set up reactive checking up if the playlist is active using a timer
+  this.isPlaying = new ReactiveVar(false);
+  var self = this;
+    this.handle = Meteor.setInterval((function() {
+      var playlist = HostedPlaylists.findOne();
+      var isActive = isHostActive(playlist.lastHostCheckIn);
+      var playing = playlist && (!playlist.isPaused && playlist.currentSongId !== null && isActive);
+      self.isPlaying.set(playing);
+    }), 1000);
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
@@ -99,7 +110,9 @@ Template.playlist_page.helpers({
     return playlist && (!playlist.privateControl || isOwnerInternal());
   },
   isPlaying(){
-    return isPlayingInternal();
+      //     var playlist = HostedPlaylists.findOne();
+      // return playlist && (!playlist.isPaused && playlist.currentSongId && isHostActive(playlist.lastHostCheckIn));
+    return Template.instance().isPlaying.get();
   },
   hasVoted(votes){
     var userId = Session.get("jukebox-active-user-id");
@@ -337,8 +350,4 @@ function isPlayingInternal(){
 
 function isHostActive(lastHostCheckIn){
   return ((new Date() - lastHostCheckIn) / 1000 < 10);
-};
-
-function refreshTimeout(){
-
 };

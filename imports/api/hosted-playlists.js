@@ -94,7 +94,7 @@ HostedPlaylists.helpers({
 
     // to play the next song, we look at this playlist's songs and grab unplayed sorted by votes then by date
     var nextSong = Songs.findOne({ hostedPlaylistId: this._id, played: false }, {sort: { voteCount: -1, dateAdded: 1 }});
-
+    
     // return null if we have no more songs
     if(!nextSong){
       HostedPlaylists.update(this._id, {
