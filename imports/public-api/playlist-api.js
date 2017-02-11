@@ -51,7 +51,6 @@ if (Meteor.isServer) {
     post: function () {
       var urlId = this.urlParams.privateId;
       var hostToken = this.bodyParams.hostToken;
-      var hostToken = this.bodyParams.userId;
 
       // invalid post arguments
       if(!urlId || !hostToken){
@@ -67,11 +66,11 @@ if (Meteor.isServer) {
 
       var nextSongId = playlist.playNextSong(/* fromtHost */ true);
 
-      if(!nextSong){
-        return { success: false, message: "Playlist is now empty", nextSong: null, endOfPlaylist: "true" };
+      if(!nextSongId){
+        return { success: false, message: "Playlist is now empty", nextSongId: null, endOfPlaylist: "true" };
       }
 
-      return { success: true, message: "Playing", nextSong: nextSong, endOfPlaylist: "false" };
+      return { success: true, message: "Playing", nextSongId: nextSongId, endOfPlaylist: "false" };
     }
   });
 

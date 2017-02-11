@@ -313,9 +313,10 @@ function getHostLinkInternal(asyncCallback){
 };
 
 function handleLink(link){
+  console.log(link);
   // TODO: replace w/ our own jukebox URL (it tries deep one first, then we can go to app store if not exist)
   if(link){
-    window.open("http://appurl.io/iz1pvgvq");
+    window.open("http://appurl.io/iz1qh8m6");
   }else{
     $('.ui.basic.modal')
       .modal({
