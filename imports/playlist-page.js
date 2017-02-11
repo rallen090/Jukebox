@@ -179,7 +179,10 @@ Template.playlist_page.events({
   },
   'click #playSong'(event){
     if(isOwnerInternal()){
-      var hostLink = getHostLinkInternal();
+      getHostLinkInternal(function(link){
+        window.location.href = link;
+      });
+      return;
     }
     else{
       var playlist = HostedPlaylists.findOne();
@@ -202,8 +205,10 @@ Template.playlist_page.events({
       }
       else{
         if(isOwnerInternal()){
-          var hostLink = getHostLinkInternal();
-          window.location.href = hostLink;
+          getHostLinkInternal(function(link){
+            window.location.href = link;
+          });
+          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -219,8 +224,10 @@ Template.playlist_page.events({
       }
       else{
         if(isOwnerInternal()){
-          var hostLink = getHostLinkInternal();
-          window.location.href = hostLink;
+          getHostLinkInternal(function(link){
+            window.location.href = link;
+          });
+          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -236,8 +243,10 @@ Template.playlist_page.events({
       }
       else{
         if(isOwnerInternal()){
-          var hostLink = getHostLinkInternal();
-          window.location.href = hostLink;
+          getHostLinkInternal(function(link){
+            window.location.href = link;
+          });
+          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -246,6 +255,7 @@ Template.playlist_page.events({
   },
 });
 
+// has to make async and sync since sync does not work in event handlers
 function getHostInfoInternal(asyncCallback){
   var playlist = HostedPlaylists.findOne();
 
@@ -257,13 +267,14 @@ function getHostInfoInternal(asyncCallback){
   var authToken = Session.get("jukebox-spotify-access-token");
 
   if(asyncCallback){
-    var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
-    return hostToken;
-  }
-  else{
     Meteor.call('getHostInfo', playlistId, authToken, function(error, result){
       asyncCallback(result);
     });
+  }
+  else
+  {
+    var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
+    return hostToken;
   }
 };
 
@@ -279,23 +290,25 @@ function isOwnerInternal(){
   return playlistUserId === Session.get("jukebox-active-user-id");
 };
 
+// has to make async and sync since sync does not work in event handlers
 function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+          var link = "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+          if(asyncCallback){
+            asyncCallback(link);
+          }
+          return link;
         };
     };
+
     if(asyncCallback){
       getHostInfoInternal(getLink);
+      return;
     }
 
-    var info = getHostInfoInternal(asyncCallback);
-    if(info && info.privateId && info.hostToken){
-      return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
-    }
-
-    return null;
+    return getLink(getHostInfoInternal());
 };
 
 function isPlayingInternal(){
