@@ -98,6 +98,9 @@ Template.playlist_page.helpers({
     var playlist = HostedPlaylists.findOne();
     return playlist && (!playlist.privateControl || isOwnerInternal());
   },
+  isPlaying(){
+    return isPlayingInternal();
+  },
   hasVoted(votes){
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1;
@@ -129,13 +132,7 @@ Template.playlist_page.helpers({
     return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
   },
   getHostLink() {
-    var info = getHostInfoInternal();
-    console.log(info);
-    if(info && info.privateId && info.hostToken){
-      return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
-    }
-
-    return null;
+    return getHostLinkInternal();
   },
 });
 
@@ -179,10 +176,77 @@ Template.playlist_page.events({
   },
   'click #settings-action'(event){
     window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + currentPlaylistId + "/settings";
-  }
+  },
+  'click #playSong'(event){
+    if(isOwnerInternal()){
+      var hostLink = getHostLinkInternal();
+    }
+    else{
+      var playlist = HostedPlaylists.findOne();
+      if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
+        Meteor.call('unpauseSong', playlist._id, /* token */ null, function(error, result){
+          alert("done");
+        });
+      }
+      else{
+        alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
+      }
+    }
+  },
+  'click #pauseSong'(event){
+      var playlist = HostedPlaylists.findOne();
+      if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
+        Meteor.call('pauseSong', playlist._id, /* token */ null, function(error, result){
+          alert("done");
+        });
+      }
+      else{
+        if(isOwnerInternal()){
+          var hostLink = getHostLinkInternal();
+          window.location.href = hostLink;
+        }
+        else{
+          alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
+        }
+      }
+  },
+  'click #playNextSong'(event){
+      var playlist = HostedPlaylists.findOne();
+      if(isHostActive(playlist.lastHostCheckIn)){
+        Meteor.call('playNextSong', playlist._id, /* token */ null, function(error, result){
+          alert("done");
+        });
+      }
+      else{
+        if(isOwnerInternal()){
+          var hostLink = getHostLinkInternal();
+          window.location.href = hostLink;
+        }
+        else{
+          alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
+        }
+      }
+  },
+  'click #playPreviousSong'(event){
+      var playlist = HostedPlaylists.findOne();
+      if(isHostActive(playlist.lastHostCheckIn)){
+        Meteor.call('playPreviousSong', playlist._id, /* token */ null, function(error, result){
+          alert("done");
+        });
+      }
+      else{
+        if(isOwnerInternal()){
+          var hostLink = getHostLinkInternal();
+          window.location.href = hostLink;
+        }
+        else{
+          alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
+        }
+      }
+  },
 });
 
-function getHostInfoInternal(){
+function getHostInfoInternal(asyncCallback){
   var playlist = HostedPlaylists.findOne();
 
   if(!playlist){
@@ -191,8 +255,16 @@ function getHostInfoInternal(){
 
   var playlistId = playlist._id;
   var authToken = Session.get("jukebox-spotify-access-token");
-  var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
-  return hostToken;
+
+  if(asyncCallback){
+    var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
+    return hostToken;
+  }
+  else{
+    Meteor.call('getHostInfo', playlistId, authToken, function(error, result){
+      asyncCallback(result);
+    });
+  }
 };
 
 function isOwnerInternal(){
@@ -205,4 +277,32 @@ function isOwnerInternal(){
 
   var playlistUserId = playlist.userId;
   return playlistUserId === Session.get("jukebox-active-user-id");
-}
+};
+
+function getHostLinkInternal(asyncCallback){
+    function getLink(result){
+        var info = result;
+        if(info && info.privateId && info.hostToken){
+          return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+        };
+    };
+    if(asyncCallback){
+      getHostInfoInternal(getLink);
+    }
+
+    var info = getHostInfoInternal(asyncCallback);
+    if(info && info.privateId && info.hostToken){
+      return "jukeboxapp://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+    }
+
+    return null;
+};
+
+function isPlayingInternal(){
+  var playlist = HostedPlaylists.findOne();
+  return playlist && (!playlist.isPaused && playlist.currentSongId && isHostActive(playlist.lastHostCheckIn));
+};
+
+function isHostActive(lastHostCheckIn){
+  return ((new Date() - lastHostCheckIn) / 1000 < 10);
+};

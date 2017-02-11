@@ -69,11 +69,13 @@ HostedPlaylists.publicFields = {
 };
 
 HostedPlaylists.helpers({
-  playNextSong() {
-    // check in
-    HostedPlaylists.update(this._id, {
-      $set: { lastHostCheckIn: new Date() },
-    });
+  playNextSong(fromHost) {
+    // check in (only do this from the host app)
+    if(fromHost === true){
+      HostedPlaylists.update(this._id, {
+        $set: { lastHostCheckIn: new Date() },
+      });
+    }
 
     // handle pause
     if(this.isPaused){
@@ -82,7 +84,8 @@ HostedPlaylists.helpers({
       });
 
       // the 'now playing' song is always the latest in the previous song queue, so we just return that again
-      if(this.previousSongIds && this.previousSongIds.length >= 1){
+      // ALSO, we only handle this from the host - otherwise, we actually perform the skip
+      if(fromHost === true && this.previousSongIds && this.previousSongIds.length >= 1){
         return this.previousSongIds[this.previousSongIds.length - 1];
       }
       // we should not end up in a case where the playlist was paused before a song began, but just in case,
@@ -126,6 +129,58 @@ HostedPlaylists.helpers({
     // and return the actual spotify id to the streaming service
     return nextSong.spotifyId;
   },
+  playPreviousSong(fromHost) {
+    // check in (only do this from the host app)
+    if(fromHost === true){
+      HostedPlaylists.update(this._id, {
+        $set: { lastHostCheckIn: new Date() },
+      });
+    }
+
+    // handle pause
+    if(this.isPaused){
+      HostedPlaylists.update(this._id, {
+        $set: { isPaused: false },
+      });
+    }
+
+    // store previous songs in order
+    var newCurrentSpotifyId;
+    if(this.previousSongIds){
+      // add current song back to queue
+      var songIdToAddBack = this.previousSongIds.pop();
+      HostedPlaylists.update(this._id, {
+        $pop: { previousSongIds: songIdToAddBack},
+      });
+      Songs.update(songIdToAddBack, {
+        $set: { played: false },
+      });
+
+      // set up previous song
+      if(this.previousSongIds.length > 0){
+        var previousSongId = this.previousSongIds[previousSongIds.length - 1];
+        var previousSong = Songs.findOne(previousSongId);
+        newCurrentSpotifyId = previousSong.spotifyId;
+
+        Songs.update(previousSongId, {
+          $set: { played: true },
+        });
+        HostedPlaylists.update(this._id, {
+          $set: { currentSongId: previousSongId },
+        });
+      }
+      else{
+        // if no previous song, just set the current song to nothing
+        HostedPlaylists.update(this._id, {
+          $set: { currentSongId: null },
+        });
+        return null;
+      }
+    }
+
+    // and return the actual spotify id to the streaming service
+    return newCurrentSpotifyId;
+  },
   checkStatus(){
     // check in
     HostedPlaylists.update(this._id, {
@@ -153,7 +208,6 @@ HostedPlaylists.helpers({
     return Songs.find({ hostedPlaylistId: this._id, played: true, _id: { $ne: this.currentSongId } }, { sort: { voteCount: -1 } });
   },
   initializeSongs(songs) {
-    console.log($);
     var playlistId = this._id;
     songs.forEach(function(value) {
       Songs.insert({

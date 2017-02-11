@@ -133,6 +133,36 @@ Meteor.methods({
 		}
 		return null;
 	},
+	pauseSong(playlistId, authToken){
+		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
+		return controlPlaylist(playlistId, authToken, updateFunc);
+	},
+	unpauseSong(playlistId, authToken){
+		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: false}});
+		return controlPlaylist(playlistId, authToken, updateFunc);
+	},
+	playNextSong(playlistId, authToken){
+		var updateFunc = () => {
+			var playlist = HostedPlaylists.findOne(playlistId);
+			if(playlist){
+				playlist.playNextSong(/* fromHost */ false);
+				return true;
+			}
+			return false;
+		};
+		return controlPlaylist(playlistId, authToken, updateFunc);
+	},
+	playPreviousSong(playlistId, authToken){
+		var updateFunc = () => {
+			var playlist = HostedPlaylists.findOne(playlistId);
+			if(playlist){
+				playlist.playPreviousSong(/* fromHost */ false);
+				return true;
+			}
+			return false;
+		};
+		return controlPlaylist(playlistId, authToken, updateFunc);
+	},
 });
 
 function newUrlSafeGuid(bytes, matcher) {
@@ -145,4 +175,23 @@ function newUrlSafeGuid(bytes, matcher) {
   while(matcher(id));
   
   return id;
+};
+
+function controlPlaylist(playlistId, authToken, updateFunction){
+	var playlist = HostedPlaylists.findOne(playlistId);
+
+	if(playlist){
+		if(playlist.privateControl === true){
+			updateFunction();
+			return true;
+		}
+		else{
+			var user = Users.findOne({spotifyAuthToken: authToken});
+			if(user && user._id === playlist.userId){
+			  updateFunction();
+			  return true;
+			}
+		}
+	}
+	return false;
 };
