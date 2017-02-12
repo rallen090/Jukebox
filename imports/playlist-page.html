@@ -24,14 +24,6 @@
   </div>
 </div>
 
-<!--
-  <div>
-    {{#if isOwner}}
-      <a>Settings</a>
-    {{/if}}
-  </div>
--->
-
   <!-- search bar -->
   {{> search playlistId=playlist._id}}
 
@@ -53,8 +45,7 @@
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>
-      <div id="invalidAlert">
-      </div>
+    <div class="hostShare icon-action"><a id="shareHostLink"><i class="fa fa-share-square" aria-hidden="true"></i></a></div>
   </div>
   {{/if}}
 

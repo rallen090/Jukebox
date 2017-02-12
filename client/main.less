@@ -419,9 +419,15 @@ to   { transform: rotate(360deg) }
 	font-weight: bold;
 }
 
-.playlistSave, .playlistSettings {
+.playlistSave, .playlistSettings, .hostShare {
 	float: right;
 	vertical-align: middle;
+	display: inline-block;
+}
+
+.hostShare{
+	/* adjust to center vertically */
+	margin-top: 5px;
 }
 
 .playlistSave p, .playlistSettings p {
@@ -632,16 +638,15 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	color: #ccc;
 	.rounded;
 	width: 100%;
+	text-align: center;
 }
 
 /* center the actions */
 .musicActions{
-   display:block;
+   display:inline-block;
    width:200px;
    height: 100%;
    margin: 0 auto;
-   /* compensate for the fact that we can't set the musicActions to exactly 33% since they wrap */
-   padding-left: 10px;
 }
 
 .musicAction{
