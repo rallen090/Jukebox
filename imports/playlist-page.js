@@ -166,9 +166,6 @@ Template.playlist_page.helpers({
 
     return "mailto:?body=" + shareMessage + "&subject=JukeboxHost";
   },
-  getHostLink() {
-    return getHostLinkInternal();
-  },
 });
 
 Template.playlist_page.events({
@@ -289,7 +286,16 @@ Template.playlist_page.events({
 });
 
 // has to make async and sync since sync does not work in event handlers
+var hostInfo = null;
 function getHostInfoInternal(asyncCallback){
+  if(hostInfo){
+    if(asyncCallback){
+      asyncCallback(hostInfo);
+      return;
+    }
+    return hostInfo;
+  }
+
   var playlist = HostedPlaylists.findOne();
 
   if(!playlist){
@@ -301,13 +307,15 @@ function getHostInfoInternal(asyncCallback){
 
   if(asyncCallback){
     Meteor.call('getHostInfo', playlistId, authToken, function(error, result){
+      hostInfo = result;
       asyncCallback(result);
     });
   }
   else
   {
-    var hostToken = ReactiveMethod.call('getHostInfo', playlistId, authToken);
-    return hostToken;
+    var info = ReactiveMethod.call('getHostInfo', playlistId, authToken);
+    hostInfo = info;
+    return info;
   }
 };
 
@@ -328,7 +336,6 @@ function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var userAgent = navigator.userAgent || navigator.vendor || window.opera;
           var link = "fb://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
           if(asyncCallback){
             asyncCallback(link);
@@ -347,6 +354,7 @@ function getHostLinkInternal(asyncCallback){
 
 function handleLink(link){
   // TODO: replace w/ our own jukebox URL (it tries deep one first, then we can go to app store if not exist)
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
   if((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)){
     window.open("http://appurl.io/iz1qh8m6");
   }else{
