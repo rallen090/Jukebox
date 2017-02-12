@@ -7,7 +7,7 @@
   </div>
   {{/if}}
   <h2 id="playlist-name">
-    {{playlist.name}}
+    {{getHostLink}}
   </h2>
 </div>
 
@@ -30,6 +30,15 @@
   <!-- music player - TODO - complete this -->
   {{#if isControllable}}
   <div class="musicPlayer">
+        <span class="musicControlHelp tooltip icon-action" style="float: left"><a><i class="fa fa-info-circle"></i></a>
+      <div class="tooltiptext">
+        <strong>Controlling the music</strong>
+        <br/><br/>
+        The first time you press play, you'll be taken to the jukebox app to start hosting the playlist (via Spotify). Once playing, you can control the playlist from here or the app.
+        <br/><br/>
+        To let others control the music too, turn on 'public music control' in the playlist's settings. You can also share a link with others to host from their own device - just press the share icon to the right of the player controls.
+      </div>
+      </span>
   <div class="musicActions">
     <div class="musicAction icon-action">
       <a style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
@@ -45,7 +54,7 @@
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>
-    <div class="hostShare icon-action"><a id="shareHostLink"><i class="fa fa-share-square" aria-hidden="true"></i></a></div>
+    <div class="hostShare icon-action"><a id="shareHostLink" href="{{getHostShareLinkByOS}}"><i class="fa fa-share-square" aria-hidden="true"></i></a></div>
   </div>
   {{/if}}
 
