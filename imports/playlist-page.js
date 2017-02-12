@@ -22,12 +22,23 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   // set up reactive checking up if the playlist is active using a timer
   this.isPlaying = new ReactiveVar(false);
   var self = this;
-    this.handle = Meteor.setInterval((function() {
-      var playlist = HostedPlaylists.findOne();
-      var isActive = isHostActive(playlist.lastHostCheckIn);
-      var playing = playlist && (!playlist.isPaused && playlist.currentSongId !== null && isActive);
-      self.isPlaying.set(playing);
-    }), 1000);
+  var isPlayingHandler = () => {
+    var playlist = HostedPlaylists.findOne();
+
+    if(!playlist){ return false; }
+
+    var isActive = isHostActive(playlist.lastHostCheckIn);
+    var playing = playlist && (!playlist.isPaused && playlist.currentSongId !== null && isActive);
+    self.isPlaying.set(playing);
+    return true;
+  };
+
+  this.handle = Meteor.setInterval((function() {
+    isPlayingHandler();
+  }), 1000);
+
+  // call once immediately
+  setTimeout(isPlayingHandler, 500);
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
@@ -103,6 +114,10 @@ Template.playlist_page.helpers({
   },
   isPlaying(){
     return Template.instance().isPlaying.get();
+  },
+  isPlayingOrPaused(){
+    var playlist = HostedPlaylists.findOne();
+    return playlist && (Template.instance().isPlaying.get() || playlist.isPaused);
   },
   hasVoted(votes){
     var userId = Session.get("jukebox-active-user-id");
