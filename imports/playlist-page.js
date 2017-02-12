@@ -213,7 +213,7 @@ Template.playlist_page.events({
 
     var playlist = HostedPlaylists.findOne();
     if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
-      Meteor.call('unpauseSong', playlist._id, /* token */ null, function(error, result){
+      Meteor.call('unpauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
       });
     }
     else{
@@ -231,7 +231,7 @@ Template.playlist_page.events({
   'click #pauseSong'(event){
       var playlist = HostedPlaylists.findOne();
       if(!playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('pauseSong', playlist._id, /* token */ null, function(error, result){
+        Meteor.call('pauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
         });
       }
       else{
@@ -249,7 +249,7 @@ Template.playlist_page.events({
   'click #playNextSong'(event){
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('playNextSong', playlist._id, /* token */ null, function(error, result){
+        Meteor.call('playNextSong', playlist._id, /* token */ getAuthToken(), function(error, result){
         });
       }
       else{
@@ -267,7 +267,7 @@ Template.playlist_page.events({
   'click #playPreviousSong'(event){
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('playPreviousSong', playlist._id, /* token */ null, function(error, result){
+        Meteor.call('playPreviousSong', playlist._id, /* token */ getAuthToken(), function(error, result){
           
         });
       }
@@ -377,4 +377,8 @@ function isPlayingInternal(){
 
 function isHostActive(lastHostCheckIn){
   return ((new Date() - lastHostCheckIn) / 1000 < 10);
+};
+
+function getAuthToken(){
+  return Session.get("jukebox-spotify-access-token");
 };

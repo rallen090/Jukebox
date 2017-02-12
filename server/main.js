@@ -155,6 +155,7 @@ Meteor.methods({
 		return null;
 	},
 	pauseSong(playlistId, authToken){
+		console.log(authToken);
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
 		return controlPlaylist(playlistId, authToken, updateFunc);
 	},
@@ -202,7 +203,7 @@ function controlPlaylist(playlistId, authToken, updateFunction){
 	var playlist = HostedPlaylists.findOne(playlistId);
 
 	if(playlist){
-		if(playlist.privateControl === true){
+		if(playlist.privateControl === false){
 			updateFunction();
 			return true;
 		}
