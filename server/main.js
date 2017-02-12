@@ -61,7 +61,7 @@ Meteor.publish('songs', function (playlistId) {
 		return null;
 	}
 	
-  	return Songs.find({hostedPlaylistId: baseId});
+  	return Songs.find({hostedPlaylistId: baseId}, { sort: { voteCount: -1, dateAdded: 1 } });
 });
 
 Meteor.startup(() => {
