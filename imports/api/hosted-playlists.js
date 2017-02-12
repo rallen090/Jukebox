@@ -153,7 +153,7 @@ HostedPlaylists.helpers({
         $pop: { previousSongIds: songIdToAddBack},
       });
       Songs.update(songIdToAddBack, {
-        $set: { played: false },
+        $set: { played: false,  },
       });
 
       // set up previous song
