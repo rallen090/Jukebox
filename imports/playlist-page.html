@@ -54,7 +54,9 @@
       <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>
+    {{#if isOwner}}
     <div class="hostShare icon-action"><a id="shareHostLink" href="{{getHostShareLinkByOS}}"><i class="fa fa-share-square" aria-hidden="true"></i></a></div>
+    {{/if}}
   </div>
   {{/if}}
 
