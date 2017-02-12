@@ -147,6 +147,25 @@ Template.playlist_page.helpers({
 
     return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
   },
+  getHostShareLinkByOS(){
+    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
+    var link = getHostLinkInternal();
+    var shareMessage = "Host the Jukebox: " + link;
+
+    // android
+    if (/android/i.test(userAgent)) {
+        return "sms:?body=" + shareMessage;
+    }
+
+    // iOS detection from: http://stackoverflow.com/a/9039885/177710
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "sms:&body=" + shareMessage;
+    }
+
+    return "mailto:?body=" + shareMessage + "&subject=JukeboxHost";
+  },
   getHostLink() {
     return getHostLinkInternal();
   },
@@ -310,9 +329,7 @@ function getHostLinkInternal(asyncCallback){
         var info = result;
         if(info && info.privateId && info.hostToken){
           var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-          var link = (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)
-            ? "fb://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId
-            : null;
+          var link = "fb://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
           if(asyncCallback){
             asyncCallback(link);
           }
@@ -329,9 +346,8 @@ function getHostLinkInternal(asyncCallback){
 };
 
 function handleLink(link){
-  console.log(link);
   // TODO: replace w/ our own jukebox URL (it tries deep one first, then we can go to app store if not exist)
-  if(link){
+  if((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)){
     window.open("http://appurl.io/iz1qh8m6");
   }else{
     $('.ui.basic.modal')
