@@ -651,14 +651,17 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
    width:200px;
    height: 100%;
    margin: 0 auto;
-   /**/
-   padding-left: 11px;
 }
 
 .musicAction{
 	display:inline-block;
 	width: 31%;
 	text-align: center;
+}
+
+/* the play button's center is weirdly off so we adjust with this */
+#playSong{
+	padding-left: 10px;
 }
 
 /* Tooltip container */
@@ -706,9 +709,13 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 }
 
 .ui.segment{
+	/* styling over the semantic ui segment to fit our styles */
 	background: black !important;
 	margin: 0em 0em !important;
 	padding: 0em 0em !important;
+
+	/* to adjust the music controls to the center */
+	padding-left: 10px !important;
 }
 
 /**************************************************
