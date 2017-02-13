@@ -117,7 +117,6 @@ Meteor.methods({
 
 		var id = HostedPlaylists.insert(ourList);
 		var playlist = HostedPlaylists.findOne(id);
-		console.log(songs);
 		playlist.initializeSongs(songs);
 
 		// return the privateId of the new list
@@ -181,7 +180,6 @@ Meteor.methods({
 		return null;
 	},
 	pauseSong(playlistId, authToken){
-		console.log(authToken);
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
 		return controlPlaylist(playlistId, authToken, updateFunc);
 	},
