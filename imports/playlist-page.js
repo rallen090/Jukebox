@@ -17,7 +17,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   self.getPlaylistId = () => FlowRouter.getParam('_id');
   currentPlaylistId = self.getPlaylistId();
 
-  checkPassword();
+  checkPassword(this, /* retry */ false);
 
   // set up reactive checking up if the playlist is active using a timer
   self.isPlaying = new ReactiveVar(false);
@@ -52,7 +52,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   }, 2000);
 });
 
-function checkPassword(){
+function checkPassword(self, retry){
     var passwordKey = "jukebox-" + currentPlaylistId + "-password";
     var passwordAttempt = Session.get(passwordKey);
     
@@ -60,9 +60,11 @@ function checkPassword(){
       if(result){
         if(result.requiresPassword === true){
             if(!passwordAttempt || result.incorrectPassword === true){
-              if(result.incorrectPassword === true){
+              if(retry){
                 $("#passwordHeader").html("Wrong password - try again:");
               }
+
+              $("#password-input").select();
 
               $('.ui.basic.modal')
                 .modal({
@@ -70,7 +72,7 @@ function checkPassword(){
                     var password = $("#password-input").val();
                     Session.setPersistent(passwordKey, password);
                     
-                    checkPassword();
+                    checkPassword(self, /* retry */ true);
                   }})
                 .modal('show');
             }
@@ -114,6 +116,11 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
     $("#save-action").css('color', 'white');
   }});
 
+  $("#password-input").on('keyup', function (e) {
+    if(e && e.keyCode === 13){
+      $("#password-button").click();
+    }
+  });
 });
 
 Template.playlist_page.helpers({
@@ -215,6 +222,9 @@ Template.playlist_page.helpers({
 });
 
 Template.playlist_page.events({
+  'keydown'(event){
+    alert(event.keyCode);
+  },
 	'click .vote-action'(event) {
 	  	var songId = event.currentTarget.id;
 

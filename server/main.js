@@ -35,7 +35,7 @@ Meteor.publish('currentPlaylist', function (playlistId, password) {
     	// check password
     	if(publicPlaylist.password){
     		if(publicPlaylist.password === password){
-    			return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
+    			return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0 } });
     		}
     		return null;
     	}
@@ -250,7 +250,7 @@ function getPrivatePlaylistsWithId(playlistId, password){
   	// check password if one is required
   	if(playlist && playlist.password){
   		if(playlist.password === password){
-  			return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0, password: 0 } });
+  			return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0 } });
   		}
   		else{
   			return null;
