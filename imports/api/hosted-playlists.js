@@ -47,7 +47,9 @@ HostedPlaylists.schema = new SimpleSchema({
 HostedPlaylists.attachSchema(HostedPlaylists.schema);
 
 if(Meteor.isServer){
-  HostedPlaylists._ensureIndex('publicId', {unique: 1});  
+  HostedPlaylists._ensureIndex('publicId', {unique: 1});
+  HostedPlaylists._ensureIndex('privateId', {unique: 1});
+  HostedPlaylists._ensureIndex('hostToken', {unique: 1});
 }
 
 // This represents the keys from Lists objects that should be published
