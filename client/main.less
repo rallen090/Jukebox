@@ -687,6 +687,7 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
     /* Position the tooltip text */
     position: fixed;
     z-index: 5;
+    top: 150px;
     right: 0;
     left: 0;
     margin-right: auto;
@@ -696,17 +697,6 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
     visibility: visible;
-}
-
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    bottom: 100%;  /* At the top of the tooltip */
-    left: 50%;
-    margin-left: -5px;
-    border-width: 10px;
-    border-style: solid;
-    border-color: transparent transparent @color-primary transparent;
 }
 
 .ui.segment{
