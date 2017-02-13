@@ -15,13 +15,13 @@ Meteor.publish('jukeboxUsers', function () { // ONLY FOR DEBUGGING - should remo
   return Users.find({}, { fields: { spotifyAuthToken: 0 } });
 });
 Meteor.publish('publicPlaylists', function () {
-  return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0 } });
+  return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
 });
-Meteor.publish('currentPlaylist', function (playlistId) {
+Meteor.publish('currentPlaylist', function (playlistId, password) {
   var nonNumeric = isNaN(playlistId);
 
   if(nonNumeric){
-    return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0 } });
+  	return getPrivatePlaylistsWithId(playlistId, password);
   }
 
   var intPlaylistId = parseInt(playlistId, 10);
@@ -32,13 +32,21 @@ Meteor.publish('currentPlaylist', function (playlistId) {
       return null;
     }
     else{
-      return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0 } });
+    	// check password
+    	if(publicPlaylist.password){
+    		if(publicPlaylist.password === password){
+    			return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
+    		}
+    		return null;
+    	}
+
+      	return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
     }
   }
 
   // we check for the privateIds first since they are very likely non-numeric, but still have to check
   // here at the end in the case where a privateId happened to be purely numeric by chance
-  return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0 } });
+  return getPrivatePlaylistsWithId(playlistId, password);
 });
 Meteor.publish('songs', function (playlistId) {
 	var nonNumeric = isNaN(playlistId);
@@ -114,6 +122,24 @@ Meteor.methods({
 
 		// return the privateId of the new list
 		return ourList.privateId;
+	},
+	checkPassword(playlistId, password){
+		var nonNumeric = isNaN(playlistId);
+
+		if(nonNumeric){
+			var playlist = HostedPlaylists.findOne({privateId: playlistId});
+			return checkPassword(playlist, password);
+		}
+
+		var intPlaylistId = parseInt(playlistId, 10);
+		var publicPlaylist = HostedPlaylists.findOne({publicId: intPlaylistId});
+
+		if(publicPlaylist){
+			return checkPassword(publicPlaylist, password);
+		}
+
+		var privatePlaylist = HostedPlaylists.findOne({privateId: playlistId});
+		return checkPassword(privatePlaylist, password);
 	},
 	getHostInfo: function (playlistId, authToken) {
 		var user = Users.findOne({spotifyAuthToken: authToken});
@@ -217,3 +243,30 @@ function controlPlaylist(playlistId, authToken, updateFunction){
 	}
 	return false;
 };
+
+function getPrivatePlaylistsWithId(playlistId, password){
+	var playlist = HostedPlaylists.findOne({privateId: playlistId});
+
+  	// check password if one is required
+  	if(playlist && playlist.password){
+  		if(playlist.password === password){
+  			return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0, password: 0 } });
+  		}
+  		else{
+  			return null;
+  		}
+  	}
+
+    return HostedPlaylists.find({privateId: playlistId}, { fields: { hostToken: 0, password: 0 } });
+};
+
+function checkPassword(playlist, password){
+	if(playlist){
+		var requiresPassword = playlist.password ? true : false;
+		return {
+			requiresPassword: requiresPassword,
+			incorrectPassword: requiresPassword && playlist.password !== password
+		};
+	}
+	return null;
+}
