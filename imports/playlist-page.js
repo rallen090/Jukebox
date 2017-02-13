@@ -13,15 +13,14 @@ import './playlist-page.html';
 var currentPlaylistId = null;
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
-  this.getPlaylistId = () => FlowRouter.getParam('_id');
-  currentPlaylistId = this.getPlaylistId();
+  var self = this;
+  self.getPlaylistId = () => FlowRouter.getParam('_id');
+  currentPlaylistId = self.getPlaylistId();
 
-  this.subscribe('currentPlaylist', this.getPlaylistId());
-  this.subscribe('songs', this.getPlaylistId());
+  checkPassword();
 
   // set up reactive checking up if the playlist is active using a timer
-  this.isPlaying = new ReactiveVar(false);
-  var self = this;
+  self.isPlaying = new ReactiveVar(false);
   var isPlayingHandler = () => {
     var playlist = HostedPlaylists.findOne();
 
@@ -37,7 +36,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
     return true;
   };
 
-  this.handle = Meteor.setInterval((function() {
+  self.handle = Meteor.setInterval((function() {
     isPlayingHandler();
   /* setting this pretty low since it makes for smoother reactivity*/
   }), 250);
@@ -52,6 +51,41 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
     }
   }, 2000);
 });
+
+function checkPassword(){
+    var passwordKey = "jukebox-" + currentPlaylistId + "-password";
+    var passwordAttempt = Session.get(passwordKey);
+    
+    Meteor.call("checkPassword", currentPlaylistId, passwordAttempt, function(error, result){
+      if(result){
+        if(result.requiresPassword === true){
+            if(!passwordAttempt || result.incorrectPassword === true){
+              if(result.incorrectPassword === true){
+                $("#passwordHeader").html("Wrong password - try again:");
+              }
+
+              $('.ui.basic.modal')
+                .modal({
+                  onApprove : function() {
+                    var password = $("#password-input").val();
+                    Session.setPersistent(passwordKey, password);
+                    
+                    checkPassword();
+                  }})
+                .modal('show');
+            }
+            else{
+              self.subscribe('currentPlaylist', currentPlaylistId, passwordAttempt);
+              self.subscribe('songs', currentPlaylistId);
+            }
+        }
+        else{
+          self.subscribe('currentPlaylist', currentPlaylistId, /* password */ null);
+          self.subscribe('songs', currentPlaylistId);
+        }
+      }
+    });
+};
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
   // set up animations (in timeout to allow for load time)
