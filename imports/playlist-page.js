@@ -186,7 +186,7 @@ Template.playlist_page.helpers({
     // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
     const instance = Template.instance();
     const playlistId = instance.getPlaylistId();
-    var shareMessage = "Join the Jukebox: " + "www." + window.location.host + "/p/" + playlistId;
+    var shareMessage = "Join the Jukebox: "  + window.location.host + "/p/" + playlistId;
 
     // android
     if (/android/i.test(userAgent)) {
@@ -222,9 +222,6 @@ Template.playlist_page.helpers({
 });
 
 Template.playlist_page.events({
-  'keydown'(event){
-    alert(event.keyCode);
-  },
 	'click .vote-action'(event) {
 	  	var songId = event.currentTarget.id;
 
@@ -247,7 +244,6 @@ Template.playlist_page.events({
     Songs.remove(songId);
   },
   'click #save-action'(event) {
-    alert("A");
     var playlist = HostedPlaylists.findOne();
     var playlistId = playlist._id;
 
