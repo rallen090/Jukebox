@@ -167,6 +167,9 @@
   no matter how big the page is. this is important for mobile since the keyboard can get in the way of search results without being able to scroll -->
   <div id="height-extender" style="height: 1000px; display:none;"></div>
   {{else}}
+      <div class="ui active dimmer" id="page-loader">
+        <div class="ui loader">Loading playlist</div>
+      </div>
     Playlist either does not exist or is private. 
     <br/>
     <br/>

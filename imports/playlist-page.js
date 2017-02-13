@@ -44,6 +44,13 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
 
   // call once immediately
   setTimeout(isPlayingHandler, 500);
+
+  setTimeout(function(){
+    var playlist = HostedPlaylists.findOne();
+    if(!playlist){
+      $('#page-loader').remove();
+    }
+  }, 2000);
 });
 
 Template.playlist_page.onRendered(function playlistPageOnRendered(){
