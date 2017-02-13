@@ -403,7 +403,7 @@ from { transform: rotate(0deg) }
 to   { transform: rotate(360deg) }
 }
 
-.playlistShare {
+.playlistShare, .musicControlHelp {
 	float: left;
 	vertical-align: middle;
 }
@@ -459,6 +459,10 @@ html.nontouch .icon-action:hover span, .icon-action:active span, html.nontouch .
 	cursor: pointer; 
 	cursor: hand;
 	color: white;
+}
+
+.disabled {
+    color: white !important;
 }
 
 .clear {
@@ -699,6 +703,12 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
     border-width: 10px;
     border-style: solid;
     border-color: transparent transparent @color-primary transparent;
+}
+
+.ui.segment{
+	background: black !important;
+	margin: 0em 0em !important;
+	padding: 0em 0em !important;
 }
 
 /**************************************************

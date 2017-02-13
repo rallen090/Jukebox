@@ -13,6 +13,7 @@ import './welcome.html';
 var NearbyPlaylists = new Meteor.Collection(null);
 
 Template.welcome_page.onRendered(function playPageOnCreated() {
+  this.subscribe('publicPlaylists');
 });
 
 Template.welcome_page.helpers({
