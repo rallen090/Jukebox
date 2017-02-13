@@ -17,10 +17,20 @@ Template.settings_page.onCreated(function settingsOnCreated() {
 
     this.getPlaylistId = () => FlowRouter.getParam('_id');
     playlistId = this.getPlaylistId();
-    this.subscribe('currentPlaylist', this.getPlaylistId());
+
+    var passwordKey = "jukebox-" + playlistId + "-password";
+    var password = Session.get(passwordKey);
+    this.subscribe('currentPlaylist', this.getPlaylistId(), password);
 });
 
 Template.settings_page.onRendered(function settingsOnRendered(){
+  setTimeout(function(){
+      $("#password-input").on('keyup', function (e) {
+        if(e && e.keyCode === 13){
+          $("#save").click();
+        }
+      });
+    }, 500);
 });
 
 Template.settings_page.helpers({
