@@ -39,7 +39,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
   self.handle = Meteor.setInterval((function() {
     isPlayingHandler();
   /* setting this pretty low since it makes for smoother reactivity*/
-  }), 250);
+  }), 500);
 
   // call once immediately
   setTimeout(isPlayingHandler, 500);
@@ -66,7 +66,7 @@ function checkPassword(self, retry){
 
               $("#password-input").select();
 
-              $('.ui.basic.modal')
+              $('.password-modal')
                 .modal({
                   onApprove : function() {
                     var password = $("#password-input").val();
@@ -417,7 +417,7 @@ function handleLink(link){
   if((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)){
     window.open("http://appurl.io/iz1qh8m6");
   }else{
-    $('.ui.basic.modal')
+    $('.confirm-modal')
       .modal({
         onApprove : function() {
           window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
