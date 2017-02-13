@@ -30,7 +30,7 @@
   <!-- music player - TODO - complete this -->
   {{#if isControllable}}
   <div class="musicPlayer">
-        <span class="musicControlHelp tooltip icon-action" style="float: left"><a><i class="fa fa-info-circle"></i></a>
+        <span class="musicControlHelp tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>
       <div class="tooltiptext">
         <strong>Controlling the music</strong>
         <br/><br/>
@@ -39,19 +39,22 @@
         To let others control the music too, turn on 'public music control' in the playlist's settings. You can also share a link with others to host from their own device - just press the share icon to the right of the player controls.
       </div>
       </span>
-  <div class="musicActions">
+  <div class="musicActions ui segment">
+      <div class="ui inverted dimmer" id="music-control-loader">
+        <div class="ui loader"></div>
+      </div>
     <div class="musicAction icon-action">
-      <a style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
+      <a class="musicIconLink" style="" id="playPreviousSong"><i class="fa fa-step-backward fa-2x" aria-hidden="true"></i></a>
       </div>
       <div class="musicAction icon-action">
       {{#if isPlaying}}
-        <a id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
+        <a class="musicIconLink" id="pauseSong"><i class="fa fa-pause fa-2x" aria-hidden="true"></i></a>
       {{else}}
-        <a id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
+        <a class="musicIconLink" id="playSong"><i class="fa fa-play fa-2x" aria-hidden="true"></i></a>
       {{/if}}
       </div>
       <div class="musicAction icon-action">
-      <a id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
+      <a class="musicIconLink" id="playNextSong"><i class="fa fa-step-forward fa-2x" aria-hidden="true"></i></a>
     </div>
     </div>
     {{#if isOwner}}

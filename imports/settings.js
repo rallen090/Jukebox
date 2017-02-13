@@ -38,13 +38,13 @@ Template.settings_page.helpers({
       var playlistUserId = playlist.userId;
       return playlistUserId === Session.get("jukebox-active-user-id");
   },
-  privateAccess(){
+  publicAccess(){
     var playlist = HostedPlaylists.findOne();
-    return playlist && playlist.privateAccess;
+    return playlist && !playlist.privateAccess;
   },
-  privateControl(){
+  publicControl(){
     var playlist = HostedPlaylists.findOne();
-    return playlist && playlist.privateAccess;
+    return playlist && !playlist.privateControl;
   }
 });
 

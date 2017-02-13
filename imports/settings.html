@@ -10,13 +10,13 @@
 <div class="playlistTitle">
 	<!-- access -->
 	<div class="ui toggle checkbox">
-	  <input type="checkbox" id="private-control-checkbox" checked="{{playlist.privateControl}}">
-	  <label>Private music control&nbsp;&nbsp;
+	  <input type="checkbox" id="private-control-checkbox" checked="{{publicControl}}">
+	  <label>Public music control&nbsp;&nbsp;
 	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
 	  	<div class="tooltiptext">
-		  	<strong>Private music control</strong> allows only the playlist owner to control a playlist that is actively being hosted on the app.
+		  	<strong>Public music control</strong> allows anyone with access to the playlist to control the actively hosted music.
 		  	<br/><br/>
-		  	Disabling this allows anyone who accesses the playlist page to use the music controls. Note that this does not allow others to host the playlist on the app.
+		  	Note that this does not allow others to host the playlist on the app.
 		  	Hosting ability can only be shared with others by the owner sending a 'host URL' from the playlist page.
 	  	</div>
 	  	</span>
@@ -26,13 +26,13 @@
 
 	<!-- control -->
 	<div class="ui toggle checkbox" >
-	  <input type="checkbox" id="private-access-checkbox" checked="{{playlist.privateAccess}}">
-	  	<label>Private access&nbsp;&nbsp;
+	  <input type="checkbox" id="private-access-checkbox" checked="{{publicAccess}}">
+	  	<label>Public access&nbsp;&nbsp;
 	  	<span class="tooltip"><i class="fa fa-info-circle"></i>
 	  	<div class="tooltiptext">
-		  	<strong>Private access</strong> makes your playlist accessible only through a shareable URL that can be sent from the playlist page.
+		  	<strong>Public access</strong> makes your playlist accessible to anyone through the basic URL (e.g. "playjuke.com/p/123") or juke code (e.g. #123). It also can appear as a 'nearby playlist' on the home page.
 		  	<br/><br/>
-		  	Your playlist will not show up as a nearby playlist by location nor can it by accessed with a juke code (e.g. #123).
+		  	Disabling this makes your playlist accessible only through a shareable URL that can be sent from the playlist page and it will not appear as a 'nearby playlist' on the home page.
 	  	</div>
 	  	</span>
 	  	</label>

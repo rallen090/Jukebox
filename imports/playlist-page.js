@@ -30,12 +30,17 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
     var isActive = isHostActive(playlist.lastHostCheckIn);
     var playing = playlist && (!playlist.isPaused && playlist.currentSongId !== null && isActive);
     self.isPlaying.set(playing);
+
+    // we re-display the controls here since this is what causes potential lag between actions
+    showMusicControls();
+
     return true;
   };
 
   this.handle = Meteor.setInterval((function() {
     isPlayingHandler();
-  }), 1000);
+  /* setting this pretty low since it makes for smoother reactivity*/
+  }), 250);
 
   // call once immediately
   setTimeout(isPlayingHandler, 500);
@@ -191,6 +196,7 @@ Template.playlist_page.events({
     Songs.remove(songId);
   },
   'click #save-action'(event) {
+    alert("A");
     var playlist = HostedPlaylists.findOne();
     var playlistId = playlist._id;
 
@@ -210,6 +216,7 @@ Template.playlist_page.events({
     window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + currentPlaylistId + "/settings";
   },
   'click #playSong'(event){
+    hideMusicControls();
 
     var playlist = HostedPlaylists.findOne();
     if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
@@ -221,7 +228,6 @@ Template.playlist_page.events({
         getHostLinkInternal(function(link){
           handleLink(link);
         });
-        return;
       }
       else{
         alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -229,6 +235,8 @@ Template.playlist_page.events({
     }
   },
   'click #pauseSong'(event){
+      hideMusicControls();
+
       var playlist = HostedPlaylists.findOne();
       if(!playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('pauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
@@ -239,7 +247,6 @@ Template.playlist_page.events({
           getHostLinkInternal(function(link){
             handleLink(link);
           });
-          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -247,6 +254,8 @@ Template.playlist_page.events({
       }
   },
   'click #playNextSong'(event){
+      hideMusicControls();
+
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('playNextSong', playlist._id, /* token */ getAuthToken(), function(error, result){
@@ -257,7 +266,6 @@ Template.playlist_page.events({
           getHostLinkInternal(function(link){
             handleLink(link);
           });
-          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -265,10 +273,11 @@ Template.playlist_page.events({
       }
   },
   'click #playPreviousSong'(event){
+      hideMusicControls();
+
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
         Meteor.call('playPreviousSong', playlist._id, /* token */ getAuthToken(), function(error, result){
-          
         });
       }
       else{
@@ -276,7 +285,6 @@ Template.playlist_page.events({
           getHostLinkInternal(function(link){
             handleLink(link);
           });
-          return;
         }
         else{
           alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
@@ -381,4 +389,21 @@ function isHostActive(lastHostCheckIn){
 
 function getAuthToken(){
   return Session.get("jukebox-spotify-access-token");
+};
+
+function showMusicControls(){
+  if(controlsHidden){
+    $("#music-control-loader").removeClass("active");
+    $(".musicIconLink").prop('disabled', false);
+    $(".musicIconLink").removeClass("disabled");
+    controlsHidden = false;
+  }
+};
+
+var controlsHidden = false;
+function hideMusicControls(){
+  $("#music-control-loader").addClass("active");
+  $(".musicIconLink").addClass("disabled");
+  $(".musicIconLink").prop('disabled', true);
+  controlsHidden = true;
 };
