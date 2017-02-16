@@ -265,7 +265,7 @@ Template.playlist_page.events({
   },
   'click #playSong'(event){
     hideMusicControls();
-
+    alert("FDSA");
     var playlist = HostedPlaylists.findOne();
     if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
       Meteor.call('unpauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
@@ -274,6 +274,7 @@ Template.playlist_page.events({
     else{
       if(isOwnerInternal()){
         getHostLinkInternal(function(link){
+
           handleLink(link);
         });
       }
@@ -392,7 +393,7 @@ function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var link = "fb://host?hostToken=" + info.hostToken + "&playlistId=" + info.privateId;
+          var link = window.location.host + "/p/" + info.privateId + "/host" + "?hostToken=" + info.hostToken;
           if(asyncCallback){
             asyncCallback(link);
           }
@@ -409,15 +410,20 @@ function getHostLinkInternal(asyncCallback){
 };
 
 function handleLink(link){
-  // TODO: replace w/ our own jukebox URL (it tries deep one first, then we can go to app store if not exist)
+  // if mobile go to host page to redirect to app
   var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-  if((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)){
-    window.open("http://appurl.io/iz1qh8m6");
+  if(((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)) || /android/i.test(userAgent)){
+    window.open(link);
   }else{
+    // otherwise show the app stores
     $('.confirm-modal')
       .modal({
-        onApprove : function() {
-          window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
+        onApprove : function(element) {
+          if(element.hasClass("android")){
+            window.open("https://play.google.com/store/apps/details?id=com.facebook.katana");
+          }else{
+            window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
+          }
         },
         onDeny : function() {
           // noop
@@ -432,6 +438,10 @@ function isPlayingInternal(){
 };
 
 function isHostActive(lastHostCheckIn){
+  if(!lastHostCheckIn){
+    return false;
+  }
+
   return ((new Date() - lastHostCheckIn) / 1000 < 10);
 };
 
