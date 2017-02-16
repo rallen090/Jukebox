@@ -12,8 +12,8 @@ import base64url from 'base64url';
 
 // publishing of the db collections from the server
 // note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
-Meteor.publish('jukeboxUsers', function () { // ONLY FOR DEBUGGING - should remove
-  return Users.find({}, { fields: { spotifyAuthToken: 0 } });
+Meteor.publish('jukeboxUsers', function (userId, authToken) {
+  return Users.find({_id: userId, spotifyAuthToken: authToken}, { fields: { spotifyAuthToken: 0 } });
 });
 Meteor.publish('publicPlaylists', function () {
   return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
@@ -172,7 +172,7 @@ Meteor.methods({
 			}
 		}
 
-		// validate w/ spotify
+		// sync w/ spotify auth via token
 		try
 		{
 			response = HTTP.get('https://api.spotify.com/v1/me', {headers: {
