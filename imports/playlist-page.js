@@ -278,7 +278,10 @@ Template.playlist_page.events({
     
     var playlist = HostedPlaylists.findOne();
     if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
-      Meteor.call('unpauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
+      getHostToken(function(hostToken) {
+        Meteor.call('unpauseSong', playlist._id, hostToken, function(error, result){
+          // TODO: handle this?
+        });
       });
     }
     else{
@@ -297,8 +300,10 @@ Template.playlist_page.events({
 
       var playlist = HostedPlaylists.findOne();
       if(!playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
-        getHostInfo()
-        Meteor.call('pauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
+        getHostToken(function(hostToken) {
+          Meteor.call('pauseSong', playlist._id, hostToken, function(error, result){
+            // TODO: handle this?
+          });
         });
       }
       else{
@@ -317,7 +322,10 @@ Template.playlist_page.events({
 
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('playNextSong', playlist._id, /* token */ getAuthToken(), function(error, result){
+        getHostToken(function(hostToken) {
+          Meteor.call('playNextSong', playlist._id, hostToken, function(error, result){
+            // TODO: handle this?
+          });
         });
       }
       else{
@@ -336,7 +344,10 @@ Template.playlist_page.events({
 
       var playlist = HostedPlaylists.findOne();
       if(isHostActive(playlist.lastHostCheckIn)){
-        Meteor.call('playPreviousSong', playlist._id, /* token */ getAuthToken(), function(error, result){
+        getHostToken(function(hostToken) {
+          Meteor.call('playPreviousSong', playlist._id, hostToken, function(error, result){
+            // TODO: handle this?
+          });
         });
       }
       else{
@@ -353,14 +364,14 @@ Template.playlist_page.events({
 });
 
 // has to make async and sync since sync does not work in event handlers
-var hostInfo = null;
+var savedHostInfo = null;
 function getHostInfoInternal(asyncCallback){
-  if(hostInfo){
+  if(savedHostInfo){
     if(asyncCallback){
-      asyncCallback(hostInfo);
+      asyncCallback(savedHostInfo);
       return;
     }
-    return hostInfo;
+    return savedHostInfo;
   }
 
   var playlist = HostedPlaylists.findOne();
@@ -374,21 +385,33 @@ function getHostInfoInternal(asyncCallback){
 
   if(asyncCallback){
     Meteor.call('getHostInfo', playlistId, authToken, function(error, result){
-      hostInfo = result;
+      savedHostInfo = result;
       asyncCallback(result);
     });
   }
   else
   {
     var info = ReactiveMethod.call('getHostInfo', playlistId, authToken);
-    hostInfo = info;
+    savedHostInfo = info;
     return info;
   }
 };
 
 function getHostToken(asyncCallback){
-
-}
+  if(currentHostToken){
+    asyncCallback(currentHostToken);
+  }
+  else{
+    getHostInfoInternal((hostInfo) => {
+      if(hostInfo && hostInfo.hostToken){
+        asyncCallback(hostInfo.hostToken);
+      }
+      else{
+        asyncCallback(null);
+      }
+    });
+  }
+};
 
 function isOwnerInternal(){
   var playlist = HostedPlaylists.findOne();

@@ -250,11 +250,11 @@ Meteor.methods({
 	},
 	pauseSong(playlistId, hostToken){
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
-		return controlPlaylist(playlistId, authToken, updateFunc);
+		return controlPlaylist(playlistId, hostToken, updateFunc);
 	},
 	unpauseSong(playlistId, hostToken){
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: false}});
-		return controlPlaylist(playlistId, authToken, updateFunc);
+		return controlPlaylist(playlistId, hostToken, updateFunc);
 	},
 	playNextSong(playlistId, hostToken){
 		var updateFunc = () => {
@@ -265,7 +265,7 @@ Meteor.methods({
 			}
 			return false;
 		};
-		return controlPlaylist(playlistId, authToken, updateFunc);
+		return controlPlaylist(playlistId, hostToken, updateFunc);
 	},
 	playPreviousSong(playlistId, hostToken){
 		var updateFunc = () => {
@@ -276,7 +276,7 @@ Meteor.methods({
 			}
 			return false;
 		};
-		return controlPlaylist(playlistId, authToken, updateFunc);
+		return controlPlaylist(playlistId, hostToken, updateFunc);
 	},
 });
 
