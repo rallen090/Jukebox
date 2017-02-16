@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { HTTP } from 'meteor/http'
 
 import { Users } from '../imports/api/users.js';
 import { HostedPlaylists } from '../imports/api/hosted-playlists.js';
@@ -149,6 +150,19 @@ Meteor.methods({
 		return null;
 	},
 	updateUserWithAuthToken(userId, token) {
+		this.unblock();
+		try
+		{
+			var result = HTTP.get('https://api.spotify.com/v1/me', {headers: {
+	           'Authorization': 'Bearer ' + token + "a"
+	        }});
+	        console.log(result);
+		}
+		catch(ex)
+		{
+			console.log(ex);
+		}
+
 		if(token){
 			var userWithTokenAlready = Users.findOne({spotifyAuthToken: token});
 			if(userWithTokenAlready){

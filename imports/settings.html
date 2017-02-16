@@ -1,4 +1,5 @@
 <template name="settings_page">
+{{#if playlist}}
 {{#if isOwner}}
 <!-- playlist name -->
 <div class="playlistTitle">
@@ -73,5 +74,10 @@
 	    </div>
 	  </div>
 	</div>
+{{/if}}
+{{else}}
+  <div class="ui active dimmer" id="page-loader">
+    <div class="ui text loader">Loading settings</div>
+  </div>
 {{/if}}
 </template>

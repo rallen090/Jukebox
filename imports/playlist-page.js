@@ -48,6 +48,7 @@ Template.playlist_page.onCreated(function playPageOnCreated() {
     var playlist = HostedPlaylists.findOne();
     if(!playlist){
       $('#page-loader').remove();
+      $('#no-playlist-block').show();
     }
   }, 2000);
 });

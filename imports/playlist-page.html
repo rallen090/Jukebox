@@ -170,10 +170,12 @@
       <div class="ui active dimmer" id="page-loader">
         <div class="ui text loader">Loading playlist</div>
       </div>
-    Playlist either does not exist or is private. 
-    <br/>
-    <br/>
-    For private playlists, you must be sent a shareable URL from the owner for access.
+      <div id="no-playlist-block" style="display: none">
+        Playlist either does not exist or is private. 
+        <br/>
+        <br/>
+        For private playlists, you must be sent a shareable URL from the owner for access.
+      </div>
   {{/if}}
 
     <!-- password input -->
