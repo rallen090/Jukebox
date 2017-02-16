@@ -113,12 +113,12 @@ function acquireSession() {
   if(Meteor.isClient){
       const sessionKey = "jukebox-active-user-id";
       var userIdFromSession = Session.get(sessionKey);
-      var token = Session.get("jukebox-spotify-access-token", token);
 
-      // server call to manage user
-      Meteor.call('updateUserWithAuthToken', userIdFromSession, token, function(error, result){
-        Session.setPersistent(sessionKey, result);
-      });
+      // get a user if no session is set
+      if(!userIdFromSession){
+        Meteor.call('syncUserWithServer', userIdFromSession, token, function(error, result){
+          Session.setPersistent(sessionKey, result);
+        });
+      }
   }
-
 };

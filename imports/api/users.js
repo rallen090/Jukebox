@@ -14,7 +14,13 @@ export const Users = new UsersCollection('jukeboxUsers');
 // allow inserts (note: best practice is to DENY crud operations and expose them via methods.js, but we can do that later if  we want to)
 Users.allow({
   'insert': function () {
-    return true; 
+    return false; 
+  },
+  'update': function () {
+    return false; 
+  },
+  'remove': function () {
+    return false; 
   },
 });
 
