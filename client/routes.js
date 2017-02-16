@@ -9,6 +9,7 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/create-page.js';
 import '../imports/playlist-page.js';
+import '../imports/host.js';
 import '../imports/welcome.js';
 import '../imports/debug.js';
 import '../imports/search.js';

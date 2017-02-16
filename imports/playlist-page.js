@@ -265,7 +265,7 @@ Template.playlist_page.events({
   },
   'click #playSong'(event){
     hideMusicControls();
-    alert("FDSA");
+    
     var playlist = HostedPlaylists.findOne();
     if(playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
       Meteor.call('unpauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
@@ -274,7 +274,6 @@ Template.playlist_page.events({
     else{
       if(isOwnerInternal()){
         getHostLinkInternal(function(link){
-
           handleLink(link);
         });
       }
@@ -393,7 +392,7 @@ function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var link = window.location.host + "/p/" + info.privateId + "/host" + "?hostToken=" + info.hostToken;
+          var link = window.location.protocol + "//" + window.location.host + "/p/" + info.privateId + "/host/" + "?hostToken=" + info.hostToken;
           if(asyncCallback){
             asyncCallback(link);
           }
