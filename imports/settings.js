@@ -69,13 +69,13 @@ Template.settings_page.events({
           return;
         }
 
-        var privateAccess = $('#private-access-checkbox').is(":checked");
-        var privateControl = $('#private-control-checkbox').is(":checked");
+        var publicAccess = $('#private-access-checkbox').is(":checked");
+        var publicControl = $('#private-control-checkbox').is(":checked");
         var password = $('#password-input').val();
 
         var settings = {
-          privateAccess: privateAccess,
-          privateControl: privateControl,
+          privateAccess: !publicAccess,
+          privateControl: !publicControl,
           password: password
         };
 
