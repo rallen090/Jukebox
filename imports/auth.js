@@ -19,7 +19,7 @@ Template.auth_page.onRendered(function authOnRendered(){
     var userIdFromSession = Session.get(sessionKey);
     // if the token matches an existing user, we switch to that new userId to keep in sync  
     //var updatedUserId = Users.updateUserWithAuthToken(userIdFromSession, token);
-    var updatedUserId = Meteor.call('updateUserWithAuthToken', userIdFromSession, token, function(error, result){
+    var updatedUserId = Meteor.call('syncUserWithServer', userIdFromSession, token, function(error, result){
         var updatedUserId = result;
         if(updatedUserId){
             Session.setPersistent(sessionKey, updatedUserId);

@@ -14,6 +14,12 @@ Meteor.startup(() => {
 Template.App_body.onCreated(function appBodyOnCreated() {
 });
 
+Template.App_body.onRendered(function appBodyOnRendered(){
+$('.ui.dropdown')
+  .dropdown()
+;
+});
+
 Template.App_body.helpers({
 
 });
