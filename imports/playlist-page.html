@@ -89,7 +89,7 @@
             <span class="songArtist">{{currentSong.artist}}</span>
             </div>
           {{else}}
-            <i>Waiting for host to begin</i>
+            <span><i>&nbsp;&nbsp;Waiting for host to begin</i></span>
           {{/if}}
         {{else}}
           {{#if isFinished}}
@@ -99,7 +99,7 @@
             <br/>
               Add more songs to keep it going!
           {{else}}
-            <i>Waiting for host to begin</i>
+            <span><i>&nbsp;&nbsp;Waiting for host to begin</i></span>
           {{/if}}
         {{/if}}
       </li>
@@ -154,8 +154,11 @@
       Get the jukebox app to play your playlist
     </div>
     <div class="actions">
-      <div id="save-message-button" class="ui inverted ok button">
+      <div id="save-message-button" class="ui inverted ok button ios">
         See in iOS app store
+      </div>
+      <div id="save-message-button" class="ui inverted ok button android">
+        See in Android app store
       </div>
       <div id="save-message-button" class="ui inverted cancel button">
         Got it

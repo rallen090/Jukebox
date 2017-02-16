@@ -144,6 +144,7 @@ Meteor.methods({
 	getHostInfo: function (playlistId, authToken) {
 		var user = Users.findOne({spotifyAuthToken: authToken});
 		var playlist = HostedPlaylists.findOne(playlistId);
+
 		if(user && playlist && user._id === playlist.userId){
 		  return {hostToken: playlist.hostToken, privateId: playlist.privateId};
 		}

@@ -80,6 +80,14 @@ FlowRouter.route('/p/:_id/settings', {
   },
 });
 
+FlowRouter.route('/p/:_id/host', {
+  name: 'Jukebox.host',
+  action() {
+    // for redirecting to app or app store
+    BlazeLayout.render('App_body', { main: 'host_page' });
+  },
+});
+
 FlowRouter.route('/spotify/auth/', {
   name: 'Jukebox.spotify',
   action() {
