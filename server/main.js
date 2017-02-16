@@ -150,6 +150,13 @@ Meteor.methods({
 		}
 		return null;
 	},
+	isValidHostToken: function(playlistId, hostToken){
+		var playlist = HostedPlaylists.findOne(playlistId);
+		if(playlist && playlist.hostToken && playlist.hostToken === hostToken){
+			return true;
+		}		
+		return false;
+	},
 	syncUserWithServer(userId, token) {
 		this.unblock();
 		var response = null;
@@ -241,15 +248,15 @@ Meteor.methods({
 		}
 		return null;
 	},
-	pauseSong(playlistId, authToken){
+	pauseSong(playlistId, hostToken){
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
 		return controlPlaylist(playlistId, authToken, updateFunc);
 	},
-	unpauseSong(playlistId, authToken){
+	unpauseSong(playlistId, hostToken){
 		var updateFunc = () => HostedPlaylists.update(playlistId, {$set: {isPaused: false}});
 		return controlPlaylist(playlistId, authToken, updateFunc);
 	},
-	playNextSong(playlistId, authToken){
+	playNextSong(playlistId, hostToken){
 		var updateFunc = () => {
 			var playlist = HostedPlaylists.findOne(playlistId);
 			if(playlist){
@@ -260,7 +267,7 @@ Meteor.methods({
 		};
 		return controlPlaylist(playlistId, authToken, updateFunc);
 	},
-	playPreviousSong(playlistId, authToken){
+	playPreviousSong(playlistId, hostToken){
 		var updateFunc = () => {
 			var playlist = HostedPlaylists.findOne(playlistId);
 			if(playlist){
@@ -285,20 +292,16 @@ function newUrlSafeGuid(bytes, matcher) {
   return id;
 };
 
-function controlPlaylist(playlistId, authToken, updateFunction){
+function controlPlaylist(playlistId, hostToken, updateFunction){
 	var playlist = HostedPlaylists.findOne(playlistId);
 
 	if(playlist){
-		if(playlist.privateControl === false){
+		if(playlist.privateControl === false || (hostToken && hostToken === playlist.hostToken)){
 			updateFunction();
 			return true;
 		}
 		else{
-			var user = Users.findOne({spotifyAuthToken: authToken});
-			if(user && user._id === playlist.userId){
-			  updateFunction();
-			  return true;
-			}
+			return false;
 		}
 	}
 	return false;

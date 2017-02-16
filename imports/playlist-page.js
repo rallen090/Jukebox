@@ -10,12 +10,16 @@ import { Users } from './api/users.js';
 
 import './playlist-page.html';
 
+// save off query parameters
 var currentPlaylistId = null;
+var currentHostToken = null;
 
 Template.playlist_page.onCreated(function playPageOnCreated() {
   var self = this;
   self.getPlaylistId = () => FlowRouter.getParam('_id');
+  self.getHostToken = () => FlowRouter.getQueryParam("hostToken");
   currentPlaylistId = self.getPlaylistId();
+  currentHostToken = self.getHostToken();
 
   checkPassword(this, /* retry */ false);
 
@@ -164,7 +168,13 @@ Template.playlist_page.helpers({
   },
   isControllable() {
     var playlist = HostedPlaylists.findOne();
-    return playlist && (!playlist.privateControl || isOwnerInternal());
+    var isValidHostToken = currentHostToken ? ReactiveMethod.call('isValidHostToken', playlist._id, currentHostToken) : false;
+
+    // allow control if:
+    // (1) control is public
+    // (2) you are the owner
+    // or (3) you have the hostToken, which allows people to share hosting ability
+    return playlist && (!playlist.privateControl || isOwnerInternal() || isValidHostToken);
   },
   isPlaying(){
     return Template.instance().isPlaying.get();
@@ -287,6 +297,7 @@ Template.playlist_page.events({
 
       var playlist = HostedPlaylists.findOne();
       if(!playlist.isPaused && isHostActive(playlist.lastHostCheckIn)){
+        getHostInfo()
         Meteor.call('pauseSong', playlist._id, /* token */ getAuthToken(), function(error, result){
         });
       }
@@ -374,6 +385,10 @@ function getHostInfoInternal(asyncCallback){
     return info;
   }
 };
+
+function getHostToken(asyncCallback){
+
+}
 
 function isOwnerInternal(){
   var playlist = HostedPlaylists.findOne();
