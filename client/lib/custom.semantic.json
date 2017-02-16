@@ -1,7 +1,7 @@
 {
   "definitions": {
-    "accordion": false,
-    "ad": false,
+    "accordion": true,
+    "ad": true,
     "api": true,
     "breadcrumb": true,
     "button": true,
