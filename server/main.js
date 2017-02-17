@@ -19,7 +19,7 @@ Meteor.publish('currentUser', function (userId, authToken) {
 	var currentUser = Users.findOne({_id: userId});
 
 	if(!currentUser){
-		return null;
+		return [];
 	}
 
 	if(currentUser.spotifyAuthToken && currentUser.spotifyAuthToken === authToken){
@@ -27,7 +27,7 @@ Meteor.publish('currentUser', function (userId, authToken) {
 	}
 
 	if(authToken){
-		var response = null;
+		var response = [];
 		try
 		{
 			response = HTTP.get('https://api.spotify.com/v1/me', {headers: {
@@ -37,7 +37,7 @@ Meteor.publish('currentUser', function (userId, authToken) {
 		catch(ex)
 		{
 			console.log(ex);
-			return null;
+			return [];
 		}
 
 		// if we have a valid spotify ID - then we are still authenticated
@@ -65,7 +65,7 @@ Meteor.publish('currentPlaylist', function (playlistId, password) {
 
   if(publicPlaylist){
     if(publicPlaylist.privateAccess){
-      return null;
+      return [];
     }
     else{
     	// check password
@@ -73,7 +73,7 @@ Meteor.publish('currentPlaylist', function (playlistId, password) {
     		if(publicPlaylist.password === password){
     			return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0 } });
     		}
-    		return null;
+    		return [];
     	}
 
       	return HostedPlaylists.find({publicId: intPlaylistId}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
@@ -102,7 +102,7 @@ Meteor.publish('songs', function (playlistId) {
 	}
 
 	if(!baseId){
-		return null;
+		return [];
 	}
 	
   	return Songs.find({hostedPlaylistId: baseId}, { sort: { voteCount: -1, dateAdded: 1 } });
