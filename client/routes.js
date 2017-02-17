@@ -125,7 +125,7 @@ function acquireSession() {
 
       // get a user if no session is set
       if(!userIdFromSession){
-        Meteor.call('syncUserWithServer', userIdFromSession, token, function(error, result){
+        Meteor.call('syncUserWithServer', userIdFromSession, /* token */ null, function(error, result){
           Session.setPersistent(sessionKey, result);
         });
       }
