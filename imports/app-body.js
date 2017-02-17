@@ -39,7 +39,7 @@ Template.App_body.events({
 	'click #user-log-out'(event) {
 		Session.clear("jukebox-spotify-access-token");
 		Session.clear("jukebox-active-user-id");
-		window.location = window.location;
+		location.reload();
 	},
 	'click #user-my-playlists'(event) {
 		alert("my playlists");
