@@ -15,6 +15,41 @@ import base64url from 'base64url';
 Meteor.publish('jukeboxUsers', function (userId, authToken) {
   return Users.find({_id: userId, spotifyAuthToken: authToken}, { fields: { spotifyAuthToken: 0 } });
 });
+Meteor.publish('currentUser', function (userId, authToken) {
+	var currentUser = Users.findOne({_id: userId});
+
+	if(!currentUser){
+		return null;
+	}
+
+	if(currentUser.spotifyAuthToken && currentUser.spotifyAuthToken === authToken){
+		return Users.find({_id: userId}, { fields: { spotifyAuthToken: 0 } });
+	}
+
+	if(authToken){
+		var response = null;
+		try
+		{
+			response = HTTP.get('https://api.spotify.com/v1/me', {headers: {
+	           'Authorization': 'Bearer ' + authToken
+	        }});
+		}
+		catch(ex)
+		{
+			console.log(ex);
+			return null;
+		}
+
+		// if we have a valid spotify ID - then we are still authenticated
+		if(response && response.data && response.data.id){
+			if(currentcurrentUser.spotifyUserId === response.data.id){
+				return Users.find({_id: userId}, { fields: { spotifyAuthToken: 0 } });
+			}
+		}		
+	}
+
+  	return [];
+});
 Meteor.publish('publicPlaylists', function () {
   return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
 });
@@ -195,43 +230,43 @@ Meteor.methods({
 
 		// if we have a valid spotify ID
 		if(response && response.data && response.data.id){
-			var spotifyId = response.data.id;
+			var spotifyUserId = response.data.id;
 
 			// already have a jukebox userId
 			if(userId){
 				var existingUser = Users.findOne({_id: userId});
 
 				// existing user already validated w/ spotify
-				if(existingUser && existingUser.spotifyId === spotifyId){
+				if(existingUser && existingUser.spotifyUserId === spotifyUserId){
 					// update auth token
 					Users.update(userId, {$set: { spotifyAuthToken: token }});
 					return userId;
 				}
 				// existing user not already validated w/ spotify
 				else if (existingUser){
-					var existingSpotifyUser = Users.findOne({spotifyId: spotifyId});
+					var existingSpotifyUser = Users.findOne({spotifyUserId: spotifyUserId});
 
 					// if there is an account already w/ this user, then we just swap to that one
-					if(existingSpotifyUser && existingSpotifyUser.spotifyId){
+					if(existingSpotifyUser && existingSpotifyUser.spotifyUserId){
 						// reset token
-						Users.update(existingSpotifyUser._id, {$set: { spotifyAuthToken: token }});
+						Users.update(existingSpotifyUser._id, {$set: { spotifyAuthToken: token, spotifyUserId: spotifyUserId }});
 						return existingSpotifyUser._id;
 					}
 
 					// otherwise, we have a new spotify validation so sync with current userId
-					Users.update(userId, {$set: { spotifyId: spotifyId, spotifyAuthToken: token }});
+					Users.update(userId, {$set: { spotifyUserId: spotifyUserId, spotifyAuthToken: token }});
 					return userId;
 				}
 				// invalid userId
 				else{
 					// re-issue - doing this in case we reset the db and so stale userIds would be left in local storage if we didn't support this
-					var id = Users.insert({spotifyId: spotifyId, spotifyAuthToken: token});
+					var id = Users.insert({spotifyUserId: spotifyUserId, spotifyAuthToken: token});
 					return id;
 				}
 			}
 			// new user altogether
 			else{
-				var id = Users.insert({spotifyId: spotifyId, spotifyAuthToken: token});
+				var id = Users.insert({spotifyUserId: spotifyUserId, spotifyAuthToken: token});
 				return id;
 			}
 		}
