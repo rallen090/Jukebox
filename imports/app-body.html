@@ -2,16 +2,20 @@
 	
     <div class="logo-container welcomeOption">
       <h1 id="jukebox-logo"><a href="/"><img src="../../JukeboxSmall@1x.png" alt="JUKEBOX" /></a>
-<!--         <div class="ui icon top right pointing dropdown button" style="position: absolute; display:inline-block; right: 10px; background: black;">
+        <div class="ui icon top right pointing dropdown button" style="position: absolute; display:inline-block; right: 10px; background: black;">
           <i class="spotify icon" style="color: #B62990"></i>
           <div class="menu">
-            <div class="header">Username</div>
-            <div class="item">My playlists</div>
-            <div class="item">Log out</div>
+          {{#if currentUser}}
+            <div class="header">{{currentUser.spotifyUserId}}</div>
+            <div class="item" id="user-my-playlists">My playlists</div>
+            <div class="item" id="user-log-out">Log out</div>
+          {{else}}
+            <div class="header">User</div>
+            <div class="item" id="user-log-in">Log in via Spotify</div>
+          {{/if}}
           </div>
-        </div> -->
+        </div>
       </h1>
-
     </div>
     <div id="container" class="">
 
