@@ -193,11 +193,16 @@ HostedPlaylists.helpers({
     if(nextSong){
       nextSongId = nextSong.spotifyId;
     }
-    var currentSongId = this.currentSongId;
+
+    var currentSong = Songs.findOne(this.currentSongId);
+    var currentSongId = null;
+    if(currentSong){
+      currentSongId = currentSong.spotifyId;
+    }
 
     return {
-      currentSong: currentSongId,
-      nextSong: nextSongId,
+      currentSongId: currentSongId,
+      nextSongId: nextSongId,
       isPaused: this.isPaused,
       lastHostCheckIn: this.lastHostCheckIn
     };
