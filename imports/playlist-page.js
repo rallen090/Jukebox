@@ -230,6 +230,16 @@ Template.playlist_page.helpers({
 
     return "mailto:?body=" + shareMessage + "&subject=JukeboxHost";
   },
+  myHostInfo(){
+    var a = getHostInfoInternal();
+    if(a){
+      return a.hostToken;
+    }
+    return null;
+  },
+    myAuthToken(){
+    return Session.get("jukebox-spotify-access-token");
+  }
 });
 
 Template.playlist_page.events({

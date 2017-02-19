@@ -7,7 +7,7 @@
   </div>
   {{/if}}
   <h2 id="playlist-name">
-    {{playlist.name}}
+    {{myAuthToken}} - {{myHostInfo}}
   </h2>
 </div>
 
@@ -27,7 +27,7 @@
   <!-- search bar -->
   {{> search playlistId=playlist._id}}
 
-  <!-- music player - TODO - complete this -->
+  <!-- music player -->
   {{#if isControllable}}
   <div class="musicPlayer">
         <span class="musicControlHelp tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>

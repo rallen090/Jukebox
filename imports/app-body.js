@@ -21,6 +21,10 @@ Template.App_body.onCreated(function appBodyOnCreated() {
 	this.subscribe('currentUser', userId, authToken, function(){
 		$('.ui.dropdown').dropdown();
 	});
+	setTimeout(function(){
+		$('.ui.dropdown').dropdown();
+	}, 1000);
+	//window.location = "jukeboxapp://host?hostToken=vmPdum4&privateId=KXOBx_Q";
 });
 
 Template.App_body.onRendered(function appBodyOnRendered(){
