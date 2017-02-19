@@ -17,7 +17,7 @@ Template.host_page.onRendered(function hostOnRendered(){
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        setTimeout(function () { window.location = "https://play.google.com/store/apps/details?id=com.facebook.katana"; }, 25);
+        setTimeout(function () { window.location = "https://itunes.apple.com/app/facebook/id284882215"; }, 25);
         window.location = "jukeboxapp://host?hostToken=" + hostToken + "&privateId=" + playlistPrivateId;
         return;
     }
