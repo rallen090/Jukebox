@@ -6,11 +6,11 @@
           <i class="spotify icon" style="color: #B62990"></i>
           <div class="menu">
           {{#if currentUser}}
-            <div class="header">{{currentUser.spotifyUserId}}</div>
+            <div class="header"><strong>{{currentUser.spotifyUserId}}</strong></div>
             <div class="item" id="user-my-playlists">My playlists</div>
             <div class="item" id="user-log-out">Log out</div>
           {{else}}
-            <div class="header">Account</div>
+            <div class="header"><strong>Account</strong></div>
             <div class="item" id="user-log-in">Log in via Spotify</div>
           {{/if}}
           </div>
