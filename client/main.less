@@ -736,11 +736,15 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	background-image: none !important;
 }
 
-/* */
-.ui.popup, .ui.popup:before, .ui.popup:after, .ui.dropdown{
-	color: white;
+/* semantic-ui popup/dropdown overrides */
+.ui.popup, .ui.popup:before, .ui.popup:after, .menu, .menu:after{
+	color: white !important;
 	background: @color-primary !important;
-	border: none;
+	/* if we don't like the borders on helptext, this remove them */
+	/*border: none;*/
+}
+.header, .item{
+	color: white !important;
 }
 
 /**************************************************
