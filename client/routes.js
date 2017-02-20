@@ -9,6 +9,7 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/create-page.js';
 import '../imports/playlist-page.js';
+import '../imports/my-playlists.js';
 import '../imports/host.js';
 import '../imports/welcome.js';
 import '../imports/debug.js';
@@ -81,11 +82,19 @@ FlowRouter.route('/p/:_id/settings', {
   },
 });
 
+FlowRouter.route('/playlists', {
+  name: 'Jukebox.playlists',
+  triggersEnter: [acquireSession],
+  action() {
+    BlazeLayout.render('App_body', { main: 'my_playlists' });
+  },
+});
+
 FlowRouter.route('/p/:_id/host', {
   name: 'Jukebox.host',
   action() {
     // for redirecting to app or app store
-    BlazeLayout.render('App_body', { main: 'host_page' });
+    BlazeLayout.render('host_page');
   },
 });
 
@@ -93,7 +102,15 @@ FlowRouter.route('/spotify/auth/', {
   name: 'Jukebox.spotify',
   action() {
     // RTA: contains auth JS logic - which we need a template for because otherwise we can't access subscriptions here in this action
-    BlazeLayout.render('App_body', { main: 'auth_page' });
+    BlazeLayout.render('auth_page');
+  },
+});
+
+// special case for android for handling app store redirect if not installed
+FlowRouter.route('/android/', {
+  name: 'Jukebox.android',
+  action() {
+    window.location.href = "market://details?id=com.facebook.katana";
   },
 });
 
