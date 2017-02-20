@@ -25,11 +25,35 @@ Template.settings_page.onCreated(function settingsOnCreated() {
 
 Template.settings_page.onRendered(function settingsOnRendered(){
   setTimeout(function(){
+      // set listener for pressing enter
       $("#password-input").on('keyup', function (e) {
         if(e && e.keyCode === 13){
           $("#save").click();
         }
       });
+
+      // initialize helptext
+      $('#public-music-help').popup({
+        position : 'bottom center',
+        html : "<strong>Public music control</strong> allows anyone with access to the playlist to control the actively hosted music.\
+        <br/><br/>\
+        Note that this does not allow others to host the playlist on the app.\
+        Hosting ability can only be shared with others by the owner sending a 'host URL' from the playlist page."
+      });
+
+      $('#public-access-help').popup({
+        position : 'bottom center',
+        html : "<strong>Public access</strong> makes your playlist accessible to anyone through the basic URL (e.g. 'playjuke.com/p/123') or juke code (e.g. #123) from the home page. \
+        It also can appear as a 'nearby playlist' on the home page.\
+        <br/><br/>\
+        Disabling this makes your playlist accessible only through a shareable URL that can be sent from the playlist page and it will not appear as a 'nearby playlist' on the home page."
+      });
+
+      $('#password-help').popup({
+        position : 'bottom center',
+        html : "<strong>Setting a password</strong> will restrict access to your playlist page with the password."
+      });
+
     }, 500);
 });
 

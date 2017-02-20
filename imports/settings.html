@@ -13,13 +13,7 @@
 	<div class="ui toggle checkbox">
 	  <input type="checkbox" id="private-control-checkbox" checked="{{publicControl}}">
 	  <label>Public music control&nbsp;&nbsp;
-	  	<span class="tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>
-	  	<div class="tooltiptext">
-		  	<strong>Public music control</strong> allows anyone with access to the playlist to control the actively hosted music.
-		  	<br/><br/>
-		  	Note that this does not allow others to host the playlist on the app.
-		  	Hosting ability can only be shared with others by the owner sending a 'host URL' from the playlist page.
-	  	</div>
+	  	<span class="icon-action" id="public-music-help"><a><i class="fa fa-info-circle"></i></a>
 	  	</span>
 	  </label>
 	</div>
@@ -29,12 +23,7 @@
 	<div class="ui toggle checkbox" >
 	  <input type="checkbox" id="private-access-checkbox" checked="{{publicAccess}}">
 	  	<label>Public access&nbsp;&nbsp;
-	  	<span class="tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>
-	  	<div class="tooltiptext">
-		  	<strong>Public access</strong> makes your playlist accessible to anyone through the basic URL (e.g. "playjuke.com/p/123") or juke code (e.g. #123). It also can appear as a 'nearby playlist' on the home page.
-		  	<br/><br/>
-		  	Disabling this makes your playlist accessible only through a shareable URL that can be sent from the playlist page and it will not appear as a 'nearby playlist' on the home page.
-	  	</div>
+	  	<span class="icon-action" id="public-access-help"><a><i class="fa fa-info-circle"></i></a>
 	  	</span>
 	  	</label>
 	</div>
@@ -44,10 +33,7 @@
 	<div class="ui form">
 	  <div class="field">
 	    <label style="color: white">Require password&nbsp;&nbsp;
-	    	<span class="tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>
-		  	<div class="tooltiptext">
-			  	<strong>Setting a password</strong> will restrict access to your playlist page with the password.
-		  	</div>
+	    	<span class="icon-action" id="password-help"><a><i class="fa fa-info-circle"></i></a>
 		  	</span>
 	    </label>
 	    <input type="password" id="password-input" placeholder="No password required" value="{{playlist.password}}">
@@ -56,11 +42,11 @@
 	<br/>
 
 	<!-- buttons -->
-	<button class="ui button" id="cancel">
-	  Cancel
-	</button>
 	<button class="ui button" id="save">
 	  Save<div id="save-loading-icon" class="ui active inline loader" style="display: none;"></div>
+	</button>
+	<button class="ui button" id="cancel">
+	  Cancel
 	</button>
 	</div>
 
