@@ -116,13 +116,19 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
           });
       } 
     };
+
+    // add popups to tutorialize
+    $(".playlistShare").popup({position : 'right center'}).popup("show");
+    setTimeout(() => $(".playlistShare").popup("hide"), 2000);
   }, 1000);
 
+  // execute post-action after spotify auth
   tryExecuteQueuedAction({savePlaylist: () => {
     $("#save-action").prop('disabled', true);
     $("#save-action").css('color', 'white');
   }});
 
+  // check password
   $("#password-input").on('keyup', function (e) {
     if(e && e.keyCode === 13){
       $("#password-button").click();
