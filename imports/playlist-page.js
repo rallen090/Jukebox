@@ -8,6 +8,8 @@ import { HostedPlaylists } from './api/hosted-playlists.js';
 import { Songs } from './api/songs.js';
 import { Users } from './api/users.js';
 
+import './services/spotify.js';
+
 import './playlist-page.html';
 
 // save off query parameters
@@ -229,16 +231,6 @@ Template.playlist_page.helpers({
     }
 
     return "mailto:?body=" + shareMessage + "&subject=JukeboxHost";
-  },
-  myHostInfo(){
-    var a = getHostInfoInternal();
-    if(a){
-      return a.hostToken;
-    }
-    return null;
-  },
-    myAuthToken(){
-    return Session.get("jukebox-spotify-access-token");
   }
 });
 
@@ -395,14 +387,18 @@ function getHostInfoInternal(asyncCallback){
 
   if(asyncCallback){
     Meteor.call('getHostInfo', playlistId, authToken, function(error, result){
-      savedHostInfo = result;
+      if(result){
+        savedHostInfo = result;
+      }
       asyncCallback(result);
     });
   }
   else
   {
     var info = ReactiveMethod.call('getHostInfo', playlistId, authToken);
-    savedHostInfo = info;
+    if(info){
+      savedHostInfo = info;
+    }
     return info;
   }
 };

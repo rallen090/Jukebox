@@ -1,0 +1,24 @@
+	<template name="my_playlists">
+	<div class="welcomeOption">
+	<div class="playlists-container">
+	<h3>Your jukeboxes</h3>
+	<div class="scroll-box-border">
+	<div class="scroll-box">
+	
+      <ul id="selectable-playlists">
+      	<li>
+        <i class="fa fa-file-o"></i> &nbsp;Create new jukebox<span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
+        </li>
+        {{#if playlists}}
+	      {{#each playlist in playlists}}
+	        <li id="{{playlist.privateId}}">
+	        <i class="fa fa-spotify"></i> &nbsp;{{playlist.name}}<span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
+	        </li>
+	      {{/each}}
+	    {{/if}}
+      </ul>
+      </div>
+      </div>
+      </div>
+      </div>
+      </template>

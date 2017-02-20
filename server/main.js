@@ -53,6 +53,13 @@ Meteor.publish('currentUser', function (userId, authToken) {
 Meteor.publish('publicPlaylists', function () {
   return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
 });
+Meteor.publish('myPlaylists', function(userId, authToken){
+	var currentUser = Users.findOne({_id: userId, spotifyAuthToken: authToken});
+	if(currentUser){
+		return HostedPlaylists.find({userId: userId}, { fields: { hostToken: 0, password: 0 } });
+	}
+	return [];
+});
 Meteor.publish('currentPlaylist', function (playlistId, password) {
   var nonNumeric = isNaN(playlistId);
 
