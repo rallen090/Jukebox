@@ -15,5 +15,51 @@ Template.my_playlists.onRendered(function playPageOnCreated() {
 Template.my_playlists.helpers({
   playlists(){
     return HostedPlaylists.find({}, {sort: { dateCreated: -1 }});
-  }
+  },
+  dateAsTimeSince(date){
+    return timeSince(date);
+  },
 });
+
+Template.my_playlists.events({
+  'click li'(event) {
+    // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked
+    console.log(event.target);
+    var playlistId = event.target.id;
+
+    if(!playlistId){
+		window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=true";
+    }
+    else{
+    	FlowRouter.go('Jukebox.playlist', { _id: playlistId });
+    }
+  },
+});
+
+function timeSince(date) {
+
+    var seconds = Math.floor((new Date() - date) / 1000);
+
+    var interval = Math.floor(seconds / 31536000);
+
+    if (interval > 1) {
+        return interval + " yrs";
+    }
+    interval = Math.floor(seconds / 2592000);
+    if (interval > 1) {
+        return interval + " months";
+    }
+    interval = Math.floor(seconds / 86400);
+    if (interval > 1) {
+        return interval + " days";
+    }
+    interval = Math.floor(seconds / 3600);
+    if (interval > 1) {
+        return interval + " hrs";
+    }
+    interval = Math.floor(seconds / 60);
+    if (interval > 1) {
+        return interval + " mins";
+    }
+    return Math.floor(seconds) + " secs";
+}

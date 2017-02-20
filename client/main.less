@@ -106,6 +106,11 @@ p.small {
 	margin: 0 0 20px 0;
 }
 
+.full-screen{
+	width: 80%;
+	height: 100%;
+}
+
 .welcomeOption, .subcontainer {
 	background: rgba(0, 0, 0, 0.7);
 	padding: 15px 15px 15px 15px;	
@@ -470,10 +475,6 @@ html.nontouch .icon-action:hover span, .icon-action:active span, html.nontouch .
 	clear: both;
 }
 
-.playlists-container{
-	margin-right: 100px;
-}
-
 .scroll-box::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
@@ -504,15 +505,32 @@ html.nontouch .icon-action:hover span, .icon-action:active span, html.nontouch .
 .scroll-box {
     overflow-y: scroll;
     overflow-x: hidden;
-	width: 90%;
 	width: 255px;
     /* precise size to fit exactly full items in the list without seeing partial blocks */
     max-height: 300px;
     .rounded;
 }
+
 #selectable-playlists {
     width: 240px;
     height: 100%;
+}
+
+.scroll-box-border-large{
+	color: @color-primary;
+	max-height: 302px;
+/*    margin-left: 50px;*/
+    .rounded;
+    width: 100%;
+    border:1px solid @color-primary;
+}
+.scroll-box-large {
+    overflow-y: hidden;
+    overflow-x: hidden;
+	width: 100%;
+    /* precise size to fit exactly full items in the list without seeing partial blocks */
+    max-height: 500px;
+    .rounded;
 }
 
 /* Container with border and rounded corners */

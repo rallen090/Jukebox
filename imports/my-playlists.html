@@ -1,18 +1,19 @@
 	<template name="my_playlists">
-	<div class="welcomeOption">
+	<!-- <div class="subcontainer"><h2>Playlists</h2></div> -->
+	<div class="subcontainer">
 	<div class="playlists-container">
-	<h3>Your jukeboxes</h3>
-	<div class="scroll-box-border">
-	<div class="scroll-box">
-	
-      <ul id="selectable-playlists">
+	<h2>Your jukeboxes</h2>
+	<br/>
+	<div class="scroll-box-border-large">
+	<div class="scroll-box-large">
+      <ul>
       	<li>
         <i class="fa fa-file-o"></i> &nbsp;Create new jukebox<span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
         </li>
         {{#if playlists}}
 	      {{#each playlist in playlists}}
 	        <li id="{{playlist.privateId}}">
-	        <i class="fa fa-spotify"></i> &nbsp;{{playlist.name}}<span class="selectArrow"><i class="fa fa-arrow-right"></i></span>
+	        <i class="fa fa-spotify"></i> &nbsp;{{playlist.name}}<span style="float:right">{{dateAsTimeSince playlist.dateCreated}} ago</span>
 	        </li>
 	      {{/each}}
 	    {{/if}}
@@ -21,4 +22,11 @@
       </div>
       </div>
       </div>
+<!-- <iframe
+	onload="this.width=screen.width;"
+  height="450"
+  frameborder="0" style="border:0"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCR5bQcR0zEj93UE-WFWFFUXfUNDn44_7k
+    &q=Space+Needle,Seattle+WA">
+</iframe> -->
       </template>

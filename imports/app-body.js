@@ -43,7 +43,7 @@ Template.App_body.events({
 		location.reload();
 	},
 	'click #user-my-playlists'(event) {
-		alert("my playlists");
+		FlowRouter.go('Jukebox.playlists');
 	},
 });
 
