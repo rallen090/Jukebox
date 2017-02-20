@@ -25,6 +25,27 @@ Template.App_body.onCreated(function appBodyOnCreated() {
 });
 
 Template.App_body.onRendered(function appBodyOnRendered(){
+	// $('body').append('<div class="ui left demo vertical inverted sidebar labeled icon menu">\
+ //        <a class="item">\
+ //          <i class="home icon"></i>\
+ //          Home\
+ //        </a>\
+ //        <a class="item">\
+ //          <i class="block layout icon"></i>\
+ //          Topics\
+ //        </a>\
+ //        <a class="item">\
+ //          <i class="smile icon"></i>\
+ //          Friends\
+ //        </a>\
+ //      </div>');
+	// $('#__blaze-root').addClass("pusher");
+	$('.context.example .ui.sidebar')
+  .sidebar({
+    context: $('.context.example .bottom.segment')
+  })
+  .sidebar('attach events', '.context.example .menu .item')
+;
 });
 
 Template.App_body.helpers({
@@ -45,6 +66,9 @@ Template.App_body.events({
 	'click #user-my-playlists'(event) {
 		FlowRouter.go('Jukebox.playlists');
 	},
+	// 'click #side-menu'(event){
+	// 	$('.sidebar').sidebar('toggle');
+	// }
 });
 
 function syncUser(){
