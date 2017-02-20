@@ -118,8 +118,8 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
     };
 
     // add popups to tutorialize
-    $(".playlistShare").popup({position : 'right center'}).popup("show");
-    setTimeout(() => $(".playlistShare").popup("hide"), 2000);
+    $(".playlistShare").popup({position : 'right center', on: 'hover'}).popup("show");
+    setTimeout(() => $(".playlistShare").popup("hide"), 3000);
   }, 1000);
 
   // execute post-action after spotify auth
