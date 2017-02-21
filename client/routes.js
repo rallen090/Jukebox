@@ -90,7 +90,7 @@ FlowRouter.route('/playlists', {
   },
 });
 
-FlowRouter.route('/p/:_id/host', {
+FlowRouter.route('/p/host', {
   name: 'Jukebox.host',
   action() {
     // for redirecting to app or app store

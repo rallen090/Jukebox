@@ -293,7 +293,7 @@ Template.playlist_page.events({
       });
     }
     else{
-      if(isOwnerInternal()){
+      if(isControllableInternal()){
         getHostLinkInternal(function(link){
           handleLink(link);
         });
@@ -315,7 +315,7 @@ Template.playlist_page.events({
         });
       }
       else{
-        if(isOwnerInternal()){
+        if(isControllableInternal()){
           getHostLinkInternal(function(link){
             handleLink(link);
           });
@@ -337,7 +337,7 @@ Template.playlist_page.events({
         });
       }
       else{
-        if(isOwnerInternal()){
+        if(isControllableInternal()){
           getHostLinkInternal(function(link){
             handleLink(link);
           });
@@ -359,7 +359,7 @@ Template.playlist_page.events({
         });
       }
       else{
-        if(isOwnerInternal()){
+        if(isControllableInternal()){
           getHostLinkInternal(function(link){
             handleLink(link);
           });
@@ -437,12 +437,16 @@ function isOwnerInternal(){
   return playlistUserId === Session.get("jukebox-active-user-id");
 };
 
+function isControllableInternal(){
+  return (currentHostToken != null) || isOwnerInternal();
+}
+
 // has to make async and sync since sync does not work in event handlers
 function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var link = window.location.protocol + "//" + window.location.host + "/p/" + info.privateId + "/host/" + "?hostToken=" + info.hostToken;
+          var link = window.location.protocol + "//" + window.location.host + "/p/host/" + "?hostToken=" + info.hostToken + "&privateId=" + info.privateId;
           if(asyncCallback){
             asyncCallback(link);
           }
