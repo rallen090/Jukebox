@@ -4,8 +4,8 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import './host.html';
 
 Template.host_page.onRendered(function hostOnRendered(){
-    var playlistPrivateId = FlowRouter.getParam('_id');
     var hostToken = FlowRouter.getQueryParam("hostToken");
+    var playlistPrivateId = FlowRouter.getQueryParam("privateId");
 
     setTimeout(function(){
         window.close();
@@ -26,8 +26,8 @@ Template.host_page.onRendered(function hostOnRendered(){
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
     if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        setTimeout(function () { window.location = "https://itunes.apple.com/app/facebook/id284882215"; }, 25);
-        window.location.href = "jukeboxapp://host?hostToken=" + hostToken + "&privateId=" + playlistPrivateId;
+        setTimeout(function () { window.location = "itms://itunes.apple.com/app/facebook/id284882215"; }, 3000);
+        window.location.href = "jukebox://host?hostToken=" + hostToken + "&privateId=" + playlistPrivateId;
         return;
     }
 });
