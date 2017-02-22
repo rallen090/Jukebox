@@ -42,7 +42,7 @@ Meteor.publish('currentUser', function (userId, authToken) {
 
 		// if we have a valid spotify ID - then we are still authenticated
 		if(response && response.data && response.data.id){
-			if(currentcurrentUser.spotifyUserId === response.data.id){
+			if(currentUser.spotifyUserId === response.data.id){
 				return Users.find({_id: userId}, { fields: { spotifyAuthToken: 0 } });
 			}
 		}		

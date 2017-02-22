@@ -204,7 +204,8 @@ HostedPlaylists.helpers({
       currentSongId: currentSongId,
       nextSongId: nextSongId,
       isPaused: this.isPaused,
-      lastHostCheckIn: this.lastHostCheckIn
+      lastHostCheckIn: this.lastHostCheckIn,
+      durationInSeconds: currentSong ? currentSong.durationInSeconds : 0
     };
   },
   songs() {
@@ -222,7 +223,8 @@ HostedPlaylists.helpers({
         name: value.name,
         artist: value.artist,
         hostedPlaylistId: playlistId,
-        imageUrl: value.imageUrl
+        imageUrl: value.imageUrl,
+        durationInSeconds: value.durationInSeconds
       });
     });
     return;

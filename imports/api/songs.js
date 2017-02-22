@@ -6,6 +6,7 @@ import { Playlists } from './hosted-playlists.js';
 class SongsCollection extends Mongo.Collection {
   insert(song, callback) {
     const ourSong = song;
+    ourSong.durationInSeconds = Math.floor(ourSong.durationInSeconds);
     ourSong.voteCount = 0;
     ourSong.votes = [];
     ourSong.played = false;
@@ -78,6 +79,9 @@ Songs.schema = new SimpleSchema({
   localUserVoted: {
 	  type: Boolean
   },
+  durationInSeconds: {
+    type: Number
+  }
 });
 
 Songs.attachSchema(Songs.schema);
@@ -96,6 +100,7 @@ Songs.publicFields = {
   voteCount: 1,
   played: 1,
   localUserVoted: 1,
+  durationInSeconds: 1
 };
 
 Songs.helpers({
