@@ -51,7 +51,8 @@ Template.search.onRendered(function createPageOnRendered() {
 	            artist 	: artist,
 	            description : "by " + artist,
 	            spotifyId: song.uri,
-	            imageUrl: imageUrl
+	            imageUrl: imageUrl,
+	            durationInSeconds: song.duration_ms ? parseInt(song.duration_ms) / 1000 : 0
 	          });
 	        });
 	        return response;
@@ -74,7 +75,8 @@ Template.search.onRendered(function createPageOnRendered() {
 		        name: result.title,
 		        artist: result.artist,
 		        hostedPlaylistId: playlistId,
-		        imageUrl: result.imageUrl
+		        imageUrl: result.imageUrl,
+		        durationInSeconds: result.durationInSeconds
 		    });
 	    }
 	  })

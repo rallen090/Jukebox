@@ -21,7 +21,7 @@ Template.App_body.onCreated(function appBodyOnCreated() {
 	this.subscribe('currentUser', userId, authToken, {onReady: function(){
 		syncUser();
 	}});
-	setTimeout(syncUser, 1000);
+	setTimeout($('.ui.dropdown').dropdown(), 1000);
 });
 
 Template.App_body.onRendered(function appBodyOnRendered(){
@@ -40,12 +40,11 @@ Template.App_body.onRendered(function appBodyOnRendered(){
  //        </a>\
  //      </div>');
 	// $('#__blaze-root').addClass("pusher");
-	$('.context.example .ui.sidebar')
-  .sidebar({
-    context: $('.context.example .bottom.segment')
-  })
-  .sidebar('attach events', '.context.example .menu .item')
-;
+	// $('.context.example .ui.sidebar')
+ //  .sidebar({
+ //    context: $('.context.example .bottom.segment')
+ //  })
+ //  .sidebar('attach events', '.context.example .menu .item');
 });
 
 Template.App_body.helpers({
@@ -75,9 +74,12 @@ function syncUser(){
 		var user = Users.findOne();
 
 		// sync auth if we have a token but no user returned
+		const sessionKey = "jukebox-active-user-id";
 		var authToken = Session.get("jukebox-spotify-access-token");
 		if(!user && authToken){
-			acquireSpotifyAccessToken(/*reacquire*/ true, /*queuedAction*/ null);
+			Meteor.call('syncUserWithServer', userIdFromSession, /* token */ null, function(error, result){
+				Session.setPersistent(sessionKey, result);
+			});
 		}
 
 		// initialize the drop down for login as well

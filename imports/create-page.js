@@ -129,7 +129,8 @@ Template.create_page.events({
             artist: track.artists[0].name,
             // track.id is the ID portion only - while track.uri has the 'spotify:track:' prefix as well
             spotifyId: track.uri,
-            imageUrl: imageUrl
+            imageUrl: imageUrl,
+            durationInSeconds: track.duration_ms ? parseInt(track.duration_ms) / 1000 : 0
           });
         });
 
