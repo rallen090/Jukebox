@@ -16,8 +16,7 @@ Meteor.publish('jukeboxUsers', function (userId, authToken) {
   return Users.find({_id: userId, spotifyAuthToken: authToken}, { fields: { spotifyAuthToken: 0 } });
 });
 Meteor.publish('currentUser', function (userId, authToken) {
-	var currentUser = Users.findOne({_id: userId});
-
+	var currentUser = Users.findOne({_id: userId, spotifyAuthToken: authToken});
 	if(!currentUser){
 		return [];
 	}
@@ -54,11 +53,14 @@ Meteor.publish('publicPlaylists', function () {
   return HostedPlaylists.find({privateAccess: false}, { fields: { privateId: 0, hostToken: 0, password: 0 } });
 });
 Meteor.publish('myPlaylists', function(userId, authToken){
+
 	var currentUser = Users.findOne({_id: userId, spotifyAuthToken: authToken});
 	if(currentUser){
 		return HostedPlaylists.find({userId: userId}, { fields: { hostToken: 0, password: 0 } });
 	}
-	return [];
+	else{
+		return [];
+	}
 });
 Meteor.publish('currentPlaylist', function (playlistId, password) {
   var nonNumeric = isNaN(playlistId);
@@ -240,7 +242,7 @@ Meteor.methods({
 			var spotifyUserId = response.data.id;
 
 			var spotifyUser = Users.findOne({spotifyUserId: spotifyUserId});
-
+			
 			// spotify account known already
 			if(spotifyUser){
 				// update auth token
