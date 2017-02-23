@@ -16,7 +16,13 @@ import './playlist-page.html';
 var currentPlaylistId = null;
 var currentHostToken = null;
 
+// save off host info locally so we don't need to request more than once for it (NOTE: important to reset OnCreated, because it won't be reset automatically)
+var savedHostInfo = null;
+
 Template.playlist_page.onCreated(function playPageOnCreated() {
+  // reset cached hostInfo
+  savedHostInfo = null;
+
   var self = this;
   self.getPlaylistId = () => FlowRouter.getParam('_id');
   self.getHostToken = () => FlowRouter.getQueryParam("hostToken");
@@ -134,6 +140,15 @@ Template.playlist_page.onRendered(function playlistPageOnRendered(){
       $("#password-button").click();
     }
   });
+
+  // try redirect to app
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
+    window.location = "jukebox://join/?playlistId=" + currentPlaylistId;
+  }
+  else if (/android/i.test(userAgent)) {
+    window.location = "jukeboxapp://join/?playlistId=" + currentPlaylistId;
+  }
 });
 
 Template.playlist_page.helpers({
@@ -301,7 +316,7 @@ Template.playlist_page.events({
         });
       }
       else{
-        alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
+        window.alert("The owner must first host the playlist using the app to begin! A link to host on the app yourself can also be sent to you by the owner.");
       }
     }
   },
@@ -374,7 +389,6 @@ Template.playlist_page.events({
 });
 
 // has to make async and sync since sync does not work in event handlers
-var savedHostInfo = null;
 function getHostInfoInternal(asyncCallback){
   if(savedHostInfo){
     if(asyncCallback){
@@ -468,7 +482,8 @@ function handleLink(link){
   // if mobile go to host page to redirect to app
   var userAgent = navigator.userAgent || navigator.vendor || window.opera;
   if(((/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream)) || /android/i.test(userAgent)){
-    window.open(link);
+    //window.open(link);
+    window.location = link;
   }else{
     // otherwise show the app stores
     $('.confirm-modal')

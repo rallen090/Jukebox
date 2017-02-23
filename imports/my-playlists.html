@@ -13,7 +13,7 @@
         {{#if playlists}}
 	      {{#each playlist in playlists}}
 	        <li id="{{playlist.privateId}}">
-	        <i class="fa fa-spotify"></i> &nbsp;{{playlist.name}}<span style="float:right">{{dateAsTimeSince playlist.dateCreated}} ago</span>
+	        <i class="fa fa-music" aria-hidden="true"></i> &nbsp;{{playlist.name}}<span style="float:right">{{dateAsTimeSince playlist.dateCreated}} ago</span>
 	        </li>
 	      {{/each}}
 	    {{/if}}

@@ -17,34 +17,6 @@ if (Meteor.isServer) {
 
   Api.addCollection(HostedPlaylists);
 
-  // TODO: remove legacy API
-  // maps to /api/playlist/next/:id
-  Api.addRoute('playlist/next/:id', {authRequired: false}, {
-    get: function () {
-      var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
-
-      if(!playlist){
-        return { message: "Playlist does not exist", endOfPlaylist: "true" };
-      }
-
-      var nextSong = playlist.playNextSong(/* fromtHost */ true);
-
-      if(!nextSong){
-        return { message: "Playlist is now empty", endOfPlaylist: "true" };
-      }
-
-      return { nextSong: nextSong, endOfPlaylist: "false" };
-    }
-  });
-
-  // maps to /api/playlists/:id
-  Api.addRoute('playlist/isvalid/:id', {authRequired: false}, {
-    get: function () {
-      var playlist = HostedPlaylists.findOne({publicId: parseInt(this.urlParams.id, 10)});
-      return { isValid: playlist ? "true" : "false" };
-    }
-  });
-
   // ---- v2 API ----
 
   Api.addRoute('v2/playlist/play/:privateId', {authRequired: false}, {
@@ -71,6 +43,56 @@ if (Meteor.isServer) {
       }
 
       return { success: true, message: "Playing", nextSongId: nextSongId, endOfPlaylist: "false" };
+    }
+  });
+
+  Api.addRoute('v2/playlist/pause/:privateId', {authRequired: false}, {
+    post: function () {
+      var urlId = this.urlParams.privateId;
+      var hostToken = this.bodyParams.hostToken;
+
+      // invalid post arguments
+      if(!urlId || !hostToken){
+        return FAILURE_403;
+      }
+
+      var playlist = HostedPlaylists.findOne({privateId: urlId, hostToken: hostToken});
+
+      // invalid playlist id and/or hostToken
+      if(!playlist){
+        return FAILURE_403;
+      }
+
+      HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
+
+      return { success: true, message: "Paused" };
+    }
+  });
+
+  Api.addRoute('v2/playlist/previous/:privateId', {authRequired: false}, {
+    post: function () {
+      var urlId = this.urlParams.privateId;
+      var hostToken = this.bodyParams.hostToken;
+
+      // invalid post arguments
+      if(!urlId || !hostToken){
+        return FAILURE_403;
+      }
+
+      var playlist = HostedPlaylists.findOne({privateId: urlId, hostToken: hostToken});
+
+      // invalid playlist id and/or hostToken
+      if(!playlist){
+        return FAILURE_403;
+      }
+
+      var nextSongId = playlist.playPreviousSong(/* fromtHost */ true);
+
+      if(!nextSongId){
+        return { success: false, message: "Playlist is now empty", nextSongId: null, endOfPlaylist: "true" };
+      }
+
+      return { success: true, message: "Previous", nextSongId: nextSongId, endOfPlaylist: "false" };
     }
   });
 
