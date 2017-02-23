@@ -199,12 +199,13 @@ Template.playlist_page.helpers({
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1 ? "fa fa-star" : "fa fa-star-o";
   },
-  getHostShareLinkByOS(){
+  getShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
     // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
-    var link = getHostLinkInternal();
-    var shareMessage = "Host the Jukebox: " + link;
+    const instance = Template.instance();
+    const playlistId = instance.getPlaylistId();
+    var shareMessage = "Join the Jukebox: "  + window.location.host + "/p/" + playlistId;
 
     // android
     if (/android/i.test(userAgent)) {
@@ -216,8 +217,8 @@ Template.playlist_page.helpers({
         return "sms:&body=" + shareMessage;
     }
 
-    return "mailto:?body=" + shareMessage + "&subject=JukeboxHost";
-  }
+    return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
+  },
 });
 
 Template.playlist_page.events({
@@ -264,8 +265,7 @@ Template.playlist_page.events({
   'click #share-host-link'(event){
     getHostLinkInternal(link => {
       var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-      var shareMessage = "Host the Jukebox: "  + link;
+      var shareMessage = "Host the Jukebox: "  + encodeURIComponent(link);
 
       // android
       if (/android/i.test(userAgent)) {
