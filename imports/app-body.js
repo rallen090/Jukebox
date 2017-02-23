@@ -18,10 +18,10 @@ Meteor.startup(() => {
 Template.App_body.onCreated(function appBodyOnCreated() {
 	var authToken = Session.get("jukebox-spotify-access-token");
 	var userId = Session.get("jukebox-active-user-id");
-	this.subscribe('currentUser', userId, authToken, {onReady: function(){
-		syncUser();
+	self = this;
+	self.subscribe('currentUser', userId, authToken, {onReady: function(){
+		syncUser(self);
 	}});
-	setTimeout($('.ui.dropdown').dropdown(), 1000);
 });
 
 Template.App_body.onRendered(function appBodyOnRendered(){
@@ -70,15 +70,28 @@ Template.App_body.events({
 	// }
 });
 
-function syncUser(){
+function syncUser(self){
 		var user = Users.findOne();
 
 		// sync auth if we have a token but no user returned
 		const sessionKey = "jukebox-active-user-id";
 		var authToken = Session.get("jukebox-spotify-access-token");
+
 		if(!user && authToken){
-			Meteor.call('syncUserWithServer', userIdFromSession, /* token */ null, function(error, result){
+			Meteor.call('syncUserWithServer', /* userId */ null, authToken, function(error, result){
+				// if syncing did not return a valid userId AND we have an auth token, then force a re-auth
+				if(result == null){
+					acquireSpotifyAccessToken(/* reaquire */ true, /*queuedAction*/ null);
+					return;
+				}
+
+				// otherwise, set the user ID
 				Session.setPersistent(sessionKey, result);
+
+				// re-sub after re-auth
+				var authToken = Session.get("jukebox-spotify-access-token");
+				var userId = Session.get("jukebox-active-user-id");
+				self.subscribe('currentUser', userId, authToken);
 			});
 		}
 
