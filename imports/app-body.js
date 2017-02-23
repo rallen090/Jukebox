@@ -76,7 +76,6 @@ function syncUser(self){
 		// sync auth if we have a token but no user returned
 		const sessionKey = "jukebox-active-user-id";
 		var authToken = Session.get("jukebox-spotify-access-token");
-
 		if(!user && authToken){
 			Meteor.call('syncUserWithServer', /* userId */ null, authToken, function(error, result){
 				// if syncing did not return a valid userId AND we have an auth token, then force a re-auth
