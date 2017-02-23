@@ -670,12 +670,16 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
    width:200px;
    height: 100%;
    margin: 0 auto;
+   /* disable selection - in iOS this opens magnifying glass which is annoying */
+   -webkit-user-select: none;
 }
 
 .musicAction{
 	display:inline-block;
 	width: 31%;
 	text-align: center;
+	/* disable selection - in iOS this opens magnifying glass which is annoying */
+   -webkit-user-select: none;
 }
 
 /* the play button's center is weirdly off so we adjust with this */
