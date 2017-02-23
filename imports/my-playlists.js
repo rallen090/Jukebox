@@ -24,7 +24,6 @@ Template.my_playlists.helpers({
 Template.my_playlists.events({
   'click li'(event) {
     // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked
-    console.log(event.target);
     var playlistId = event.target.id;
 
     if(!playlistId){

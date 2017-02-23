@@ -60,7 +60,7 @@ Template.App_body.events({
 	'click #user-log-out'(event) {
 		Session.clear("jukebox-spotify-access-token");
 		Session.clear("jukebox-active-user-id");
-		location.reload();
+		location.reload(true);
 	},
 	'click #user-my-playlists'(event) {
 		FlowRouter.go('Jukebox.playlists');
