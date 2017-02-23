@@ -90,7 +90,7 @@ FlowRouter.route('/playlists', {
   },
 });
 
-FlowRouter.route('/p/host', {
+FlowRouter.route('/host', {
   name: 'Jukebox.host',
   action() {
     // for redirecting to app or app store
@@ -139,9 +139,10 @@ function acquireSession() {
   if(Meteor.isClient){
       const sessionKey = "jukebox-active-user-id";
       var userIdFromSession = Session.get(sessionKey);
+      var authToken = Session.get("jukebox-spotify-access-token");
 
       // get a user if no session is set
-      if(!userIdFromSession){
+      if(!userIdFromSession && !authToken){
         Meteor.call('syncUserWithServer', userIdFromSession, /* token */ null, function(error, result){
           Session.setPersistent(sessionKey, result);
         });

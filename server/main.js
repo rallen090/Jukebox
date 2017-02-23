@@ -239,46 +239,30 @@ Meteor.methods({
 		if(response && response.data && response.data.id){
 			var spotifyUserId = response.data.id;
 
-			// already have a jukebox userId
-			if(userId){
+			var spotifyUser = Users.findOne({spotifyUserId: spotifyUserId});
+
+			// spotify account known already
+			if(spotifyUser){
+				// update auth token
+				Users.update(spotifyUser._id, {$set: { spotifyAuthToken: token }});
+				return spotifyUser._id;
+			}
+			// user known but no spotify
+			else if(userId){
 				var existingUser = Users.findOne({_id: userId});
 
-				// existing user already validated w/ spotify
-				if(existingUser && existingUser.spotifyUserId === spotifyUserId){
-					// update auth token
-					Users.update(userId, {$set: { spotifyAuthToken: token }});
-					return userId;
-				}
-				// existing user not already validated w/ spotify
-				else if (existingUser){
-					var existingSpotifyUser = Users.findOne({spotifyUserId: spotifyUserId});
-
-					// if there is an account already w/ this user, then we just swap to that one
-					if(existingSpotifyUser && existingSpotifyUser.spotifyUserId){
-						// reset token
-						Users.update(existingSpotifyUser._id, {$set: { spotifyAuthToken: token, spotifyUserId: spotifyUserId }});
-						return existingSpotifyUser._id;
-					}
-
-					// otherwise, we have a new spotify validation so sync with current userId
-					Users.update(userId, {$set: { spotifyUserId: spotifyUserId, spotifyAuthToken: token }});
-					return userId;
-				}
-				// invalid userId
-				else{
-					// re-issue - doing this in case we reset the db and so stale userIds would be left in local storage if we didn't support this
-					var id = Users.insert({spotifyUserId: spotifyUserId, spotifyAuthToken: token});
-					return id;
+				if(existingUser && (!existingUser.spotifyUserId || existingUser.spotifyUserId == null)){
+					Users.update(existingUser._id, {$set: { spotifyAuthToken: token, spotifyUserId: spotifyUserId }});
+					return existingUser._id;
 				}
 			}
-			// new user altogether
-			else{
-				var id = Users.insert({spotifyUserId: spotifyUserId, spotifyAuthToken: token});
-				return id;
-			}
+
+			// otherwise re-issue - doing this in case we reset the db and so stale userIds would be left in local storage if we didn't support this
+			var id = Users.insert({spotifyUserId: spotifyUserId, spotifyAuthToken: token});
+			return id;
 		}
 
-		// don't this can logically be reached
+		// don't think this can logically be reached
 		return null;
   	},
 	updateSettings (playlistId, authToken, settings) {

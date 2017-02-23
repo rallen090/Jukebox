@@ -199,26 +199,6 @@ Template.playlist_page.helpers({
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1 ? "fa fa-star" : "fa fa-star-o";
   },
-  getShareLinkByOS(){
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-    // to avoid private/public concerns, the share link just used whatever the current URL has since the user has it
-    const instance = Template.instance();
-    const playlistId = instance.getPlaylistId();
-    var shareMessage = "Join the Jukebox: "  + window.location.host + "/p/" + playlistId;
-
-    // android
-    if (/android/i.test(userAgent)) {
-        return "sms:?body=" + shareMessage;
-    }
-
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return "sms:&body=" + shareMessage;
-    }
-
-    return "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
-  },
   getHostShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
 
@@ -280,6 +260,28 @@ Template.playlist_page.events({
   },
   'click #settings-action'(event){
     window.location.href = window.location.protocol + "//" + window.location.host + "/p/" + currentPlaylistId + "/settings";
+  },
+  'click #share-host-link'(event){
+    getHostLinkInternal(link => {
+      var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      var shareMessage = "Host the Jukebox: "  + link;
+
+      // android
+      if (/android/i.test(userAgent)) {
+          location.href = "sms:?body=" + shareMessage;
+          return;
+      }
+
+      // iOS detection from: http://stackoverflow.com/a/9039885/177710
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+          location.href = "sms:&body=" + shareMessage;
+          return;
+      }
+
+      location.href = "mailto:?body=" + shareMessage + "&subject=JukeboxInvite";
+      return;
+    });
   },
   'click #playSong'(event){
     hideMusicControls();
@@ -446,7 +448,7 @@ function getHostLinkInternal(asyncCallback){
     function getLink(result){
         var info = result;
         if(info && info.privateId && info.hostToken){
-          var link = window.location.protocol + "//" + window.location.host + "/p/host/" + "?hostToken=" + info.hostToken + "&privateId=" + info.privateId;
+          var link = window.location.protocol + "//" + window.location.host + "/host/" + "?hostToken=" + info.hostToken + "&privateId=" + info.privateId;
           if(asyncCallback){
             asyncCallback(link);
           }
