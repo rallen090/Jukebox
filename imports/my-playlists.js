@@ -10,6 +10,11 @@ Template.my_playlists.onRendered(function playPageOnCreated() {
 	var authToken = acquireSpotifyAccessToken(/* reacquire */false, /* queuedAction */ null);
 	var userId = Session.get("jukebox-active-user-id");
   	this.subscribe('myPlaylists', userId, authToken);
+  	setTimeout(() => {
+	  	$("li").on("swipe",function(event){
+		  alert("This will delete one day...");
+		});
+  	}, 1000);
 });
 
 Template.my_playlists.helpers({
@@ -61,4 +66,4 @@ function timeSince(date) {
         return interval + " mins";
     }
     return Math.floor(seconds) + " secs";
-}
+};

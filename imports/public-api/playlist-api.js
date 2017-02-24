@@ -63,7 +63,7 @@ if (Meteor.isServer) {
         return FAILURE_403;
       }
 
-      HostedPlaylists.update(playlistId, {$set: {isPaused: true}});
+      HostedPlaylists.update(playlist._id, {$set: {isPaused: true}});
 
       return { success: true, message: "Paused" };
     }
@@ -86,7 +86,7 @@ if (Meteor.isServer) {
         return FAILURE_403;
       }
 
-      var nextSongId = playlist.playPreviousSong(/* fromtHost */ true);
+      var nextSongId = playlist.playPreviousSong(/* fromHost */ true);
 
       if(!nextSongId){
         return { success: false, message: "Playlist is now empty", nextSongId: null, endOfPlaylist: "true" };
