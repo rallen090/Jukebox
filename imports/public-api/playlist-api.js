@@ -1,12 +1,13 @@
 import { HostedPlaylists } from '../api/hosted-playlists.js';
 
+import winston from 'winston';
 import crypto from 'crypto';
 import base64url from 'base64url';
 
 const CLIENT_ID = 'e03e15b112774918a9d3dfd5e2e78ba5';
 const CLIENT_SECRET_ID = "0d5bd36c030b41e886f813ff10096228";
 const ENCRYPTION_SECRET = "cFJLyifeUJUBFWdHzVbykfDmPHtLKLGzViHW9aHGmyTLD8hGXC";
-const CLIENT_CALLBACK_URL = "jukebox-login://callback";
+const CLIENT_CALLBACK_URL = "jukebox://callback";
 const SPOTIFY_BASE_URL = "https://accounts.spotify.com";
 
 const FAILURE_403 = {
@@ -138,47 +139,63 @@ if (Meteor.isServer) {
 
   Api.addRoute('v2/spotify/auth/swap', {authRequired: false}, {
     post: function () {
-      console.log("MADE IT!");
+      winston.info("Swapping auth code", this.bodyParams);
       var authCode = this.bodyParams.code;
-      console.log(this.bodyParams.code);
 
-      var response = HTTP.call(
-        "POST", 
-        SPOTIFY_BASE_URL + "/api/token", 
-        {params: {grant_type: "authorization_code", redirect_uri: CLIENT_CALLBACK_URL, code: authCode}, auth: CLIENT_ID + ":" + CLIENT_SECRET_ID});
+      try{
+        var response = HTTP.call(
+          "POST", 
+          SPOTIFY_BASE_URL + "/api/token", 
+          {params: {grant_type: "authorization_code", redirect_uri: CLIENT_CALLBACK_URL, code: authCode}, auth: CLIENT_ID + ":" + CLIENT_SECRET_ID});
 
-      if(response && response.data){
-        var accessToken = response.data.access_token;
-        var refreshToken = response.data.refresh_token;
-        var encryptedRefreshToken = crypto.publicEncrypt(ENCRYPTION_SECRET, refreshToken);
-        response.data.refresh_token = encryptedRefreshToken;
-        return response.data;
+        if(response && response.data){
+          winston.info("Swap response", response.data);
+          // var accessToken = response.data.access_token;
+          // var refreshToken = response.data.refresh_token;
+          // var encryptedRefreshToken = crypto.publicEncrypt(ENCRYPTION_SECRET, refreshToken);
+          // response.data.refresh_token = encryptedRefreshToken;
+          return response.data;
+        }
+        else{
+          winston.error("Error response swapping auth code", response);
+          return response;
+        }
       }
-      // # encrypt the refresh token before forwarding to the client
-      // if response.code.to_i == 200
-      //     token_data = JSON.parse(response.body)
-      //     refresh_token = token_data["refresh_token"]
-      //     encrypted_token = refresh_token.encrypt(:symmetric, :password => ENCRYPTION_SECRET)
-      //     token_data["refresh_token"] = encrypted_token
-      //     response.body = JSON.dump(token_data)
-      // end
-
-      // status response.code.to_i
-      // return response.body
-      return response.data;
+      catch(ex){
+        winston.error("Error swapping auth code", ex);
+        return ex;
+      }
     }
   });
 
   Api.addRoute('v2/spotify/auth/refresh', {authRequired: false}, {
     post: function () {
+      winston.info("Refreshing auth token", this.bodyParams);
       var refreshToken = this.bodyParams.refresh_token;
 
-      var response = HTTP.call(
+      try{
+        var response = HTTP.call(
         "POST", 
         SPOTIFY_BASE_URL + "/api/token", 
-        {params: {grant_type: "refresh_token", refresh_token: crypto.publicDecrypt(ENCRYPTION_SECRET, refreshToken)}, auth: CLIENT_ID + ":" + CLIENT_SECRET_ID});
+        {params: {grant_type: "refresh_token", refresh_token: refreshToken}, auth: CLIENT_ID + ":" + CLIENT_SECRET_ID});
 
-      return response.data;
+        if(response && response.data){
+          winston.info("Refresh response", response.data);
+          // var accessToken = response.data.access_token;
+          // var refreshToken = response.data.refresh_token;
+          // var encryptedRefreshToken = crypto.publicEncrypt(ENCRYPTION_SECRET, refreshToken);
+          // response.data.refresh_token = encryptedRefreshToken;
+          return response.data;
+        }
+        else{
+          winston.error("Error response refreshing auth token", response);
+          return response;
+        }
+      }
+      catch(ex){
+        winston.error("Error refreshing auth token", ex);
+        return ex;
+      }
     }
   });
 }

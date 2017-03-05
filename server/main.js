@@ -7,8 +7,18 @@ import { Songs } from '../imports/api/songs.js';
 
 import '../imports/public-api/playlist-api.js';
 
+import winston from 'winston';
 import crypto from 'crypto';
 import base64url from 'base64url';
+
+Meteor.startup(() => {
+  // code to run on server at startup
+
+  // set up log handlers
+  winston.add(winston.transports.File, { filename: 'jukebox-logs-' + new Date().toISOString().slice(0, 10) + '.log' });
+  winston.info('Logging initialized!');
+  //winston.remove(winston.transports.Console);
+});
 
 // publishing of the db collections from the server
 // note: here is where we can filter what is sent to the server (e.g. hiding certain fields)
@@ -115,10 +125,6 @@ Meteor.publish('songs', function (playlistId) {
 	}
 	
   	return Songs.find({hostedPlaylistId: baseId}, { sort: { voteCount: -1, dateAdded: 1 } });
-});
-
-Meteor.startup(() => {
-  // code to run on server at startup
 });
 
 Meteor.methods({
