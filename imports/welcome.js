@@ -80,6 +80,12 @@ Template.welcome_page.events({
   'click #createJukebox'(event){
     window.location = window.location.protocol + "//" + window.location.host + "/create?useSpotify=true";
   },
+  'click #joinJukebox'(event){
+  	$("#joinJukeboxCode").show();
+  	$("#joinGeoJukebox").show();
+  	$("#joinJukebox").hide();
+  	$("#createJukebox").hide();
+  },
   'click li'(event) {
     // get the public id - we store the public id on the rows of the list so it is easy to grab it when a row is clicked
     var playlistPublicId = event.target.id;
