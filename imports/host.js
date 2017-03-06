@@ -18,7 +18,6 @@ Template.host_page.onRendered(function hostOnRendered(){
     if (/android/i.test(userAgent)) {
         var timer = setTimeout(function () {
             window.location.href = "http://www.playjuke.com/android";
-            // window.location = "https://play.google.com/store/apps/details?id=com.facebook.katana"; 
         }, 3000);
         window.location.replace("jukeboxapp://host?hostToken=" + hostToken + "&privateId=" + playlistPrivateId);
         return;

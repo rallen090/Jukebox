@@ -110,7 +110,7 @@ FlowRouter.route('/spotify/auth/', {
 FlowRouter.route('/android/', {
   name: 'Jukebox.android',
   action() {
-    window.location.href = "market://details?id=com.facebook.katana";
+    window.location.href = "market://details?id=jukebox.jukebox";
   },
 });
 

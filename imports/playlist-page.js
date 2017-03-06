@@ -224,7 +224,7 @@ Template.playlist_page.helpers({
 
     // android
     if (/android/i.test(userAgent)) {
-        return "sms:1?body=" + shareMessage;
+        return "sms:?body=" + shareMessage;
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
@@ -290,7 +290,7 @@ Template.playlist_page.events({
 
       // iOS detection from: http://stackoverflow.com/a/9039885/177710
       if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          location.href = "sms:1&body=" + shareMessage;
+          location.href = "sms:&body=" + shareMessage;
           return;
       }
 
@@ -490,7 +490,7 @@ function handleLink(link){
       .modal({
         onApprove : function(element) {
           if(element.hasClass("android")){
-            window.open("https://play.google.com/store/apps/details?id=com.facebook.katana");
+            window.open("https://play.google.com/store/apps/details?id=jukebox.jukebox");
           }else{
             window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
           }
