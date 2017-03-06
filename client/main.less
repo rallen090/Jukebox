@@ -111,6 +111,10 @@ p.small {
 	height: 100%;
 }
 
+.hidden {
+	display: none !important;
+}
+
 .welcomeOption, .subcontainer {
 	background: rgba(0, 0, 0, 0.7);
 	padding: 15px 15px 15px 15px;	
@@ -624,7 +628,7 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 	background: rgba(0, 0, 0, 0.7);
 	margin: 0px 0px 0px 0px;
 	color: @color-primary;
-	.rounded;
+	padding: 10px 0 5px 0;
 }
 
 #jukebox-logo{
@@ -757,7 +761,8 @@ html.nontouch .playlists-container li:hover .selectArrow, .playlists-container l
 @media only screen and (max-width : 600px) {
 	
 #container {
-	padding: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 #header h1 {
