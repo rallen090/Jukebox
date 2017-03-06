@@ -10,15 +10,22 @@
 
 
 <div class="welcomeOption" id="joinJukebox">
-	<span class="icon" style="margin-top: 0px;"><i class="fa fa-music fa-1x"></i></span> 
-	<h3>Join a jukebox by ID</h3>
-	<p>
-		Add songs and vote on what'll play next<br/>
-	</p>
+	<span class="icon" style="margin-top: -5px;"><i class="fa fa-sign-in fa-1x"></i></span> 
+	<h3>Join an existing Jukebox</h3>
+	
+	<div class="clear"></div>	
+
+</div><!-- /#joinJukebox -->
+
+	<div class="clear"></div>
+
+<div class="welcomeOption" id="joinJukeboxCode" style="display: none;">
+	<span class="icon" style="margin-top: -2px;"><i class="fa fa-hashtag fa-1x"></i></span> 
+	<h3>Join by Jukebox ID</h3>
 
 	<div class="inputContainer">
-		<div id="invalidAlert"><p><i class="fa fa-exclamation-triangle"></i> <strong>Invalid Juke Code:</strong> Ask the party host for the playlist number</p></div>
-		<div class="inputPrefix">#<input type="text" class="bigger-input partyInput" id="playlist-id" placeholder="Juke Code" pattern="[0-9]*"></div>
+		<div id="invalidAlert"><p><i class="fa fa-exclamation-triangle"></i> <strong>Invalid Jukebox ID:</strong> Ask the party host for the Jukebox ID</p></div>
+		<div class="inputPrefix">ID:<input type="text" class="bigger-input partyInput" id="playlist-id" pattern="[0-9]*"></div>
 			<a id="js-party-joiner" class="partyJoinClick" >
 			<i class="fa fa-arrow-right"></i>
 			</a>
@@ -28,11 +35,11 @@
 
 </div><!-- /#joinJukebox -->
 
-	<div class="clear"></div>	
+	<div class="clear"></div>		
 
-<div class="welcomeOption" id="joinGeoJukebox">
+<div class="welcomeOption" id="joinGeoJukebox" style="display: none;">
 	<span class="icon" style="margin-top: -2px;"><i class="fa fa-map-o fa-1x" style="font-size: 80%;"></i></span> 
-	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
+	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby Jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
 	
 	{{#if nearbyPlaylists}}
 	<div class="playlists-container" style="display: none;">
@@ -55,9 +62,8 @@
 </div><!-- /#joinGeoJukebox -->
 
 <div class="welcomeOption" id="createJukebox">
-	<span class="icon"><i class="fa fa-bullhorn fa-1x"></i></span> 
-	<h3>Create a jukebox</h3>
-	<p>Let your guests help pick what plays next</p>
+	<span class="icon" style="margin-top: -5px;"><i class="fa fa-plus fa-1x"></i></span> 
+	<h3>Create a new Jukebox</h3>
 </div><!-- /#createJukebox -->
 
 <div id="footer">
