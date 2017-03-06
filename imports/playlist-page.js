@@ -224,7 +224,7 @@ Template.playlist_page.helpers({
 
     // android
     if (/android/i.test(userAgent)) {
-        return "sms:?body=" + shareMessage;
+        return "sms:1?body=" + shareMessage;
     }
 
     // iOS detection from: http://stackoverflow.com/a/9039885/177710
@@ -290,7 +290,7 @@ Template.playlist_page.events({
 
       // iOS detection from: http://stackoverflow.com/a/9039885/177710
       if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          location.href = "sms:&body=" + shareMessage;
+          location.href = "sms:1&body=" + shareMessage;
           return;
       }
 
