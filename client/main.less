@@ -66,8 +66,72 @@ strong {
 }
 
 #header {
-	background: rgba(0, 0, 0, 0.7);
+	background-color: @color-primary;
+	position: fixed;
+	width: 100%;
+	height: 40px;
+	box-shadow: 0px 1px 2px #000;
+	color: #eee;
+	z-index: 999999;
+}
+
+#header-spacer {
+	height: 40px;
+	width: 100%;
+}
+
+#header-left-button {
+	float: left;
 	padding: 10px 15px;	
+}
+
+#header-right-button {
+	float: right;
+	padding: 10px 15px;	
+}
+
+#header-right-button.selected {
+	background-color: #ddd;
+	color: @color-primary;
+}
+
+
+#header-title {
+	padding: 10px 15px;	
+}
+
+#side-menu {
+	position: fixed;
+	top: 40px;
+	right: 0px;
+	width: 300px;
+	background-color: #ddd;
+	color: #111;
+	z-index: 999999;
+}
+
+.menu-header {
+	border-bottom: 1px solid #999;
+	text-align: left;
+	padding: 10px 10px;
+	color: #444;
+}
+
+.menu-option {
+	border-bottom: 1px solid #999;
+	text-align: left;
+	padding: 10px 10px;
+}
+
+.menu-icon {
+	float: left;
+	width: 30px;
+	text-align: center;
+	padding-right: 10px;
+}
+
+.menu-text {
+	float: left;
 }
 
 #container {
@@ -85,6 +149,17 @@ h1, h2, h3, h4, p {
 
 h1 {
 	font-size: 40px;
+	text-shadow: none;
+}
+
+#header h1 {
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+
+#header h1 a {
+	color: #eee;
 }
 
 h2 {

@@ -17,6 +17,7 @@ import '../imports/search.js';
 import '../imports/auth.js';
 import '../imports/settings.js';
 import '../imports/app-body.js';
+import '../imports/join-jukebox.js';
 
 FlowRouter.route('/', {
   name: 'App.home',
@@ -54,7 +55,7 @@ FlowRouter.route('/join/', {
   name: 'Jukebox.join',
   triggersEnter: [acquireSession],
   action() {
-    BlazeLayout.render('App_body', { main: 'create_page' });
+    BlazeLayout.render('App_body', { main: 'join_page' });
   },
 });
 

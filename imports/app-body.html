@@ -1,25 +1,56 @@
 <template name="App_body">
 
-    <div class="logo-container">
-      <h1 id="jukebox-logo"><a href="/"><img src="../../JukeboxSmall@1x.png" alt="JUKEBOX" /></a>
-<!--         <div style="position: absolute; display:inline-block; left: 10px; background: black;">
-          <i class="small sidebar icon" id="side-menu" style="color: #B62990"></i>
-        </div> -->
-        <div class="ui icon top right pointing dropdown button" style="position: absolute; display:inline-block; background: black;">
-          <i class="large spotify icon" style="color: #B62990"></i>
-          <div class="menu">
-          {{#if currentUser}}
-            <div class="header"><strong>{{currentUser.spotifyUserId}}</strong></div>
-            <div class="item" id="user-my-playlists">My playlists</div>
-            <div class="item" id="user-log-out">Log out</div>
-          {{else}}
-            <div class="header"><strong>Account</strong></div>
-            <div class="item" id="user-log-in">Log in via Spotify</div>
-          {{/if}}
-          </div>
-        </div>
-      </h1>
-    </div>
+<div id="header">
+	<div id="header-left-button">
+		{{#unless isHomepage}}
+		<i class="fa fa-chevron-left" aria-hidden="true"></i>
+		{{/unless}}
+	</div>
+	
+	<div id="header-right-button">
+			<i class="fa fa-user" aria-hidden="true"></i>
+	</div>
+
+	<div id="header-title">
+		<h1><a href="../">Jukebox</a></h1>
+	</div>
+
+</div>
+
+<div id="side-menu" style="display: none;">
+	{{#if currentUser}}
+	<div class="menu-header">
+		<div class="menu-icon">&nbsp;</div>
+		<div class="menu-text">Looking good, {{currentUser.spotifyUserId}}</div>
+		<div class="clear"></div>
+	</div>
+	<div class="menu-option" id="user-my-playlists">
+		<div class="menu-icon"><i class="fa fa-list-ul" aria-hidden="true"></i></div>
+		<div class="menu-text">My playlists</div>
+		<div class="clear"></div>
+	</div>
+	<div class="menu-option" id="user-log-out">
+		<div class="menu-icon"><i class="fa fa-sign-out" aria-hidden="true"></i></div>
+		<div class="menu-text">Log out</div>
+		<div class="clear"></div>
+	</div>
+	{{else}}
+	<div class="menu-header">
+		Account
+		</div>
+	<div class="menu-option" id="user-log-in">
+		<div class="menu-icon"><i class="fa fa-spotify" aria-hidden="true"></i></div>
+		<div class="menu-text">Log in via Spotify</div>
+		<div class="clear"></div>
+	</div>
+	{{/if}}
+</div>
+
+<div id="header-spacer">
+	&nbsp;
+</div>
+
+
     <div id="container" class="">
 
       <div class="content-overlay"></div>
