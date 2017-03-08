@@ -50,6 +50,9 @@ Template.App_body.onRendered(function appBodyOnRendered(){
 Template.App_body.helpers({
   currentUser(){
     return Users.findOne();
+  },
+  isHomepage(){
+	return (FlowRouter.getRouteName() == 'App.home');	
   }
 });
 
@@ -65,9 +68,19 @@ Template.App_body.events({
 	'click #user-my-playlists'(event) {
 		FlowRouter.go('Jukebox.playlists');
 	},
-	// 'click #side-menu'(event){
-	// 	$('.sidebar').sidebar('toggle');
-	// }
+	'click #header-right-button'(event){
+		if($('#header-right-button').hasClass("selected")) {
+		  	$("#side-menu").slideUp(200);
+		  	$( "#header-right-button" ).removeClass( "selected" );
+		} else {
+		  	$("#side-menu").slideDown(200);
+		  	$( "#header-right-button" ).addClass( "selected" );
+		}
+	 },
+	'click #header-left-button'(event){
+		parent.history.back();
+		return false;
+	 },
 });
 
 function syncUser(self){

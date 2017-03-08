@@ -1,0 +1,45 @@
+<template name="join_page">
+
+<div class="welcomeOption" id="joinJukeboxCode">
+	<span class="icon" style="margin-top: -2px;"><i class="fa fa-hashtag fa-1x"></i></span> 
+	<h3>Join by Jukebox ID</h3>
+
+	<div class="inputContainer">
+		<div id="invalidAlert"><p><i class="fa fa-exclamation-triangle"></i> <strong>Invalid Jukebox ID:</strong> Ask the party host for the Jukebox ID</p></div>
+		<div class="inputPrefix">ID:<input type="text" class="bigger-input partyInput" id="playlist-id" pattern="[0-9]*"></div>
+			<a id="js-party-joiner" class="partyJoinClick" >
+			<i class="fa fa-arrow-right"></i>
+			</a>
+	</div>
+	
+	<div class="clear"></div>	
+
+</div><!-- /#joinJukebox -->
+
+	<div class="clear"></div>		
+
+<div class="welcomeOption" id="joinGeoJukebox">
+	<span class="icon" style="margin-top: -2px;"><i class="fa fa-map-o fa-1x" style="font-size: 80%;"></i></span> 
+	<h3 id="nearby-button"><span class="hideWhenLoading">Join a nearby Jukebox</span><span class="showWhenLoading">Finding nearby playlists &nbsp;<i class="fa fa-spinner fa-spin"></i></span></h3>
+	
+	{{#if nearbyPlaylists}}
+	<div class="playlists-container" style="display: none;">
+	<br/>
+	<div class="scroll-box-border">
+	<div class="scroll-box">
+		<div>
+			<ul id="selectable-playlists">
+		      {{#each playlist in nearbyPlaylists}}
+		        <li id="{{playlist.publicId}}">
+					{{playlist.name}} ({{playlist.distanceInMiles}} miles)
+		        </li>
+		      {{/each}}
+		  	</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+	{{/if}}
+</div><!-- /#joinGeoJukebox -->
+
+</template>
