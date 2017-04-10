@@ -12,7 +12,7 @@
 </div>
 
 <div class="actionBar">
-  <div class="playlistShare icon-action" data-content="Invite others to your jukebox">
+  <div class="playlistShare icon-action" data-content="Invite others to your jukebox" data-position="right center">
     <p>
     <a href="{{getShareLinkByOS}}">
       <span class="icon-content"><i class="fa fa-bullhorn fa-1x"></i>#{{playlist.publicId}}</span>
@@ -27,14 +27,14 @@
   <!-- search bar -->
   {{> search playlistId=playlist._id}}
 
-  <!-- music player -->
+  <!-- music player (iOS or Android) -->
   {{#if isControllable}}
   <div class="musicPlayer">
         <span class="musicControlHelp tooltip icon-action"><a><i class="fa fa-info-circle"></i></a>
       <div class="tooltiptext">
         <strong>Controlling the music</strong>
         <br/><br/>
-        Playing music requires our app (iOS or Android). If you're in the app now, just press play to begin! If you don't have it yet, press play to download it.
+        Playing music requires our app. If you're in the app now, just press play to begin! If you don't have it yet, press play to download it.
         <br/><br/>
         Once the jukebox is playing on a device, you can control it from anywhere (app or browser). To let others control the music too, turn on 'public music control' in the playlist's settings. You can also share a link with others to host from their own device - just press the share icon to the right of the player controls.
       </div>
