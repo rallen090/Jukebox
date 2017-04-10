@@ -81,6 +81,14 @@ Template.App_body.events({
 		parent.history.back();
 		return false;
 	 },
+	 'click'(event){
+	 	if($('#header-right-button').hasClass("selected")) {
+	 		if($(event.currentTarget).parents('#side-menu').length === 0){
+	 			$("#side-menu").slideUp(200);
+		  		$( "#header-right-button" ).removeClass( "selected" );
+	 		}
+	 	}
+	 }
 });
 
 function syncUser(self){
