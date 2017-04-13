@@ -111,7 +111,7 @@ Template.search.events({
 		$("#height-extender").show();
 
 		$('html, body').animate({
-	        scrollTop: $("#search-input").offset().top
+	        scrollTop: $("#search-input").offset().top - 50
 	    }, 500);
 	 },
 	 // on-enter key press handler

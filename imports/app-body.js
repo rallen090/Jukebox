@@ -25,26 +25,16 @@ Template.App_body.onCreated(function appBodyOnCreated() {
 });
 
 Template.App_body.onRendered(function appBodyOnRendered(){
-	// $('body').append('<div class="ui left demo vertical inverted sidebar labeled icon menu">\
- //        <a class="item">\
- //          <i class="home icon"></i>\
- //          Home\
- //        </a>\
- //        <a class="item">\
- //          <i class="block layout icon"></i>\
- //          Topics\
- //        </a>\
- //        <a class="item">\
- //          <i class="smile icon"></i>\
- //          Friends\
- //        </a>\
- //      </div>');
-	// $('#__blaze-root').addClass("pusher");
-	// $('.context.example .ui.sidebar')
- //  .sidebar({
- //    context: $('.context.example .bottom.segment')
- //  })
- //  .sidebar('attach events', '.context.example .menu .item');
+	// adding body click event here since you can't add to elements via the meteor event framework
+	$('body').click(function(event) {
+		console.log($(event));
+	   	if($('#header-right-button').hasClass("selected")) {
+	 		if($(event.target).parents('#side-menu').length === 0 && $(event.target).parents('#header').length === 0){
+	 			$("#side-menu").slideUp(200);
+		  		$( "#header-right-button" ).removeClass( "selected" );
+	 		}
+	 	}
+	});
 });
 
 Template.App_body.helpers({
@@ -80,14 +70,6 @@ Template.App_body.events({
 	'click #header-left-button'(event){
 		parent.history.back();
 		return false;
-	 },
-	 'click'(event){
-	 	if($('#header-right-button').hasClass("selected")) {
-	 		if($(event.currentTarget).parents('#side-menu').length === 0){
-	 			$("#side-menu").slideUp(200);
-		  		$( "#header-right-button" ).removeClass( "selected" );
-	 		}
-	 	}
 	 }
 });
 
