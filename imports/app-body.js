@@ -12,7 +12,6 @@ import './services/spotify.js';
 import './app-body.html';
 
 Meteor.startup(() => {
-
 });
 
 Template.App_body.onCreated(function appBodyOnCreated() {
