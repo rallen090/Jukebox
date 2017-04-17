@@ -34,6 +34,20 @@ Template.App_body.onRendered(function appBodyOnRendered(){
 	 		}
 	 	}
 	});
+
+	// prevent rubber-banding of the body, but allow for scrolling elements
+	$('body').on('touchmove', function (e) {
+	    var searchTerms = '.scrollable',
+	        $target = $(e.target),
+	        parents = $target.parents(searchTerms);
+
+	    if (parents.length || $target.hasClass(searchTerms)) {
+	        // ignore as we want the scroll to happen
+	        // (This is where we may need to check if at limit)
+	    } else {
+	        e.preventDefault();
+	    }
+	});
 });
 
 Template.App_body.helpers({
