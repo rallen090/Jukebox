@@ -19,6 +19,12 @@ var currentHostToken = null;
 // save off host info locally so we don't need to request more than once for it (NOTE: important to reset OnCreated, because it won't be reset automatically)
 var savedHostInfo = null;
 
+// browser info
+var standalone = window.navigator.standalone,
+    userAgent = window.navigator.userAgent.toLowerCase(),
+    browser = /safari|chrome/.test(userAgent),
+    ios = /iphone|ipod|ipad/.test(userAgent);
+
 Template.playlist_page.onCreated(function playPageOnCreated() {
   // reset cached hostInfo
   savedHostInfo = null;
@@ -213,6 +219,12 @@ Template.playlist_page.helpers({
   hasVotedClass(votes){
     var userId = Session.get("jukebox-active-user-id");
     return $.inArray(userId, votes) > -1 ? "fa fa-star" : "fa fa-star-o";
+  },
+  getImage(imageUrl){
+    if(ios && !standalone && !browser) {
+      return "<i class='fa fa-music fa-4x' aria-hidden='true'></i>";
+    }
+    return "<img src='" + imageUrl + "'/>";
   },
   getShareLinkByOS(){
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;

@@ -79,7 +79,7 @@
         {{#if currentSong}}
           {{#if isPlayingOrPaused}}
               <div style="float: left;">
-                <img src="{{currentSong.imageUrl}}"/>
+                {{{getImage currentSong.imageUrl}}}
               </div>
               <div class="songInfo">
             <span class="songName">{{currentSong.name}}</span> 
@@ -107,7 +107,7 @@
       {{#each song in songs}}
         <li class="song-row">
         <div style="float: left;">
-          <img src="{{song.imageUrl}}"/>
+          {{{getImage song.imageUrl}}}
         </div>
         <div class="songInfo">
         <span class="songName">{{song.name}}</span>
