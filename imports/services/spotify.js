@@ -180,6 +180,9 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
             window.open(url, '_blank');
             ajaxSuccessFunc();
           }
+        },
+        error: function(){
+          Session.clear(SESSION_KEY_ACTION);
         }
   });
 
@@ -202,6 +205,9 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
 
           // propogate userId and playlistId
           saveSongsToPlaylist(userId, jsonResponse.id, jsonResponse.external_urls.spotify, /* start batch index*/ 0);
+        },
+        error: function(){
+          Session.clear(SESSION_KEY_ACTION);
         }
     } /* TODO: add failed action!*/);
 
@@ -213,6 +219,9 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
         success: function(response){
           // propogate userId
           createPlaylist(response.id);
+        },
+        error: function(){
+          Session.clear(SESSION_KEY_ACTION);
         }
     }, queuedAction);
 };

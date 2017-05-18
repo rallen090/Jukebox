@@ -1,0 +1,21 @@
+<template name="map_page">
+{{#if playlist}}
+{{#if isOwner}}
+<!-- playlist name -->
+<div class="playlistTitle">
+	<h2 id="playlist-name">
+	  {{playlist.name}}
+	</h2>
+</div>
+
+<div class="playlistTitle">
+	<button onclick="getLocation()">Try It</button>
+	<div id="mapholder"></div>
+	<br/><br/>
+{{/if}}
+{{else}}
+  <div class="ui active dimmer" id="page-loader">
+    <div class="ui text loader">Loading settings</div>
+  </div>
+{{/if}}
+</template>

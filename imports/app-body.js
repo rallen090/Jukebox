@@ -95,7 +95,7 @@ function syncUser(self){
 		if(!user && authToken){
 			Meteor.call('syncUserWithServer', /* userId */ null, authToken, function(error, result){
 				// if syncing did not return a valid userId AND we have an auth token, then force a re-auth
-				if(result == null){
+				if(!result){
 					acquireSpotifyAccessToken(/* reaquire */ true, /*queuedAction*/ null);
 					return;
 				}
