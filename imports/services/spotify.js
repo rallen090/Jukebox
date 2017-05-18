@@ -9,6 +9,7 @@ const SPOTIFY_SCOPES = [
       'playlist-modify-public'];
 const SESSION_KEY_SPOTIFY_TOKEN = "jukebox-spotify-access-token"; 
 const SESSION_KEY_ACTION = "jukebox-spotify-auth-action";
+const SESSION_KEY_RETRY = "jukebox-failure-retry";
 
 function spotifyLogin(callback, action) {
   var redirectUrl = window.location.href.split("#")[0]; // return to original URL
@@ -50,7 +51,13 @@ function spotifyLogin(callback, action) {
 };
 
 function ajaxWithReauthentication(ajaxRequestArguments, queuedAction){
-	var failCount = 0;
+  if(Session.get(SESSION_KEY_RETRY) === true){
+    Session.clear(SESSION_KEY_RETRY);
+  }
+  else{
+    Session.setPersistent(SESSION_KEY_RETRY, true);
+  }
+
 	ajaxRequestArguments.error = function (ex){
     // spotify returns 201 created for some API endpoints, but ajax considers this onError
     if(ex && ex.status && ex.status === 201){
@@ -58,12 +65,12 @@ function ajaxWithReauthentication(ajaxRequestArguments, queuedAction){
     }
 
 		// assume first failure is because expires accessToken to re-auth
-		if(failCount === 0){
-      failCount++;
-
+    Session.clear(SESSION_KEY_ACTION);
+		if(Session.get(SESSION_KEY_RETRY) === true){
       // so we clear the token and force a reacquisition of the token (note: important that we clear this, in case we fail again,
       // because otherwise we could be leaving around a stale token that could be re-tried again)
       Session.clear(SESSION_KEY_SPOTIFY_TOKEN);
+
 			acquireSpotifyAccessToken(/* reacquire */ true, queuedAction);
 		}
     else{
@@ -81,6 +88,7 @@ tryExecuteQueuedAction = function(postActionMapping){
 
   function postAction(){
     // run post-action
+    Session.clear(SESSION_KEY_ACTION);
     var action = postActionMapping[actionInfo.action];
     if(action && typeof action === 'function'){
       action();
@@ -98,7 +106,7 @@ acquireSpotifyAccessToken = function acquireSpotifyAccessToken(reacquire, queued
 	const tokenKey = SESSION_KEY_SPOTIFY_TOKEN;
 
 	var accessToken = Session.get(tokenKey);
-	if(!accessToken || reacquire){
+	if(!accessToken || reacquire === true){
     // send to spotify
 		spotifyLogin(function(accessToken) {
 	    	Session.setPersistent(tokenKey, accessToken);
@@ -146,7 +154,6 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
 
   // note: we can assert that if we get a valid token then we have userId stored (this could be a cleaner system obviously...)
   var accessToken = acquireSpotifyAccessToken(/* reacquire */ false, queuedAction);
-
   // note: spotify has max songs per request set to 100
   var songIdBatches = [];
   var i, j, batchSize = 99;
@@ -180,9 +187,6 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
             window.open(url, '_blank');
             ajaxSuccessFunc();
           }
-        },
-        error: function(){
-          Session.clear(SESSION_KEY_ACTION);
         }
   });
 
@@ -205,9 +209,6 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
 
           // propogate userId and playlistId
           saveSongsToPlaylist(userId, jsonResponse.id, jsonResponse.external_urls.spotify, /* start batch index*/ 0);
-        },
-        error: function(){
-          Session.clear(SESSION_KEY_ACTION);
         }
     } /* TODO: add failed action!*/);
 
@@ -220,9 +221,6 @@ savePlaylist = function (playlistName, songUris, ajaxSuccessFunc) {
           // propogate userId
           createPlaylist(response.id);
         },
-        error: function(){
-          Session.clear(SESSION_KEY_ACTION);
-        }
     }, queuedAction);
 };
 
