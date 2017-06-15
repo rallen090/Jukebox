@@ -1,0 +1,14 @@
+MUPX / DOCKER Troubleshooting
+
+- docker ps (prints containers)
+
+- for corrupt mongodb
+	- docker kill mongodb
+	- for reinstall
+		- sudo -i
+		- apt-get remove mongodb
+	-# remove stopped containers
+	docker rm $(docker ps -a -q)
+
+	# remove dangling images
+	docker rmi $(docker images -q --filter "dangling=true")
