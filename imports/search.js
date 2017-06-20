@@ -20,7 +20,7 @@ Template.search.onRendered(function createPageOnRendered() {
   	$('.ui.search')
 	  .search({
 	    apiSettings: {
-	      url: 'http://localhost:3000/api/v2/spotify/search?query={query}',
+	      url: 'https://www.playjuke.com/api/v2/spotify/search?query={query}',
 	      onResponse: function(spotifyResponse) {
 	        var
 	          response = {
