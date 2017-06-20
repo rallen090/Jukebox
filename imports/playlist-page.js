@@ -221,9 +221,10 @@ Template.playlist_page.helpers({
     return $.inArray(userId, votes) > -1 ? "fa fa-star" : "fa fa-star-o";
   },
   getImage(imageUrl){
-    if(ios && !standalone && !browser) {
-      return "<i class='fa fa-music fa-4x' aria-hidden='true'></i>";
-    }
+    // FOR hiding images...
+    // if(ios && !standalone && !browser) {
+    //   return "<i class='fa fa-music fa-4x' aria-hidden='true'></i>";
+    // }
     return "<img src='" + imageUrl + "'/>";
   },
   getShareLinkByOS(){
@@ -504,7 +505,7 @@ function handleLink(link){
           if(element.hasClass("android")){
             window.open("https://play.google.com/store/apps/details?id=jukebox.jukebox");
           }else{
-            window.open("https://itunes.apple.com/us/app/facebook/id284882215?mt=8");
+            window.open("https://itunes.apple.com/us/app/play-juke/id1214477408");
           }
         },
         onDeny : function() {

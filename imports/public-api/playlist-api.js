@@ -10,6 +10,9 @@ const ENCRYPTION_SECRET = "cFJLyifeUJUBFWdHzVbykfDmPHtLKLGzViHW9aHGmyTLD8hGXC";
 const CLIENT_CALLBACK_URL = "jukebox://callback";
 const SPOTIFY_BASE_URL = "https://accounts.spotify.com";
 
+var currentAuthToken = null;
+var currentAuthTokenExpiration = new Date();
+
 const FAILURE_403 = {
   statusCode: 403,
   success: false,
@@ -198,4 +201,70 @@ if (Meteor.isServer) {
       }
     }
   });
+
+  Api.addRoute('v2/spotify/search', {authRequired: false}, {
+    get: function () {
+      var query = this.queryParams.query;
+      var token = getServerAuthToken(/*renew*/ false);
+
+      var result = searchSpotify(query, token);
+      if(result){
+        return result;
+      }
+
+      token = getServerAuthToken(/*renew*/ true);
+      return searchSpotify(query, token);
+    }
+  });
+
+  searchSpotify = function (query, token) {
+    var tokenBearer = 'Bearer ' + token;
+
+    try{
+      var response = HTTP.call(
+      "GET", 
+      "https://api.spotify.com/v1/search?type=track&q=" + query, 
+      {headers: {
+        'Authorization': tokenBearer
+      }});
+
+      return response.data;
+    }
+    catch(ex){
+      winston.error("Error searching spotify", ex);
+      return null;
+    }
+  };
+
+  getServerAuthToken = function (renew) {
+    if(!renew && currentAuthToken && (new Date() < currentAuthTokenExpiration)){
+      return currentAuthToken;
+    }
+
+    try{
+      var response = HTTP.call(
+      "POST", 
+      SPOTIFY_BASE_URL + "/api/token", 
+      {params: {grant_type: "client_credentials"}, auth: CLIENT_ID + ":" + CLIENT_SECRET_ID});
+
+      if(response && response.data){
+        currentAuthToken = response.data.access_token;
+
+        // set expiration to 45 min from now (spotify enforces 1 hr)
+        var newExpiration = new Date();
+        newExpiration.setMinutes(newExpiration.getMinutes() + 45);
+        currentAuthTokenExpiration = newExpiration;
+
+        return currentAuthToken;
+      }
+      else{
+        winston.error("Invalid auth response for search token", response);
+        return null;
+      }
+    }
+    catch(ex){
+      winston.error("Error acquiring server auth token for search", ex);
+      return null;
+    }
+  };
 }

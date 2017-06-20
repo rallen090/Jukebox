@@ -20,7 +20,7 @@ Template.search.onRendered(function createPageOnRendered() {
   	$('.ui.search')
 	  .search({
 	    apiSettings: {
-	      url: 'https://api.spotify.com/v1/search?q={query}&type=track',
+	      url: 'http://localhost:3000/api/v2/spotify/search?query={query}',
 	      onResponse: function(spotifyResponse) {
 	        var
 	          response = {
