@@ -6,7 +6,7 @@
 			"username": "ubuntu",
 			// or pem file (ssh based authentication)
 			// WARNING: Keys protected by a passphrase are not supported
-			"pem": "/dev/jukebox-aws.pem",
+			"pem": "/Users/Ryan/dev/jukebox-aws.pem",
 			// Also, for non-standard ssh port use this
 			//"sshOptions": { "port" : 49154 },
 			// server specific environment variables
@@ -23,7 +23,7 @@
 	// Location of app (local directory). This can reference '~' as the users home directory.
 	// i.e., "app": "~/Meteor/my-app",
 	// This is the same as the line below.
-	"app": "/dev/Jukebox/",
+	"app": "/Users/Ryan/dev/Jukebox/",
 
 	// Configure environment
 	// ROOT_URL must be set to your correct domain (https or http)
